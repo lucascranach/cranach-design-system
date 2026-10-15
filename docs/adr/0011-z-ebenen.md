@@ -26,6 +26,17 @@ Werte aus dem Bolt Design System (Pega), `@bolt/core-v3.x@5.8.0`, `_settings-z-i
 | `--cda-z-toast` | 220 | Ergänzung |
 | `--cda-z-skip-link` | 240 | Ergänzung |
 
+### Die zwei ergänzten Ebenen
+
+Bolt deckt zwei Fälle nicht ab, die in den Cranach-Projekten vorkommen. Beide liegen oberhalb von `modal` (200) und setzen Bolts 20er-Schritte fort; die Bolt-Werte selbst bleiben unverändert.
+
+| Token | Wert | Warum nötig | Warum über `modal` |
+|---|---|---|---|
+| `--cda-z-toast` | 220 | Kurze Benachrichtigungen, z. B. „Zur Merkliste hinzugefügt“ oder Fehlermeldungen. cranach-artefacts (`notification.scss`) und cranach-search haben solche Hinweise; Bolt hat dafür keine Ebene. | Eine Benachrichtigung muss auch sichtbar sein, wenn gerade ein Dialog oder der Bildviewer im Vollbild offen ist. |
+| `--cda-z-skip-link` | 240 | Der Skip-Link „Zum Inhalt springen“ ist für Tastatur- und Screenreader-Nutzung erforderlich (WCAG 2.4.1 „Bereiche überspringen“). Er erscheint erst, wenn er per Tab den Fokus erhält. | Ein fokussiertes Element darf nicht verdeckt sein (WCAG 2.4.11). Der Skip-Link liegt daher über allem, auch über dem fixierten Header (160), Dialogen und Benachrichtigungen. |
+
+### Weitere Regeln
+
 - Utility-Klassen `.cda-u-z-*` ohne `!important`.
 - Drawer nutzen `modal-bg`/`modal`. Echte Dialoge bevorzugt über `<dialog>` bzw. die Popover-API (Top-Layer, kein z-Index nötig).
 
