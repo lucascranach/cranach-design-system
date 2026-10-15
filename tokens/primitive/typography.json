@@ -1,0 +1,38 @@
+{
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": { "$value": ["IBM Plex Sans", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"] },
+      "mono": { "$value": ["IBM Plex Mono", "ui-monospace", "Menlo", "Consolas", "Liberation Mono", "monospace"] },
+      "icon": { "$value": ["Cranach Symbols"], "$description": "Subset von Material Symbols Sharp (ADR 0012)." }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "$description": "Standard-Mapping (ADR 0009) – nicht mehr das verschobene Mapping (200 = Light) der Sass-Projekte.",
+      "light": { "$value": 300 },
+      "regular": { "$value": 400 },
+      "medium": { "$value": 500 },
+      "semibold": { "$value": 600 },
+      "bold": { "$value": 700 }
+    },
+    "size": {
+      "$type": "dimension",
+      "$description": "Vorschlag einer Größenskala; m (16 px) ist der Fließtext.",
+      "xs": { "$value": "0.75rem" },
+      "s": { "$value": "0.875rem" },
+      "m": { "$value": "1rem" },
+      "l": { "$value": "1.25rem" },
+      "xl": { "$value": "1.5rem" },
+      "2xl": { "$value": "2rem" },
+      "3xl": { "$value": "2.5rem" },
+      "4xl": { "$value": "3.25rem" }
+    },
+    "line-height": {
+      "$type": "number",
+      "$description": "Aus cranach-search (120/140/160 %).",
+      "tight": { "$value": 1.2 },
+      "normal": { "$value": 1.4 },
+      "loose": { "$value": 1.6 }
+    }
+  }
+}

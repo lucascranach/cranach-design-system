@@ -1,0 +1,50 @@
+{
+  "color": {
+    "$type": "color",
+    "neutral": {
+      "$description": "Graustufen. Hell aus cranach-search (#f2f2f2, #b4b4b4, #666, #444), dunkel aus cranach-timeline (#18181a).",
+      "0": { "$value": "#ffffff" },
+      "50": { "$value": "#f7f7f7" },
+      "100": { "$value": "#f2f2f2" },
+      "200": { "$value": "#e0e0e0" },
+      "300": { "$value": "#b4b4b4" },
+      "400": { "$value": "#8a8a8a" },
+      "500": { "$value": "#666666" },
+      "600": { "$value": "#444444" },
+      "700": { "$value": "#333336" },
+      "800": { "$value": "#242426" },
+      "900": { "$value": "#18181a" },
+      "1000": { "$value": "#000000" }
+    },
+    "yellow": {
+      "$description": "Cranach-Gelb. 500 ist der Akzent (#FEB701), 800 das Ocker für Text (#946800). Zwischenstufen in OKLab interpoliert.",
+      "50": { "$value": "#fff8ed" },
+      "100": { "$value": "#fff0d7" },
+      "200": { "$value": "#ffe2b1" },
+      "300": { "$value": "#ffd488" },
+      "400": { "$value": "#ffc559" },
+      "500": { "$value": "#feb701" },
+      "600": { "$value": "#da9c01" },
+      "700": { "$value": "#b78200" },
+      "800": { "$value": "#946800" },
+      "900": { "$value": "#6b4b00" }
+    },
+    "orange": {
+      "$description": "Dekorationsfarbe. 600 ist das bisherige $decoration (#cc5800, nur Großtext), 700 die AA-taugliche Textvariante.",
+      "300": { "$value": "#ff9a52" },
+      "600": { "$value": "#cc5800" },
+      "700": { "$value": "#b84f00" }
+    },
+    "red": {
+      "$description": "Fehlerfarbe. 700 ist das bisherige $error (#c00).",
+      "300": { "$value": "#ff7a7a" },
+      "700": { "$value": "#cc0000" }
+    },
+    "alpha": {
+      "black-40": { "$value": "rgba(0, 0, 0, 0.4)", "$description": "Schattenfarbe aus cranach-search/-artefacts" },
+      "black-60": { "$value": "rgba(0, 0, 0, 0.6)" },
+      "black-10": { "$value": "rgba(0, 0, 0, 0.1)" },
+      "white-10": { "$value": "rgba(255, 255, 255, 0.1)" }
+    }
+  }
+}

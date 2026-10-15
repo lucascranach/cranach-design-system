@@ -1,0 +1,21 @@
+{
+  "z": {
+    "$type": "number",
+    "$description": "Werte aus dem Bolt Design System (@bolt/core-v3.x 5.8.0), ergänzt um toast und skip-link (ADR 0011).",
+    "background-bottom": { "$value": -20 },
+    "background": { "$value": 0 },
+    "background-top": { "$value": 20 },
+    "content-bottom": { "$value": 40 },
+    "content": { "$value": 60 },
+    "content-top": { "$value": 80 },
+    "nav": { "$value": 100 },
+    "fab": { "$value": 110 },
+    "popover": { "$value": 120 },
+    "tooltip": { "$value": 140 },
+    "nav-fixed": { "$value": 160 },
+    "modal-bg": { "$value": 180 },
+    "modal": { "$value": 200 },
+    "toast": { "$value": 220, "$description": "Ergänzung, nicht in Bolt" },
+    "skip-link": { "$value": 240, "$description": "Ergänzung, nicht in Bolt" }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "space": {
+    "$type": "dimension",
+    "$description": "4-px-Raster (ADR 0010).",
+    "2xs": { "$value": "4px" },
+    "xs": { "$value": "8px" },
+    "s": { "$value": "12px" },
+    "m": { "$value": "16px" },
+    "l": { "$value": "24px" },
+    "xl": { "$value": "32px" },
+    "2xl": { "$value": "48px" },
+    "3xl": { "$value": "64px" },
+    "4xl": { "$value": "96px" },
+    "fluid": {
+      "$type": "other",
+      "$description": "Fließende Abschnittsabstände nach dem Muster --responsive-padding-* aus cranach-artefacts. Vorschlag, Werte zur Prüfung.",
+      "s": { "$value": "clamp(12px, 1vw + 8px, 24px)" },
+      "m": { "$value": "clamp(16px, 2vw + 8px, 48px)" },
+      "l": { "$value": "clamp(24px, 4vw + 8px, 96px)" }
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "s": { "$value": "2px" },
+    "m": { "$value": "4px" },
+    "full": { "$value": "9999px" }
+  },
+  "border-width": {
+    "$type": "dimension",
+    "$description": "Aus cranach-search ($border-stroke-weight-*).",
+    "s": { "$value": "1px" },
+    "m": { "$value": "2px" },
+    "l": { "$value": "3px" }
+  },
+  "breakpoint": {
+    "$type": "dimension",
+    "$description": "Tailwind-Standard (ADR 0010). In @media nicht als var() nutzbar, daher zusätzlich als @custom-media ausgegeben.",
+    "sm": { "$value": "640px" },
+    "md": { "$value": "768px" },
+    "lg": { "$value": "1024px" },
+    "xl": { "$value": "1280px" },
+    "2xl": { "$value": "1536px" }
+  },
+  "focus": {
+    "ring-width": { "$type": "dimension", "$value": "2px" },
+    "ring-offset": { "$type": "dimension", "$value": "2px" }
+  }
+}

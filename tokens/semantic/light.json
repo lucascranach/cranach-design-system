@@ -1,0 +1,39 @@
+{
+  "color": {
+    "$type": "color",
+    "background": {
+      "default": { "$value": "{color.neutral.0}", "$description": "Seitenhintergrund" },
+      "subtle": { "$value": "{color.neutral.50}", "$description": "Leicht abgesetzte Fläche (Karten, Seitenleisten)" },
+      "muted": { "$value": "{color.neutral.100}", "$description": "Stärker abgesetzte Fläche, Hover-Fläche neutraler Elemente" },
+      "inverse": { "$value": "{color.neutral.1000}" },
+      "overlay": { "$value": "{color.alpha.black-40}", "$description": "Abdunkelung hinter Dialogen und Viewer" }
+    },
+    "text": {
+      "default": { "$value": "{color.neutral.1000}" },
+      "muted": { "$value": "{color.neutral.500}", "$description": "Nebeninformationen, mind. 4,5:1" },
+      "inverse": { "$value": "{color.neutral.0}" },
+      "accent": { "$value": "{color.yellow.800}", "$description": "Farbig betonter Text (Ocker)" },
+      "decoration": { "$value": "{color.orange.700}", "$description": "Dekorationsfarbe als Text (Orange)" },
+      "danger": { "$value": "{color.red.700}" },
+      "on-accent": { "$value": "{color.neutral.1000}", "$description": "Text auf Gelb – immer dunkel" }
+    },
+    "accent": {
+      "default": { "$value": "{color.yellow.500}", "$description": "Markenfarbe, nur als Fläche" },
+      "hover": { "$value": "{color.yellow.600}" },
+      "subtle": { "$value": "{color.yellow.100}", "$description": "Zarte Hervorhebung, z. B. ausgewählte Zeile" }
+    },
+    "link": {
+      "default": { "$value": "{color.neutral.1000}" },
+      "underline": { "$value": "{color.yellow.500}" },
+      "hover-background": { "$value": "{color.yellow.500}" },
+      "hover-text": { "$value": "{color.neutral.1000}" }
+    },
+    "border": {
+      "default": { "$value": "{color.neutral.200}", "$description": "Dekorative Trennlinien" },
+      "strong": { "$value": "{color.neutral.500}", "$description": "Rahmen von Bedienelementen, mind. 3:1" }
+    },
+    "focus": {
+      "ring": { "$value": "{color.yellow.800}", "$description": "Fokusring, mind. 3:1 gegen den Hintergrund" }
+    }
+  }
+}

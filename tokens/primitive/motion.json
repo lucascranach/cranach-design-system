@@ -1,0 +1,18 @@
+{
+  "duration": {
+    "$type": "duration",
+    "fast": { "$value": "200ms" },
+    "medium": { "$value": "400ms" },
+    "slow": { "$value": "800ms" }
+  },
+  "easing": {
+    "$type": "cubicBezier",
+    "default": { "$value": [0.25, 0.1, 0.25, 1], "$description": "Entspricht CSS ease." }
+  },
+  "opacity": {
+    "$type": "number",
+    "$description": "Aus cranach-search ($op-medium, $op-low).",
+    "medium": { "$value": 0.6 },
+    "low": { "$value": 0.3 }
+  }
+}
