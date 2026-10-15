@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+*.log
+/storybook-static/
+/.cache/
+# dist/ wird auf main NICHT eingecheckt, sondern nur auf dem Release-Branch (siehe ADR 0005)
+/dist/

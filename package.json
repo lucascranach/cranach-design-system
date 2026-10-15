@@ -1,0 +1,18 @@
+{
+  "name": "@lucascranach/design-system",
+  "version": "0.0.0",
+  "description": "Cranach Design System – gemeinsame Design-Tokens, Grundstyles und Komponenten für die Frontends des Cranach Digital Archive",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucascranach/cranach-design-system.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {}
+}
