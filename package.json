@@ -14,5 +14,23 @@
   "files": [
     "dist"
   ],
-  "scripts": {}
+  "exports": {
+    "./tokens.css": "./dist/tokens.css",
+    "./tailwind.css": "./dist/tailwind.css",
+    "./custom-media.css": "./dist/custom-media.css",
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "default": "./dist/tokens.js"
+    },
+    "./figma/tokens.figma.json": "./dist/figma/tokens.figma.json"
+  },
+  "style": "./dist/tokens.css",
+  "scripts": {
+    "build:tokens": "node build/build-tokens.mjs",
+    "check:contrast": "node build/check-contrast.mjs",
+    "build": "npm run build:tokens && npm run check:contrast"
+  },
+  "devDependencies": {
+    "style-dictionary": "5.6.1"
+  }
 }

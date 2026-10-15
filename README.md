@@ -35,6 +35,7 @@ npm i github:lucascranach/cranach-design-system#semver:^1.0
 **Tailwind-4-Projekte** zusätzlich:
 
 ```css
+@layer theme, base, cda, components, utilities;
 @import "tailwindcss";
 @import "@lucascranach/design-system/tailwind.css";
 ```
@@ -49,6 +50,18 @@ npm i github:lucascranach/cranach-design-system#semver:^1.0
 | `icons/` | Liste der benötigten Material-Symbols-Icons |
 | `docs/` | ADRs und weitere Dokumentation |
 | `dist/` | Build-Ergebnis (nicht auf `main` eingecheckt) |
+
+## Entwicklung
+
+```sh
+npm install
+npm run build          # Tokens bauen und Kontraste prüfen
+```
+
+| Befehl | Wirkung |
+|---|---|
+| `npm run build:tokens` | erzeugt `dist/tokens.css`, `tailwind.css`, `custom-media.css`, `tokens.js`/`.d.ts`, `figma/tokens.figma.json` |
+| `npm run check:contrast` | prüft alle semantischen Farbpaarungen beider Themes gegen WCAG AA |
 
 ## Commits
 
