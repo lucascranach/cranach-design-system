@@ -66,3 +66,9 @@ npm run build          # Tokens bauen und Kontraste prüfen
 ## Commits
 
 Conventional Commits (`feat:`, `fix:`, `docs:` …), daraus erzeugt release-please Version und Changelog ([ADR 0006](docs/adr/0006-versionierung.md)).
+
+## Lizenz
+
+[MIT](LICENSE) – Copyright (c) 2026 Cranach Digital Archive.
+
+Drittanbieter-Ressourcen behalten ihre eigenen Lizenzen: IBM Plex (SIL Open Font License 1.1), Material Symbols (Apache License 2.0).

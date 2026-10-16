@@ -2,6 +2,7 @@
   "name": "@lucascranach/design-system",
   "version": "0.0.0",
   "description": "Cranach Design System – gemeinsame Design-Tokens, Grundstyles und Komponenten für die Frontends des Cranach Digital Archive",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "repository": {
