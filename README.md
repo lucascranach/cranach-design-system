@@ -32,6 +32,8 @@ npm i @lucascranach/design-system
 <link rel="stylesheet" href="/design-system/1.0.0/cranach.css">
 ```
 
+`cranach.css` enthält die Tokens (per `@import "./tokens.css"`), die Schriften IBM Plex Sans und IBM Plex Mono (`fonts/`), den Reset und die Grundstyles. Die Datei **vor** den eigenen Styles einbinden: Projekte, die IBM Plex noch selbst mit dem alten, verschobenen Gewichts-Mapping (Datei „Light“ als 200 usw.) registrieren, behalten dann ihre eigenen `@font-face`-Regeln, weil bei gleichem Familiennamen und passendem Gewicht die später definierte Regel Vorrang hat.
+
 **Tailwind-4-Projekte** zusätzlich:
 
 ```css
@@ -55,12 +57,13 @@ npm i @lucascranach/design-system
 
 ```sh
 npm install
-npm run build          # Tokens bauen und Kontraste prüfen
+npm run build          # Tokens und CSS bauen, Kontraste prüfen
 ```
 
 | Befehl | Wirkung |
 |---|---|
 | `npm run build:tokens` | erzeugt `dist/tokens.css`, `tailwind.css`, `custom-media.css`, `tokens.js`/`.d.ts`, `figma/tokens.figma.json` |
+| `npm run build:css` | erzeugt `dist/cranach.css` aus `src/` und kopiert die Schriften nach `dist/fonts/` (setzt `build:tokens` voraus) |
 | `npm run check:contrast` | prüft alle semantischen Farbpaarungen beider Themes gegen WCAG AA |
 
 ## Commits
@@ -71,4 +74,4 @@ Conventional Commits (`feat:`, `fix:`, `docs:` …), daraus erzeugt release-plea
 
 [MIT](LICENSE) – Copyright (c) 2026 Cranach Digital Archive.
 
-Drittanbieter-Ressourcen behalten ihre eigenen Lizenzen: IBM Plex (SIL Open Font License 1.1), Material Symbols (Apache License 2.0).
+Drittanbieter-Ressourcen behalten ihre eigenen Lizenzen: IBM Plex (SIL Open Font License 1.1, Lizenztexte in `dist/fonts/`, bezogen über die Fontsource-Pakete), Material Symbols (Apache License 2.0).

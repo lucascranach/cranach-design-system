@@ -1,0 +1,60 @@
+/*
+ * Reset – Layer cda.reset (ADR 0003)
+ *
+ * Bewusst schlank: Die Regeln liegen zwar unter allen Projekt-Styles ohne Layer,
+ * aber über den Browser-Standards. Alles, was hier steht, kann sich also auf Seiten
+ * auswirken, die sich auf die Browser-Standards verlassen. Abstände von Absätzen und
+ * Überschriften bleiben deshalb unangetastet.
+ */
+@layer cda.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Keine automatische Schriftvergrößerung in iOS im Querformat */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
+  img,
+  video {
+    height: auto;
+  }
+
+  /* Formularelemente übernehmen die Schrift der Umgebung */
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    letter-spacing: inherit;
+  }
+
+  /* Lange Wörter (deutsche Komposita, Inventarnummern, URLs) brechen um statt überzustehen */
+  p,
+  li,
+  dd,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+}

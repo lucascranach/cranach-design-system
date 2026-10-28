@@ -15,6 +15,7 @@
     "dist"
   ],
   "exports": {
+    "./cranach.css": "./dist/cranach.css",
     "./tokens.css": "./dist/tokens.css",
     "./tailwind.css": "./dist/tailwind.css",
     "./custom-media.css": "./dist/custom-media.css",
@@ -24,17 +25,20 @@
     },
     "./figma/tokens.figma.json": "./dist/figma/tokens.figma.json"
   },
-  "style": "./dist/tokens.css",
+  "style": "./dist/cranach.css",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "build:tokens": "node build/build-tokens.mjs",
+    "build:css": "node build/build-css.mjs",
     "check:contrast": "node build/check-contrast.mjs",
-    "build": "npm run build:tokens && npm run check:contrast",
+    "build": "npm run build:tokens && npm run build:css && npm run check:contrast",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
+    "@fontsource-variable/ibm-plex-sans": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
     "style-dictionary": "5.6.1"
   }
 }

@@ -1,0 +1,107 @@
+/*
+ * Grundstyles – Layer cda.base (ADR 0003, 0008, 0009, 0010)
+ *
+ * Nur semantische Tokens, damit helles und dunkles Theme automatisch greifen (ADR 0007).
+ */
+@layer cda.base {
+  /* ---------- Seite und Fließtext ---------- */
+
+  body {
+    font-family: var(--cda-font-family-sans);
+    font-size: var(--cda-font-size-m);
+    font-weight: var(--cda-font-weight-regular);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-default);
+    background-color: var(--cda-color-background-default);
+  }
+
+  /* ---------- Überschriften ---------- */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: var(--cda-font-weight-semibold);
+    line-height: var(--cda-font-line-height-tight);
+  }
+
+  h1 {
+    font-size: var(--cda-font-size-3xl);
+  }
+
+  h2 {
+    font-size: var(--cda-font-size-2xl);
+  }
+
+  h3 {
+    font-size: var(--cda-font-size-xl);
+  }
+
+  h4 {
+    font-size: var(--cda-font-size-l);
+  }
+
+  h5,
+  h6 {
+    font-size: var(--cda-font-size-m);
+  }
+
+  /* ---------- Text-Auszeichnungen ---------- */
+
+  small {
+    font-size: var(--cda-font-size-s);
+  }
+
+  /* Gelb nur als Fläche mit dunkler Schrift (ADR 0008) */
+  mark {
+    color: var(--cda-color-text-on-accent);
+    background-color: var(--cda-color-accent-default);
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--cda-font-family-mono);
+    font-size: 1em;
+  }
+
+  pre {
+    overflow-x: auto;
+  }
+
+  hr {
+    border: 0;
+    border-block-start: var(--cda-border-width-s) solid var(--cda-color-border-default);
+  }
+
+  /* ---------- Links (Muster aus cranach-artefacts, ADR 0008) ----------
+   * Textfarbe, gelbe Unterstreichung, gelbe Fläche beim Überfahren.
+   * Im dunklen Theme ist die Linkfarbe selbst Gelb (Token color.link.default). */
+
+  a {
+    color: var(--cda-color-link-default);
+    text-decoration-line: underline;
+    text-decoration-color: var(--cda-color-link-underline);
+    text-decoration-thickness: var(--cda-border-width-m);
+    text-underline-offset: var(--cda-space-2xs);
+    transition:
+      color var(--cda-duration-fast) var(--cda-easing-default),
+      background-color var(--cda-duration-fast) var(--cda-easing-default);
+
+    &:hover {
+      color: var(--cda-color-link-hover-text);
+      background-color: var(--cda-color-link-hover-background);
+    }
+  }
+
+  /* ---------- Fokus (ADR 0010) ----------
+   * Einheitlicher Ring nur bei Tastaturbedienung. outline: none ist verboten. */
+
+  :focus-visible {
+    outline: var(--cda-focus-ring-width) solid var(--cda-color-focus-ring);
+    outline-offset: var(--cda-focus-ring-offset);
+  }
+}

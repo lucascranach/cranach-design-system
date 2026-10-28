@@ -65,6 +65,7 @@ async function main() {
   // ---------- tokens.css ----------
   const decl = (tokens, map) => tokens.map((t) => `${cssVar(t)}: ${cssValue(t, map)};`);
   const darkMap = new Map(themes.dark.map((t) => [t.path.join('.'), t]));
+  const durations = primitives.filter((t) => t.path[0] === 'duration');
   const css = [
     header,
     '@layer cda.tokens, cda.reset, cda.base, cda.components, cda.utilities;\n',
@@ -80,6 +81,12 @@ async function main() {
     '  /* Dunkles Theme – Systemeinstellung, sofern kein Theme erzwungen ist */',
     '  @media (prefers-color-scheme: dark) {',
     block(':root:not([data-theme="light"]):not(.light)', ['color-scheme: dark;', ...decl(semantic.dark, darkMap)], '    '),
+    '  }',
+    '',
+    '  /* Reduzierte Bewegung (ADR 0010): Alle Dauern werden praktisch null. Bewusst nicht 0,',
+    '     damit transitionend/animationend weiter ausgelöst werden. */',
+    '  @media (prefers-reduced-motion: reduce) {',
+    block(':root', durations.map((t) => `${cssVar(t)}: 0.01ms;`), '    '),
     '  }',
     '}',
     '',

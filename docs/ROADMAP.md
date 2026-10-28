@@ -12,10 +12,10 @@ Die Bestandsprojekte (`../cranach-*`, `../cda-orga`) werden in dieser Phase **ni
 - [x] Lizenz MIT
 - [x] Umstellung der Auslieferung auf npmjs.com (ADR 0016 ersetzt ADR 0005)
 - [x] Doku für die Weiterarbeit: `docs/bestandsaufnahme.md`, `docs/hintergrund.md`, `docs/archiv/`, `CLAUDE.md`, diese Roadmap
+- [x] 4 · Grundstyles und Schriften – Schriftquelle Fontsource (`@fontsource-variable/ibm-plex-sans`, `@fontsource/ibm-plex-mono`, je 5.3.0, OFL 1.1), von Volker am 28.10.2026 freigegeben. `build/build-css.mjs` kopiert nur Latin/Latin-Ext nach `dist/fonts/` und schreibt eigene `@font-face`-Regeln; `src/reset.css` (`cda.reset`), `src/base.css` (`cda.base`: Fließtext, Überschriften, Links nach ADR 0008, Fokus-Ring); `prefers-reduced-motion` setzt in `tokens.css` die Dauer-Tokens auf 0,01 ms; `dist/cranach.css` mit Export `./cranach.css`.
 
 ## Offen
 
-- [ ] **4 · Grundstyles und Schriften** – IBM Plex Sans als variable woff2 (+ Italic), Subset Latin/Latin-Ext, IBM Plex Mono 400 im Paket (`dist/fonts/`). Layer `cda.reset` und `cda.base`: Reset, Typografie, Links (Muster ADR 0008), Fokus-Ring über `:focus-visible`, `prefers-reduced-motion`. Ergebnis: `dist/cranach.css` als zentrale Einbinde-Datei (importiert `tokens.css`), Export `./cranach.css` in `package.json`. *Hinweis:* Als Font-Quelle bietet sich `@fontsource-variable/ibm-plex-sans` bzw. `@fontsource/ibm-plex-mono` (OFL 1.1) an – vor der Wahl kurz mit Volker abstimmen.
 - [ ] **5 · Icon-Font** – `icons/icons.json` mit den benötigten Icons (aus den Bestandsprojekten ermitteln: Ligatur-Namen in `.icon`-Elementen, Material-Icons-Nutzung, siehe `docs/bestandsaufnahme.md` Abschnitt 3), Build-Skript `build/build-icons.mjs` über `icon_names` (ADR 0012), Klassen `.cda-icon` und `.cda-icon--filled`. Der Build braucht Zugriff auf `fonts.googleapis.com`/`fonts.gstatic.com`.
 - [ ] **6 · Storybook** – HTML-Renderer mit Vite, deutsche Doku-Seiten (Einstieg, Einbinden, Farben, Typografie, Abstände, z-Ebenen, Icons), Umschalter hell/dunkel über `data-theme`, Addon für Barrierefreiheit (axe).
   - ⏸ **Haltepunkt:** Optik und Doku von Volker prüfen lassen.
