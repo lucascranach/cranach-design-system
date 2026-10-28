@@ -9,7 +9,7 @@ Gemeinsame Design-Tokens, Grundstyles und Komponenten für die Frontends des [Cr
 - **CSS-first:** Tokens als CSS Custom Properties (`--cda-…`), Komponenten als CSS-Klassen (`.cda-…`). Funktioniert in jedem Stack – React, Eleventy, Jekyll, Kirby/PHP, reines HTML.
 - **Konfliktfrei einbinden:** Alles liegt in Cascade Layers (`@layer cda.*`). Bestehende Projekt-Styles behalten Vorrang, das Einbinden ändert zunächst nichts am Aussehen.
 - **Eine Quelle:** Tokens als DTCG-JSON in `tokens/`, Style Dictionary erzeugt daraus CSS, JS/TS, Tailwind-Theme und Figma-Variablen.
-- **Nur eigener Server:** Zur Laufzeit wird ausschließlich von lucascranach.org geladen.
+- **Nur eigener Server zur Laufzeit:** Projekte mit Build installieren über npmjs.com und bündeln die Dateien; Projekte ohne Build laden die versionierte Kopie von lucascranach.org. Besucher laden nie von Dritten.
 - **Hell und dunkel** von Anfang an.
 
 Alle Entscheidungen mit Begründung: [docs/adr](docs/adr/README.md).
@@ -19,7 +19,7 @@ Alle Entscheidungen mit Begründung: [docs/adr](docs/adr/README.md).
 **Projekte mit Build** (Vite, Eleventy …):
 
 ```sh
-npm i github:lucascranach/cranach-design-system#semver:^1.0
+npm i @lucascranach/design-system
 ```
 
 ```css

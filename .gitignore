@@ -3,5 +3,5 @@ node_modules/
 *.log
 /storybook-static/
 /.cache/
-# dist/ wird auf main NICHT eingecheckt, sondern nur auf dem Release-Branch (siehe ADR 0005)
+# dist/ wird nicht eingecheckt; es steckt im npm-Paket und in der Server-Kopie (ADR 0016)
 /dist/

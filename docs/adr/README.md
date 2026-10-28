@@ -10,7 +10,7 @@ Format: Status · Kontext · Entscheidung · Konsequenzen. Neue Entscheidungen b
 | [0002](0002-css-first-mit-adaptern.md) | CSS-first mit Adaptern, ohne SCSS | angenommen |
 | [0003](0003-praefix-und-cascade-layers.md) | Präfix `cda` und Cascade Layers | angenommen |
 | [0004](0004-dtcg-tokens-und-style-dictionary.md) | Tokens im DTCG-Format, Build mit Style Dictionary | angenommen |
-| [0005](0005-auslieferung.md) | Auslieferung: Git-Abhängigkeit und selbst gehostete Kopie | angenommen |
+| [0005](0005-auslieferung.md) | Auslieferung: Git-Abhängigkeit und selbst gehostete Kopie | ersetzt durch 0016 |
 | [0006](0006-versionierung.md) | Versionierung mit SemVer und release-please | angenommen |
 | [0007](0007-themes.md) | Themes hell und dunkel | angenommen |
 | [0008](0008-farben-und-kontrast.md) | Farben und Kontrast | angenommen |
@@ -21,3 +21,4 @@ Format: Status · Kontext · Entscheidung · Konsequenzen. Neue Entscheidungen b
 | [0013](0013-doku-und-qualitaetssicherung.md) | Storybook, axe, Stylelint | angenommen |
 | [0014](0014-figma-anbindung.md) | Figma-Anbindung über den Figma-MCP-Server | angenommen |
 | [0015](0015-projektrollen-und-migration.md) | Projektrollen und Migrationsreihenfolge | angenommen |
+| [0016](0016-auslieferung-ueber-npmjs.md) | Auslieferung über npmjs.com und selbst gehostete Kopie | angenommen |

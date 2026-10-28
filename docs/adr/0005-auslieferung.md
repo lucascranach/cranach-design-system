@@ -1,6 +1,6 @@
 # 0005 – Auslieferung: Git-Abhängigkeit und selbst gehostete Kopie
 
-**Status:** angenommen (Q4, Q4b)
+**Status:** ersetzt durch [ADR 0016](0016-auslieferung-ueber-npmjs.md) am 28.10.2026 (ursprünglich angenommen: Q4, Q4b)
 
 ## Kontext
 Zur Laufzeit soll ausschließlich vom eigenen Server (lucascranach.org) geladen werden – kein externes CDN, auch aus Datenschutzgründen. Es soll kein npm-Registry-Konto nötig sein.

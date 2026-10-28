@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "description": "Cranach Design System – gemeinsame Design-Tokens, Grundstyles und Komponenten für die Frontends des Cranach Digital Archive",
   "license": "MIT",
-  "private": true,
   "type": "module",
   "repository": {
     "type": "git",
@@ -26,10 +25,14 @@
     "./figma/tokens.figma.json": "./dist/figma/tokens.figma.json"
   },
   "style": "./dist/tokens.css",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build:tokens": "node build/build-tokens.mjs",
     "check:contrast": "node build/check-contrast.mjs",
-    "build": "npm run build:tokens && npm run check:contrast"
+    "build": "npm run build:tokens && npm run check:contrast",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "style-dictionary": "5.6.1"
