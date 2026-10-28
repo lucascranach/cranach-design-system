@@ -51,5 +51,7 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 
 ## Offene Punkte (nicht blockierend)
 
+- **Am Haltepunkt nach Schritt 6 entscheiden – Familienname der Schrift:** `cranach.css` registriert IBM Plex als „IBM Plex Sans“. Bestandsprojekte registrieren denselben Namen mit verschobenem Gewichts-Mapping (Datei „Light“ als 200 usw.); bei gleichem Namen und Gewicht gewinnt die später definierte `@font-face`-Regel. Derzeit gilt: `cranach.css` vor den Projekt-Styles einbinden (README). Alternative: eigener Name wie „Cranach Sans“ (Token-Änderung).
+- **Am Haltepunkt nach Schritt 6 entscheiden – gelbe Link-Unterstreichung:** Muster nach ADR 0008 freigegeben, die Unterstreichung #FEB701 hat auf Weiß aber nur 1,75:1. Manche Prüfer verlangen für die Kennzeichnung von Links 3:1 (WCAG 1.4.11).
 - Ist ein SSH-Deploy aus GitHub Actions auf den Hochschul-Server zulässig? (erst für die automatische Release-Action relevant)
 - Funktioniert IBM Plex mit `use_figma`? (Figma-Doku: „Custom Fonts“ noch nicht unterstützt) – in Schritt 20 testen.
