@@ -56,4 +56,5 @@ npm pack --dry-run       # Paketinhalt kontrollieren
 
 ## Stand der Infrastruktur
 
-- Das Repo existiert bisher nur lokal (kein Remote). GitHub-Repo, npm-Organisation, Server-Pfad und Figma-Datei stehen als Aufgaben für Volker in der Roadmap.
+- GitHub-Repo `lucascranach/cranach-design-system` (privat) ist als `origin` gesetzt; gepusht wird nur auf ausdrückliche Bitte. npm-Organisation, Server-Pfad und Figma-Datei stehen als Aufgaben für Volker in der Roadmap.
+- Node-Version: 24 (`.nvmrc`), vor der Arbeit `nvm use`.

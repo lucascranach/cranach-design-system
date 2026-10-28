@@ -17,7 +17,7 @@ Die Bestandsprojekte (`../cranach-*`, `../cda-orga`) werden in dieser Phase **ni
 
 ## Offen
 
-- [ ] **6 · Storybook** – HTML-Renderer mit Vite, deutsche Doku-Seiten (Einstieg, Einbinden, Farben, Typografie, Abstände, z-Ebenen, Icons), Umschalter hell/dunkel über `data-theme`, Addon für Barrierefreiheit (axe).
+- [ ] **6 · Storybook** – HTML-Renderer mit Vite, deutsche Doku-Seiten (Einstieg, Einbinden, Farben, Typografie, Abstände, z-Ebenen, Icons), Umschalter hell/dunkel über `data-theme` mit `@storybook/addon-themes` (ohne Modus „System“, am 28.10.2026 von Volker festgelegt), Addon für Barrierefreiheit (axe).
   - ⏸ **Haltepunkt:** Optik und Doku von Volker prüfen lassen.
 - [ ] **7 · Stylelint** – u. a. Verbot von `outline: none` und `!important`, Klassen nur mit Präfix `cda-`, keine Hex-Farben außerhalb von `tokens/`.
 - [ ] **8 · Komponente Button**
@@ -44,7 +44,7 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 | Wann | Aufgabe | Status |
 |---|---|---|
 | vor Schritt 5 (Font-Datei) | `npm run build:icons` auf einem Rechner mit Zugriff auf Google Fonts ausführen | entfällt – Google Fonts war in der Entwicklungsumgebung erreichbar |
-| vor dem ersten Push | GitHub-Repo `lucascranach/cranach-design-system` anlegen, Remote setzen | offen |
+| vor dem ersten Push | GitHub-Repo `lucascranach/cranach-design-system` anlegen, Remote setzen | erledigt 28.10.2026 – privat, `origin` per SSH gesetzt, noch nichts gepusht |
 | vor Schritt 20 | leere Figma-Library-Datei im Team-Projekt anlegen, Link bereitstellen; Figma-MCP-Server in Claude Code verbinden | offen |
 | vor Schritt 21 | Zielordner und SSH-Host für `/design-system/` auf lucascranach.org | offen |
 | vor dem ersten Release | npm-Organisation `lucascranach` auf npmjs.com anlegen (falls belegt: `@lucas-cranach`, dann Paketname, README und ADR 0016 anpassen) | offen |
@@ -53,5 +53,6 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 
 - **Am Haltepunkt nach Schritt 6 entscheiden – Familienname der Schrift:** `cranach.css` registriert IBM Plex als „IBM Plex Sans“. Bestandsprojekte registrieren denselben Namen mit verschobenem Gewichts-Mapping (Datei „Light“ als 200 usw.); bei gleichem Namen und Gewicht gewinnt die später definierte `@font-face`-Regel. Derzeit gilt: `cranach.css` vor den Projekt-Styles einbinden (README). Alternative: eigener Name wie „Cranach Sans“ (Token-Änderung).
 - **Am Haltepunkt nach Schritt 6 entscheiden – gelbe Link-Unterstreichung:** Muster nach ADR 0008 freigegeben, die Unterstreichung #FEB701 hat auf Weiß aber nur 1,75:1. Manche Prüfer verlangen für die Kennzeichnung von Links 3:1 (WCAG 1.4.11).
+- **Vor dem ersten Release – Sichtbarkeit des GitHub-Repos:** Das Repo ist derzeit privat. npm erzeugt Provenance-Angaben beim Veröffentlichen nur aus öffentlichen Repos; Trusted Publishing selbst funktioniert auch privat.
 - Ist ein SSH-Deploy aus GitHub Actions auf den Hochschul-Server zulässig? (erst für die automatische Release-Action relevant)
 - Funktioniert IBM Plex mit `use_figma`? (Figma-Doku: „Custom Fonts“ noch nicht unterstützt) – in Schritt 20 testen.
