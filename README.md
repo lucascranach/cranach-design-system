@@ -42,6 +42,20 @@ npm i @lucascranach/design-system
 @import "@lucascranach/design-system/tailwind.css";
 ```
 
+## Icons
+
+Icon-Font „Cranach Symbols“, ein Subset von Material Symbols Sharp ([ADR 0012](docs/adr/0012-icons.md)), enthalten in `cranach.css`:
+
+```html
+<span class="cda-icon" aria-hidden="true">search</span>
+<span class="cda-icon cda-icon--filled" aria-hidden="true">lock</span>
+```
+
+- Immer `aria-hidden="true"`, sonst lesen Screenreader den Namen vor. Trägt das Icon allein die Bedeutung, bekommt das umgebende Element ein `aria-label`.
+- Größe 24 px; anders über `font-size` am Icon.
+- Verfügbare Icons: [`icons/icons.json`](icons/icons.json). Alte Material-Icons-Namen wie `expand_more` funktionieren als Alias.
+- Neues Icon: Namen in `icons/icons.json` ergänzen, `npm run build`, Minor-Release.
+
 ## Aufbau des Repos
 
 | Ordner | Inhalt |
@@ -57,13 +71,14 @@ npm i @lucascranach/design-system
 
 ```sh
 npm install
-npm run build          # Tokens und CSS bauen, Kontraste prüfen
+npm run build          # Tokens, Icons und CSS bauen, Kontraste prüfen
 ```
 
 | Befehl | Wirkung |
 |---|---|
 | `npm run build:tokens` | erzeugt `dist/tokens.css`, `tailwind.css`, `custom-media.css`, `tokens.js`/`.d.ts`, `figma/tokens.figma.json` |
-| `npm run build:css` | erzeugt `dist/cranach.css` aus `src/` und kopiert die Schriften nach `dist/fonts/` (setzt `build:tokens` voraus) |
+| `npm run build:icons` | lädt das Icon-Subset über `icon_names` von Google Fonts nach `dist/fonts/cranach-symbols.woff2`; zwischengespeichert in `.cache/icons/`, `-- --refresh` lädt neu |
+| `npm run build:css` | erzeugt `dist/cranach.css` aus `src/` und kopiert die Schriften nach `dist/fonts/` (setzt `build:tokens` und `build:icons` voraus) |
 | `npm run check:contrast` | prüft alle semantischen Farbpaarungen beider Themes gegen WCAG AA |
 
 ## Commits
@@ -74,4 +89,4 @@ Conventional Commits (`feat:`, `fix:`, `docs:` …), daraus erzeugt release-plea
 
 [MIT](LICENSE) – Copyright (c) 2026 Cranach Digital Archive.
 
-Drittanbieter-Ressourcen behalten ihre eigenen Lizenzen: IBM Plex (SIL Open Font License 1.1, Lizenztexte in `dist/fonts/`, bezogen über die Fontsource-Pakete), Material Symbols (Apache License 2.0).
+Drittanbieter-Ressourcen behalten ihre eigenen Lizenzen: IBM Plex (SIL Open Font License 1.1, Lizenztexte in `dist/fonts/`, bezogen über die Fontsource-Pakete), Material Symbols (Apache License 2.0, Lizenztext in `icons/` und `dist/fonts/`).

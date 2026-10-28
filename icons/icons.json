@@ -1,0 +1,186 @@
+{
+  "$description": "Icons der Icon-Font „Cranach Symbols“ (Subset von Material Symbols Sharp, ADR 0012). Schlüssel = Ligatur-Name, Wert = Projekte, die das Icon heute nutzen (Bestandsaufnahme 28.10.2026; bei lucide/react-icons die ersetzte Komponente). Ein neues Icon: Namen ergänzen, npm run build, Minor-Release.",
+  "icons": {
+    "add": [
+      "search"
+    ],
+    "apps": [
+      "artefacts",
+      "map"
+    ],
+    "arrow_back": [
+      "kirby"
+    ],
+    "arrow_drop_up": [
+      "search"
+    ],
+    "arrow_forward": [
+      "search"
+    ],
+    "aspect_ratio": [
+      "image-tools"
+    ],
+    "backspace": [
+      "search"
+    ],
+    "chevron_left": [
+      "image-tools"
+    ],
+    "close": [
+      "search",
+      "artefacts",
+      "image-metadata",
+      "timeline (lucide X)"
+    ],
+    "code": [
+      "cda-orga"
+    ],
+    "collections": [
+      "compare"
+    ],
+    "compare": [
+      "artefacts"
+    ],
+    "content_copy": [
+      "image-metadata"
+    ],
+    "content_paste": [
+      "artefacts",
+      "cda-orga"
+    ],
+    "crop_16_9": [
+      "image-tools"
+    ],
+    "dark_mode": [
+      "map",
+      "timeline (lucide Moon)"
+    ],
+    "delete_sweep": [
+      "search"
+    ],
+    "description": [
+      "image-tools"
+    ],
+    "download": [
+      "artefacts",
+      "image-metadata"
+    ],
+    "edit": [
+      "artefacts"
+    ],
+    "edit_note": [
+      "artefacts"
+    ],
+    "error": [
+      "image-tools"
+    ],
+    "expand_less": [
+      "artefacts",
+      "map (react-icons FaChevronUp)"
+    ],
+    "expand_more": [
+      "search",
+      "artefacts",
+      "image-metadata",
+      "map (react-icons FaChevronDown)"
+    ],
+    "filter_list": [
+      "search",
+      "artefacts",
+      "image-metadata"
+    ],
+    "folder_open": [
+      "image-tools"
+    ],
+    "fullscreen": [
+      "compare"
+    ],
+    "image": [
+      "image-tools"
+    ],
+    "left_panel_open": [
+      "timeline (lucide PanelLeft)"
+    ],
+    "light_mode": [
+      "map",
+      "timeline (lucide Sun)"
+    ],
+    "link": [
+      "artefacts",
+      "cda-orga"
+    ],
+    "list": [
+      "search",
+      "image-tools"
+    ],
+    "location_on": [
+      "image-tools"
+    ],
+    "lock": [
+      "compare"
+    ],
+    "lock_open": [
+      "compare"
+    ],
+    "manage_search": [
+      "search"
+    ],
+    "menu": [
+      "search"
+    ],
+    "minimize": [
+      "search"
+    ],
+    "more_vert": [
+      "search",
+      "artefacts"
+    ],
+    "multiple_stop": [
+      "compare"
+    ],
+    "people": [
+      "artefacts"
+    ],
+    "playlist_add": [
+      "artefacts"
+    ],
+    "playlist_remove": [
+      "artefacts",
+      "compare"
+    ],
+    "public": [
+      "search"
+    ],
+    "remove": [
+      "search"
+    ],
+    "reorder": [
+      "artefacts"
+    ],
+    "restart_alt": [
+      "image-metadata"
+    ],
+    "screen_share": [
+      "cda-orga"
+    ],
+    "search": [
+      "search",
+      "image-tools"
+    ],
+    "tune": [
+      "image-metadata"
+    ],
+    "view_comfy": [
+      "search"
+    ],
+    "view_headline": [
+      "search"
+    ],
+    "view_list": [
+      "search"
+    ],
+    "view_module": [
+      "search"
+    ]
+  }
+}

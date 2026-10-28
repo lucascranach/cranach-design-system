@@ -5,15 +5,20 @@
  *   dist/fonts/        IBM Plex Sans (variabel, wght, normal + kursiv) und IBM Plex Mono 400,
  *                      je Subset Latin und Latin-Ext, mit OFL-Lizenztexten
  *
+ * Die Icon-Font (dist/fonts/cranach-symbols.woff2) legt build-icons.mjs ab; hier kommt nur
+ * ihre @font-face-Regel dazu.
+ *
  * Quelle der Schriften sind die Fontsource-Pakete (OFL 1.1, als devDependencies gepinnt).
  * Deren CSS wird nicht übernommen: Die @font-face-Regeln werden hier mit dem Familiennamen
  * aus den Tokens neu geschrieben; unicode-range kommt aus dem Paket. Siehe ADR 0009.
  *
- * Setzt voraus, dass build-tokens.mjs vorher gelaufen ist (dist/tokens.css).
+ * Setzt voraus, dass build-tokens.mjs und build-icons.mjs vorher gelaufen sind.
  */
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const DIST = 'dist';
 const FONT_DIR = path.join(DIST, 'fonts');
@@ -21,7 +26,10 @@ const SUBSETS = ['latin', 'latin-ext'];
 const require = createRequire(import.meta.url);
 
 /** Reihenfolge der Quell-Dateien in cranach.css */
-const SOURCES = ['src/reset.css', 'src/base.css'];
+const SOURCES = ['src/reset.css', 'src/base.css', 'src/components/icon.css'];
+
+/** Icon-Font aus build-icons.mjs (ADR 0012) */
+const ICON_FONT = 'cranach-symbols.woff2';
 
 const FONTS = [
   {
@@ -94,6 +102,25 @@ async function buildFonts() {
       }
     }
   }
+  // Icon-Font: von build-icons.mjs bereits nach dist/fonts/ gelegt
+  if (!existsSync(path.join(FONT_DIR, ICON_FONT))) {
+    throw new Error(`dist/fonts/${ICON_FONT} fehlt – zuerst "npm run build:icons" ausführen.`);
+  }
+  const { tokens } = await import(pathToFileURL(path.join(DIST, 'tokens.js')).href);
+  rules.push(
+    '/* Cranach Symbols – Subset von Material Symbols Sharp, Apache License 2.0 (fonts/LICENSE-Material-Symbols.txt) */',
+    [
+      '@font-face {',
+      `  font-family: "${String(tokens.font.family.icon).split(',')[0].replace(/["']/g, '').trim()}";`,
+      '  font-style: normal;',
+      '  font-weight: 400;',
+      '  font-display: block;',
+      `  src: url("./fonts/${ICON_FONT}") format("woff2");`,
+      '}',
+    ].join('\n'),
+  );
+  files.push(ICON_FONT);
+
   return { rules, files };
 }
 

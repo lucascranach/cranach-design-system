@@ -31,9 +31,10 @@
   },
   "scripts": {
     "build:tokens": "node build/build-tokens.mjs",
+    "build:icons": "node build/build-icons.mjs",
     "build:css": "node build/build-css.mjs",
     "check:contrast": "node build/check-contrast.mjs",
-    "build": "npm run build:tokens && npm run build:css && npm run check:contrast",
+    "build": "npm run build:tokens && npm run build:icons && npm run build:css && npm run check:contrast",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {

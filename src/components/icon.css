@@ -1,0 +1,42 @@
+/*
+ * Icon – Layer cda.components (ADR 0012)
+ *
+ * Icon-Font „Cranach Symbols“ (Subset von Material Symbols Sharp) über Ligaturen:
+ *
+ *   <span class="cda-icon" aria-hidden="true">search</span>
+ *   <span class="cda-icon cda-icon--filled" aria-hidden="true">favorite</span>
+ *
+ * Immer aria-hidden="true": Sonst lesen Screenreader den Namen („search“) vor. Trägt das Icon
+ * allein die Bedeutung (Button ohne Text), bekommt das umgebende Element ein aria-label.
+ *
+ * Größe: 24 px, die optische Größe der Font. Anders über font-size am Icon selbst.
+ */
+@layer cda.components {
+  .cda-icon {
+    display: inline-block;
+    /* Feste Breite: Während die Font lädt (font-display: block), nimmt das unsichtbare Wort
+       sonst seine volle Breite ein und das Layout springt. */
+    inline-size: 1em;
+    block-size: 1em;
+    overflow: hidden;
+    font-family: var(--cda-font-family-icon);
+    font-size: var(--cda-font-size-xl);
+    font-style: normal;
+    font-weight: var(--cda-font-weight-regular);
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    direction: ltr;
+    vertical-align: middle;
+    font-feature-settings: "liga";
+    font-variation-settings: "FILL" 0;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+  }
+
+  .cda-icon--filled {
+    font-variation-settings: "FILL" 1;
+  }
+}

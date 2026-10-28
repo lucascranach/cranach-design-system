@@ -13,10 +13,10 @@ Die Bestandsprojekte (`../cranach-*`, `../cda-orga`) werden in dieser Phase **ni
 - [x] Umstellung der Auslieferung auf npmjs.com (ADR 0016 ersetzt ADR 0005)
 - [x] Doku für die Weiterarbeit: `docs/bestandsaufnahme.md`, `docs/hintergrund.md`, `docs/archiv/`, `CLAUDE.md`, diese Roadmap
 - [x] 4 · Grundstyles und Schriften – Schriftquelle Fontsource (`@fontsource-variable/ibm-plex-sans`, `@fontsource/ibm-plex-mono`, je 5.3.0, OFL 1.1), von Volker am 28.10.2026 freigegeben. `build/build-css.mjs` kopiert nur Latin/Latin-Ext nach `dist/fonts/` und schreibt eigene `@font-face`-Regeln; `src/reset.css` (`cda.reset`), `src/base.css` (`cda.base`: Fließtext, Überschriften, Links nach ADR 0008, Fokus-Ring); `prefers-reduced-motion` setzt in `tokens.css` die Dauer-Tokens auf 0,01 ms; `dist/cranach.css` mit Export `./cranach.css`.
+- [x] 5 · Icon-Font – 54 Icons in `icons/icons.json` (53 aus dem Bestand, `left_panel_open` als Ersatz für lucide in timeline), mit nutzenden Projekten. `build/build-icons.mjs` lädt das Subset über `icon_names` (Namensprüfung gegen Googles Icon-Verzeichnis, Größen-Sicherheitsnetz, Cache in `.cache/icons/`); `src/components/icon.css` mit `.cda-icon` und `.cda-icon--filled`; `@font-face` mit `font-display: block` in `cranach.css`; Lizenztext Apache 2.0 in `dist/fonts/`.
 
 ## Offen
 
-- [ ] **5 · Icon-Font** – `icons/icons.json` mit den benötigten Icons (aus den Bestandsprojekten ermitteln: Ligatur-Namen in `.icon`-Elementen, Material-Icons-Nutzung, siehe `docs/bestandsaufnahme.md` Abschnitt 3), Build-Skript `build/build-icons.mjs` über `icon_names` (ADR 0012), Klassen `.cda-icon` und `.cda-icon--filled`. Der Build braucht Zugriff auf `fonts.googleapis.com`/`fonts.gstatic.com`.
 - [ ] **6 · Storybook** – HTML-Renderer mit Vite, deutsche Doku-Seiten (Einstieg, Einbinden, Farben, Typografie, Abstände, z-Ebenen, Icons), Umschalter hell/dunkel über `data-theme`, Addon für Barrierefreiheit (axe).
   - ⏸ **Haltepunkt:** Optik und Doku von Volker prüfen lassen.
 - [ ] **7 · Stylelint** – u. a. Verbot von `outline: none` und `!important`, Klassen nur mit Präfix `cda-`, keine Hex-Farben außerhalb von `tokens/`.
@@ -43,7 +43,7 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 
 | Wann | Aufgabe | Status |
 |---|---|---|
-| vor Schritt 5 (Font-Datei) | `npm run build:icons` auf einem Rechner mit Zugriff auf Google Fonts ausführen | offen |
+| vor Schritt 5 (Font-Datei) | `npm run build:icons` auf einem Rechner mit Zugriff auf Google Fonts ausführen | entfällt – Google Fonts war in der Entwicklungsumgebung erreichbar |
 | vor dem ersten Push | GitHub-Repo `lucascranach/cranach-design-system` anlegen, Remote setzen | offen |
 | vor Schritt 20 | leere Figma-Library-Datei im Team-Projekt anlegen, Link bereitstellen; Figma-MCP-Server in Claude Code verbinden | offen |
 | vor Schritt 21 | Zielordner und SSH-Host für `/design-system/` auf lucascranach.org | offen |

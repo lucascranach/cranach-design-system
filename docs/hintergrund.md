@@ -97,6 +97,12 @@ Laut Google lädt Material Symbols ohne `icon_names` alle über 3.800 Icons (295
 
 Ein lokales Zuschneiden mit fonttools wurde verworfen: Weil Material Symbols über Ligaturen arbeitet, behält `pyftsubset` sonst alle Ligaturen, deren Buchstaben in der Schrift bleiben – also praktisch die ganze Font. Es bräuchte ein eigenes Skript zum Ausdünnen der Ligatur-Tabelle. Zugunsten eines einfachen Setups gilt ausschließlich der `icon_names`-Weg; der Icon-Build braucht deshalb Zugriff auf `fonts.googleapis.com` und `fonts.gstatic.com`.
 
+Befunde beim Bau (28.10.2026):
+
+- Google meldet unbekannte Namen nicht als Fehler, sondern lässt sie weg. Ist **kein** Name gültig, liefert Google die komplette Font (rund 440 KB) statt eines Subsets. `build-icons.mjs` prüft die Namen deshalb gegen Googles Icon-Verzeichnis (`fonts.google.com/metadata/icons`, nur Warnung, wenn nicht erreichbar) und bricht bei mehr als 100 KB ab.
+- Alte Namen aus Material Icons, die in Material Symbols umbenannt sind (`expand_more`, `expand_less`, `people`, `collections`), löst Google als Alias auf: Sie stehen im Subset als Ligatur und werden im Browser als Icon dargestellt. Die Projekte müssen ihr Markup dafür nicht ändern.
+- Das Subset mit 54 Icons ist rund 7 KB groß.
+
 Quelle: [Material Symbols Guide](https://developers.google.com/fonts/docs/material_symbols?hl=de).
 
 ---
