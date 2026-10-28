@@ -1,0 +1,41 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Icons from './icons.stories.js';
+
+<Meta of={Icons} />
+
+# Icons
+
+Die Icon-Font **„Cranach Symbols“** ist ein Subset von Material Symbols Sharp mit nur den Icons, die die Projekte brauchen – rund 7 KB (ADR 0012). Sie ist in `cranach.css` enthalten.
+
+```html
+<span class="cda-icon" aria-hidden="true">search</span>
+<span class="cda-icon cda-icon--filled" aria-hidden="true">lock</span>
+```
+
+## Regeln
+
+- **Immer `aria-hidden="true"`.** Sonst lesen Screenreader den Namen vor, z. B. „search“.
+- **Trägt das Icon allein die Bedeutung**, bekommt das umgebende Element einen zugänglichen Namen:
+
+  ```html
+  <button type="button" aria-label="Suchen">
+    <span class="cda-icon" aria-hidden="true">search</span>
+  </button>
+  ```
+
+- **Größe** 24 px, die optische Größe der Font. Anders über `font-size` am Icon.
+- **Farbe** kommt aus der Textfarbe (`color`).
+- Alte Namen aus Material Icons wie `expand_more` funktionieren als Alias.
+- **Neues Icon:** Namen in `icons/icons.json` ergänzen, `npm run build`, Minor-Release.
+
+## Varianten
+
+<Canvas of={Icons.Varianten} />
+
+## Icon im Button
+
+<Canvas of={Icons.ImButton} />
+
+## Alle Icons
+
+<Canvas of={Icons.Alle} />

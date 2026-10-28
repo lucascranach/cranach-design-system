@@ -64,6 +64,8 @@ Icon-Font „Cranach Symbols“, ein Subset von Material Symbols Sharp ([ADR 001
 | `build/` | Build-Skripte (Style Dictionary, Icons, Figma-Sync) |
 | `src/` | CSS für Grundstyles und Komponenten |
 | `icons/` | Liste der benötigten Material-Symbols-Icons |
+| `stories/` | Storybook-Doku: deutsche MDX-Seiten und Stories |
+| `.storybook/` | Storybook-Konfiguration und Hilfsstyles der Doku |
 | `docs/` | ADRs und weitere Dokumentation |
 | `dist/` | Build-Ergebnis (nicht auf `main` eingecheckt) |
 
@@ -80,6 +82,10 @@ npm run build          # Tokens, Icons und CSS bauen, Kontraste prüfen
 | `npm run build:icons` | lädt das Icon-Subset über `icon_names` von Google Fonts nach `dist/fonts/cranach-symbols.woff2`; zwischengespeichert in `.cache/icons/`, `-- --refresh` lädt neu |
 | `npm run build:css` | erzeugt `dist/cranach.css` aus `src/` und kopiert die Schriften nach `dist/fonts/` (setzt `build:tokens` und `build:icons` voraus) |
 | `npm run check:contrast` | prüft alle semantischen Farbpaarungen beider Themes gegen WCAG AA |
+| `npm run storybook` | baut und startet die Doku unter http://localhost:6006 |
+| `npm run build:storybook` | baut die Doku als statische Seite nach `storybook-static/` |
+
+Die Doku (Storybook 10, HTML-Renderer mit Vite) liegt in `stories/`, die Konfiguration in `.storybook/`. Storybook bindet das gebaute `dist/cranach.css` ein; nach Änderungen in `src/` oder `tokens/` `npm run build` erneut ausführen. Der Pinsel in der Werkzeugleiste schaltet zwischen hellem und dunklem Theme, der Reiter „Accessibility“ zeigt die axe-Prüfung jeder Story.
 
 ## Commits
 

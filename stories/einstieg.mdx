@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Einstieg" />
+
+# Cranach Design System
+
+Gemeinsame Design-Tokens, Grundstyles und Komponenten für die Frontends des [Cranach Digital Archive](https://lucascranach.org). Das Designsystem fasst die Werte zusammen, die bisher zwischen den Projekten kopiert wurden und auseinandergelaufen sind, und behebt dabei Mängel der Barrierefreiheit. Ein Redesign ist es nicht.
+
+> **Status:** im Aufbau, noch kein Release. Die Bestandsprojekte werden noch nicht umgestellt.
+
+## Grundprinzipien
+
+- **CSS-first:** Tokens sind CSS Custom Properties (`--cda-…`), Komponenten sind CSS-Klassen (`.cda-…`) mit dokumentiertem HTML. Das funktioniert in jedem Stack – React, Eleventy, Jekyll, Kirby/PHP oder reines HTML.
+- **Konfliktfrei einbinden:** Alle Styles liegen in Cascade Layers (`@layer cda.*`). Eigene Styles eines Projekts haben immer Vorrang; das Einbinden ändert zunächst nichts am Aussehen.
+- **Eine Quelle:** Die Tokens werden als JSON im DTCG-Format gepflegt. Daraus entstehen CSS, JS/TS, ein Tailwind-Theme und die Figma-Variablen.
+- **Nur eigener Server zur Laufzeit:** Schriften, Icons und CSS werden von lucascranach.org geladen, nie von Dritten.
+- **Hell und dunkel** von Anfang an.
+- **Barrierefreiheit:** Jede Text/Hintergrund-Kombination erreicht mindestens 4,5:1; Gelb ist nur Fläche mit dunkler Schrift; der Fokus ist immer sichtbar.
+
+## Aufbau dieser Doku
+
+| Bereich | Inhalt |
+|---|---|
+| **Einbinden** | Installation, Reihenfolge der Layers, Themes, Tailwind |
+| **Grundlagen** | Farben, Typografie, Abstände, z-Ebenen und Icons mit allen Tokens |
+| **Komponenten** | folgen ab Version 0.x, jeweils mit Markup, Varianten und Zuständen |
+
+## Bedienung
+
+- **Theme:** Der Pinsel in der Werkzeugleiste schaltet zwischen **Hell** und **Dunkel** um. Er setzt `data-theme` auf `<html>`; alle Beispiele folgen.
+- **Barrierefreiheit:** Der Reiter „Accessibility“ unter jeder Story zeigt das Ergebnis der automatischen Prüfung mit axe. Verstöße gelten als Fehler. Die automatische Prüfung ersetzt keinen Test mit Tastatur und Screenreader.
+
+## Entscheidungen
+
+Alle grundlegenden Entscheidungen stehen mit Begründung als Architecture Decision Records (ADR) im Repository unter `docs/adr/`. Verweise wie „ADR 0008“ in dieser Doku beziehen sich darauf.

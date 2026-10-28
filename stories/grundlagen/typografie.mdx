@@ -1,0 +1,46 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Typografie from './typografie.stories.js';
+
+<Meta of={Typografie} />
+
+# Typografie
+
+Schrift ist **IBM Plex Sans** als variable Schrift (Achse `wght`, normal und kursiv), für Code **IBM Plex Mono** 400 (ADR 0009). Beide liegen als woff2 mit den Subsets Latin und Latin-Ext im Paket und werden nur vom eigenen Server geladen.
+
+## Regeln
+
+- **Fließtext 16 px** (`--cda-font-size-m`) in Regular 400. Die bisherige Grundgröße von 14,4 px in Plex Light entfällt.
+- **Standard-Gewichte:** 300 Light, 400 Regular, 500 Medium, 600 SemiBold, 700 Bold. Das verschobene Mapping der Sass-Projekte (Datei „Light“ als 200) gilt nicht mehr.
+- Überschriften sind SemiBold mit der Zeilenhöhe `tight`.
+
+```css
+.bildunterschrift {
+  font-size: var(--cda-font-size-s);
+  line-height: var(--cda-font-line-height-normal);
+  color: var(--cda-color-text-muted);
+}
+```
+
+## Schriftgrößen
+
+<Canvas of={Typografie.Schriftgroessen} />
+
+## Schriftschnitte
+
+<Canvas of={Typografie.Schriftschnitte} />
+
+## Zeilenhöhen
+
+<Canvas of={Typografie.Zeilenhoehen} />
+
+## Grundstyles
+
+`cranach.css` gestaltet die HTML-Elemente selbst (Layer `cda.base`), ohne zusätzliche Klassen. Projekt-Styles ohne Layer behalten Vorrang.
+
+Code-Blöcke (`pre`) scrollen bei langen Zeilen seitlich. Damit sie auch per Tastatur scrollbar sind, bekommen sie `tabindex="0"`:
+
+```html
+<pre tabindex="0"><code>…</code></pre>
+```
+
+<Canvas of={Typografie.Grundstyles} />

@@ -14,11 +14,11 @@ Die Bestandsprojekte (`../cranach-*`, `../cda-orga`) werden in dieser Phase **ni
 - [x] Doku für die Weiterarbeit: `docs/bestandsaufnahme.md`, `docs/hintergrund.md`, `docs/archiv/`, `CLAUDE.md`, diese Roadmap
 - [x] 4 · Grundstyles und Schriften – Schriftquelle Fontsource (`@fontsource-variable/ibm-plex-sans`, `@fontsource/ibm-plex-mono`, je 5.3.0, OFL 1.1), von Volker am 28.10.2026 freigegeben. `build/build-css.mjs` kopiert nur Latin/Latin-Ext nach `dist/fonts/` und schreibt eigene `@font-face`-Regeln; `src/reset.css` (`cda.reset`), `src/base.css` (`cda.base`: Fließtext, Überschriften, Links nach ADR 0008, Fokus-Ring); `prefers-reduced-motion` setzt in `tokens.css` die Dauer-Tokens auf 0,01 ms; `dist/cranach.css` mit Export `./cranach.css`.
 - [x] 5 · Icon-Font – 54 Icons in `icons/icons.json` (53 aus dem Bestand, `left_panel_open` als Ersatz für lucide in timeline), mit nutzenden Projekten. `build/build-icons.mjs` lädt das Subset über `icon_names` (Namensprüfung gegen Googles Icon-Verzeichnis, Größen-Sicherheitsnetz, Cache in `.cache/icons/`); `src/components/icon.css` mit `.cda-icon` und `.cda-icon--filled`; `@font-face` mit `font-display: block` in `cranach.css`; Lizenztext Apache 2.0 in `dist/fonts/`.
+- [x] 6 · Storybook – Storybook 10.6.5 mit `@storybook/html-vite`, Vite 8.3.5, `addon-docs`, `addon-a11y` (axe, Verstöße als Fehler), `addon-themes` (hell/dunkel über `data-theme`, ohne Modus „System“), dazu `remark-gfm` 4.0.1 für Tabellen in MDX; alle exakt gepinnt, Telemetrie, Neuigkeiten-Hinweise und Einführungs-Checkliste aus. Deutsche Doku-Seiten in `stories/`: Einstieg, Einbinden, Grundlagen Farben (mit Kontrasttabelle aus `build/contrast.mjs`, dieselbe Liste wie `check:contrast`), Typografie (mit Grundstyles), Abstände (mit Radius, Rahmen, Schatten, Breakpoints, Bewegung), z-Ebenen, Icons. Die Werte kommen aus `dist/tokens.js` und `tokens/*.json`, nicht doppelt gepflegt. axe ohne Fehler in allen Stories, beide Themes. Node 24 (`.nvmrc`).
+  - ⏸ **Haltepunkt:** Optik und Doku von Volker prüfen lassen.
 
 ## Offen
 
-- [ ] **6 · Storybook** – HTML-Renderer mit Vite, deutsche Doku-Seiten (Einstieg, Einbinden, Farben, Typografie, Abstände, z-Ebenen, Icons), Umschalter hell/dunkel über `data-theme` mit `@storybook/addon-themes` (ohne Modus „System“, am 28.10.2026 von Volker festgelegt), Addon für Barrierefreiheit (axe).
-  - ⏸ **Haltepunkt:** Optik und Doku von Volker prüfen lassen.
 - [ ] **7 · Stylelint** – u. a. Verbot von `outline: none` und `!important`, Klassen nur mit Präfix `cda-`, keine Hex-Farben außerhalb von `tokens/`.
 - [ ] **8 · Komponente Button**
 - [ ] **9 · Komponente Textfeld/Suchfeld**
@@ -55,4 +55,6 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 - **Am Haltepunkt nach Schritt 6 entscheiden – gelbe Link-Unterstreichung:** Muster nach ADR 0008 freigegeben, die Unterstreichung #FEB701 hat auf Weiß aber nur 1,75:1. Manche Prüfer verlangen für die Kennzeichnung von Links 3:1 (WCAG 1.4.11).
 - **Vor dem ersten Release – Sichtbarkeit des GitHub-Repos:** Das Repo ist derzeit privat. npm erzeugt Provenance-Angaben beim Veröffentlichen nur aus öffentlichen Repos; Trusted Publishing selbst funktioniert auch privat.
 - Ist ein SSH-Deploy aus GitHub Actions auf den Hochschul-Server zulässig? (erst für die automatische Release-Action relevant)
+- **Automatische axe-Prüfung aller Stories in CI** (ADR 0013 „lokal und in CI“): mit `@storybook/addon-vitest` (Vitest, Playwright) nachrüsten, sobald es eine CI gibt. Bis dahin prüft axe jede Story in Storybook selbst.
+- **Hosting der Doku** unter `lucascranach.org/design-system/docs/` (ADR 0013): `npm run build:storybook` erzeugt eine statische Seite mit relativen Pfaden; Upload gehört zu Schritt 21.
 - Funktioniert IBM Plex mit `use_figma`? (Figma-Doku: „Custom Fonts“ noch nicht unterstützt) – in Schritt 20 testen.

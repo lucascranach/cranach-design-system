@@ -39,6 +39,8 @@ npm run build:tokens     # Token-Dateien in dist/ aus tokens/ erzeugen
 npm run build:icons      # Icon-Subset von Google Fonts nach dist/fonts/ (Cache: .cache/icons/)
 npm run build:css        # dist/cranach.css aus src/ + Schriften nach dist/fonts/
 npm run check:contrast   # WCAG-Prüfung beider Themes
+npm run storybook        # bauen und Doku unter http://localhost:6006 starten
+npm run build:storybook  # Doku statisch nach storybook-static/
 npm pack --dry-run       # Paketinhalt kontrollieren
 ```
 
@@ -48,9 +50,11 @@ npm pack --dry-run       # Paketinhalt kontrollieren
 |---|---|
 | `tokens/primitive/` | Paletten und Skalen (DTCG-JSON) |
 | `tokens/semantic/{light,dark}.json` | Bedeutungen je Theme |
-| `build/` | Build-Skripte (Style Dictionary, Icons, CSS und Schriften, Kontrastprüfung, später Figma/Release) |
+| `build/` | Build-Skripte (Style Dictionary, Icons, CSS und Schriften, Kontrastprüfung mit Paarungen in `contrast.mjs`, später Figma/Release) |
 | `src/` | CSS für Reset und Grundstyles (`reset.css`, `base.css`), Komponenten in `src/components/`; Reihenfolge in `build/build-css.mjs` |
 | `icons/` | `icons.json` (Icon-Namen mit nutzenden Projekten), Lizenztext Material Symbols |
+| `stories/` | Storybook-Doku: MDX-Seiten (Deutsch) und Stories; Grundlagen in `stories/grundlagen/`, Komponenten künftig in `stories/komponenten/` |
+| `.storybook/` | Storybook-Konfiguration; `preview.css` mit Hilfsklassen `docs-*` nur für die Doku |
 | `docs/` | ADRs, Roadmap, Bestandsaufnahme, Hintergrund, Archiv |
 | `dist/` | Build-Ergebnis (nicht eingecheckt) |
 

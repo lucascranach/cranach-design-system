@@ -1,0 +1,51 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Abstaende from './abstaende.stories.js';
+
+<Meta of={Abstaende} />
+
+# Abstände
+
+Abstände folgen einem **4-px-Raster** mit T-Shirt-Namen. Für Abschnitte gibt es drei fließende Abstände, die mit der Fensterbreite wachsen (ADR 0010).
+
+```css
+.karte {
+  padding: var(--cda-space-m);
+  gap: var(--cda-space-xs);
+}
+
+.abschnitt {
+  padding-block: var(--cda-space-fluid-l);
+}
+```
+
+## Abstandsskala
+
+<Canvas of={Abstaende.Abstandsskala} />
+
+## Fließende Abstände
+
+<Canvas of={Abstaende.FliessendeAbstaende} />
+
+## Radius, Rahmen und Schatten
+
+Radius `m` (4 px) ist der Standard; shadcn `--radius` wird darauf gesetzt.
+
+<Canvas of={Abstaende.FormenUndSchatten} />
+
+## Breakpoints
+
+Kachel-Raster passen sich besser fließend an (`repeat(auto-fill, minmax(…))` oder Container Queries) als über Breakpoints. Custom Properties lassen sich in `@media` nicht verwenden; dafür gibt es `custom-media.css`.
+
+```css
+@import "@lucascranach/design-system/custom-media.css";
+
+@media (--cda-md) {
+  /* ab 768 px */
+}
+```
+
+<Canvas of={Abstaende.Breakpoints} />
+
+## Bewegung
+
+<Canvas of={Abstaende.Bewegung} />

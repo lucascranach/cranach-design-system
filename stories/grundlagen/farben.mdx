@@ -1,0 +1,43 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Farben from './farben.stories.js';
+
+<Meta of={Farben} />
+
+# Farben
+
+Die Farben sind in zwei Ebenen gegliedert (ADR 0004, ADR 0008):
+
+- **Semantische Tokens** wie `--cda-color-text-default` beschreiben eine Bedeutung und haben je Theme einen eigenen Wert. Komponenten und Projekte verwenden nur diese.
+- **Primitive Tokens** wie `--cda-color-yellow-500` bilden die Palette, aus der die semantischen Tokens schöpfen.
+
+## Regeln
+
+- **Gelb nur als Fläche mit dunkler Schrift.** Das Akzent-Gelb #FEB701 erreicht als Text auf Weiß nur 1,75:1. Für farbig betonten Text gibt es `--cda-color-text-accent` (Ocker, 4,95:1).
+- **Links** haben die Textfarbe, eine gelbe Unterstreichung und beim Überfahren eine gelbe Fläche. Im dunklen Theme ist der Link selbst gelb.
+- **Jede Text/Hintergrund-Kombination** erreicht mindestens 4,5:1, Rahmen von Bedienelementen und der Fokusring mindestens 3:1. `npm run check:contrast` prüft das bei jedem Build.
+
+## Semantische Farben
+
+Der Theme-Umschalter in der Werkzeugleiste wechselt die Farbfelder.
+
+<Canvas of={Farben.Semantisch} />
+
+```css
+.hinweis {
+  color: var(--cda-color-text-default);
+  background-color: var(--cda-color-accent-subtle);
+  border: var(--cda-border-width-s) solid var(--cda-color-border-strong);
+}
+```
+
+## Kontraste
+
+Dieselben Paarungen, die der Build prüft.
+
+<Canvas of={Farben.Kontraste} />
+
+## Palette
+
+Nicht direkt in Komponenten verwenden. Die Zwischenstufen der Gelb-Palette sind in OKLab interpoliert.
+
+<Canvas of={Farben.Palette} />
