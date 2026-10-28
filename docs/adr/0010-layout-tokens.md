@@ -9,3 +9,9 @@
 - **Bewegung:** `fast` 200 ms, `medium` 400 ms, `slow` 800 ms; bei `prefers-reduced-motion: reduce` entfallen Animationen.
 - **Fokus:** einheitlicher 2-px-Ring über `:focus-visible`; `outline: none` ist verboten (Stylelint-Regel).
 - **Browser:** Baseline „widely available“ (Q28).
+
+## Freigegebene Werte (16.10.2026)
+- **Fließende Abstände:** `--cda-space-fluid-s` clamp(12px, 1vw + 8px, 24px) · `-m` clamp(16px, 2vw + 8px, 48px) · `-l` clamp(24px, 4vw + 8px, 96px).
+- **Rahmenstärken:** s 1 px · m 2 px · l 3 px (aus cranach-search).
+- **Schatten:** s/m/l mit `rgba(0,0,0,.4)` und 4/12/20 px Unschärfe (aus cranach-search, auf 16-px-Basis umgerechnet).
+- **Opazität:** medium 0,6 · low 0,3 (aus cranach-search).
