@@ -65,5 +65,6 @@ npm pack --dry-run       # Paketinhalt kontrollieren
 
 ## Stand der Infrastruktur
 
-- GitHub-Repo `lucascranach/cranach-design-system` (privat) ist als `origin` gesetzt; gepusht wird nur auf ausdrückliche Bitte. npm-Organisation, Server-Pfad und Figma-Datei stehen als Aufgaben für Volker in der Roadmap.
+- GitHub-Repo `lucascranach/cranach-design-system` (privat) ist als `origin` gesetzt; gepusht wird nur auf ausdrückliche Bitte. npm-Organisation und Server-Pfad stehen als Aufgaben für Volker in der Roadmap.
+- Figma: Library-Datei [Cranach Design System](https://www.figma.com/design/GV3vvoVc8GebPQ79YwA1yz/Cranach-Design-System), Figma-MCP-Server in Claude Code eingerichtet. Variablen per Sync nach `docs/figma-sync.md`; die Library wird erst nach gemeinsamer Prüfung veröffentlicht (ADR 0014).
 - Node-Version: 24 (`.nvmrc`), vor der Arbeit `nvm use`.

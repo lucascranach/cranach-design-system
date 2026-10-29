@@ -4,15 +4,16 @@
 
 ## Voraussetzungen
 
-- Leere Library-Datei im Team-Projekt des Education-Teams, Link liegt vor (Aufgabe für Volker in der Roadmap).
-- Figma-MCP-Server (remote) ist in Claude Code verbunden.
+- Library-Datei im Team-Projekt des Education-Teams: [Cranach Design System](https://www.figma.com/design/GV3vvoVc8GebPQ79YwA1yz/Cranach-Design-System).
+- Figma-MCP-Server (remote) ist in Claude Code eingerichtet und angemeldet:
+  `claude mcp add --transport http figma https://mcp.figma.com/mcp`, danach im Terminal-Claude `/mcp` → figma → Authenticate. MCP-Server werden nur beim Start einer Sitzung geladen; nach dem Einrichten eine neue Sitzung beginnen.
 - Wer ausführt, hat einen Full-Seat und Bearbeitungsrechte an der Datei.
 
 ## Ablauf
 
 1. `npm run build` – erzeugt unter anderem `dist/figma/figma-sync.js`.
-2. Claude Code bitten: „Figma-Sync in <Link zur Datei> ausführen“. Claude übergibt den Inhalt von `dist/figma/figma-sync.js` an `use_figma` und meldet die Zusammenfassung, etwa `121 angelegt, 0 geändert, 0 unverändert, 0 nicht mehr in den Tokens, 0 Fehler`.
-3. Claude prüft das Ergebnis mit `get_variable_defs`.
+2. Claude Code bitten: „Figma-Sync ausführen“. Claude übergibt den Inhalt von `dist/figma/figma-sync.js` unverändert an `use_figma` und meldet die Zusammenfassung, beim ersten Lauf in eine leere Datei `123 angelegt` (2 Sammlungen, 121 Variablen), sonst etwa `0 angelegt, 3 geändert, 118 unverändert, 0 nicht mehr in den Tokens, 0 Fehler`.
+3. Claude prüft eine Stichprobe mit einem reinen Lese-Aufruf von `use_figma` (Modi, Verweise, Werte, Scopes, CSS-Namen). `get_variable_defs` eignet sich dafür nicht: Es zeigt nur Variablen, die an eine ausgewählte Ebene gebunden sind.
 4. In Figma ansehen; die Library erst nach gemeinsamer Prüfung veröffentlichen (ADR 0014).
 
 Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen meldet `0 angelegt, 0 geändert`.
@@ -35,9 +36,10 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 | Variablen | Scope |
 |---|---|
 | Primitive Farben | keiner – erscheinen nicht in den Farbwählern, damit die semantischen Farben genutzt werden |
-| `color/text/*` | Textfarbe |
-| `color/border/*`, `color/focus/*` | Konturfarbe |
-| übrige semantische Farben | Füllungen und Konturen |
+| `color/text/*`, `color/link/default`, `color/link/hover-text` | Textfarbe |
+| `color/border/*`, `color/focus/*`, `color/link/underline` | Konturfarbe |
+| `color/background/*`, `color/link/hover-background` | Fläche (Rahmen und Formen) |
+| `color/accent/*` | Fläche und Kontur |
 | `space/*` (ohne `fluid`) | Abstand (Auto-Layout) und Breite/Höhe |
 | `radius/*` | Eckenradius |
 | `border-width/*`, `focus/ring-*` | Konturstärke |
@@ -56,10 +58,13 @@ Die Zuordnung steht in `build/build-figma.mjs` (`scopesFor`).
 | `build/build-figma.mjs` | setzt beides zu `dist/figma/figma-sync.js` zusammen, ergänzt Scopes und CSS-Namen |
 | `build/figma-sync.test.mjs` | Tests gegen eine nachgebaute Figma-API (`npm run test:figma`) |
 
-## Noch nicht mit einer echten Figma-Datei geprüft
+## Erster Lauf am 29.10.2026
 
-Bis die Library-Datei und der MCP-Server bereitstehen, ist das Skript nur gegen den Nachbau getestet. Beim ersten echten Lauf klären:
+In die leere Library-Datei: 2 Sammlungen und 121 Variablen angelegt, 0 Fehler. Stichprobe stimmt (z. B. `color/text/default` hell → `color/neutral/1000`, dunkel → `color/neutral/100`; `font/size/m` = 16; `color/alpha/black-40` mit Deckkraft 0,4).
 
-- Gibt `use_figma` das Ergebnis des letzten Ausdrucks (`syncTokens()`) zurück, oder braucht es ein `return`?
-- Nimmt `use_figma` die 27 KB Code in einem Aufruf an? Sonst die Sammlungen auf zwei Aufrufe verteilen.
-- Funktioniert IBM Plex Sans in der Datei (offener Punkt in der Roadmap)?
+Dabei geklärt:
+
+- **Rückgabe:** `use_figma` führt den Code als Rumpf einer async-Funktion aus und gibt nur zurück, was mit `return` übergeben wird. Das Skript endet deshalb mit `return await syncTokens();`.
+- **Größe:** `use_figma` nimmt bis zu 50.000 Zeichen Code; die rund 27 KB passen in einen Aufruf.
+- **Zahlen mit 32 Bit:** Figma speichert Zahlen ungenauer, 0,6 kommt als 0,60000002… zurück. Der zweite Lauf meldete deshalb zunächst Deckkraft und Zeilenhöhen als geändert. Zahlen werden jetzt mit einer kleinen Toleranz verglichen; der Nachbau in den Tests rundet genauso (`Math.fround`). Danach: `0 angelegt, 0 geändert, 121 unverändert`.
+- **Schriften:** IBM Plex Sans, IBM Plex Mono und Material Symbols Sharp sind in Figma vorhanden und laden. Die Schnitte heißen dort z. B. „SemiBold“ (ohne Leerzeichen).

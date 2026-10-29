@@ -10,8 +10,9 @@
  * Idempotent: Ein zweiter Lauf ändert nichts. Variablen, die es in den Tokens nicht mehr gibt,
  * werden nur gemeldet, nicht gelöscht – Gestalter:innen könnten sie noch verwenden.
  *
- * Ausführen über den Figma-MCP-Server (use_figma) oder als Plugin-Code. Das Ergebnis ist eine
- * kurze Zusammenfassung (angelegt, geändert, unverändert, Waisen, Fehler).
+ * Ausführen über den Figma-MCP-Server (use_figma): Der Code läuft dort in einem asynchronen Rahmen,
+ * deshalb das return am Ende. Das Ergebnis ist eine kurze Zusammenfassung (angelegt, geändert,
+ * unverändert, Waisen, Fehler).
  */
 
 const DATA = __TOKENS__;
@@ -32,9 +33,11 @@ function parseColor(value) {
 
 const close = (a, b) => Math.abs(a - b) < 1 / 512;
 
-/** Ist der gespeicherte Wert schon der gewünschte? */
+/** Ist der gespeicherte Wert schon der gewünschte? Zahlen speichert Figma mit 32 Bit
+    (0.6 kommt als 0.6000000238… zurück), deshalb Vergleich mit kleiner Toleranz. */
 function sameValue(current, wanted) {
   if (current === undefined) return false;
+  if (typeof wanted === 'number') return typeof current === 'number' && Math.abs(current - wanted) < 1e-6;
   if (wanted && wanted.type === 'VARIABLE_ALIAS') return current.type === 'VARIABLE_ALIAS' && current.id === wanted.id;
   if (wanted && typeof wanted === 'object') {
     return (
@@ -137,4 +140,4 @@ async function syncTokens() {
   };
 }
 
-syncTokens();
+return await syncTokens();

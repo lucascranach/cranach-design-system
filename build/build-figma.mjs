@@ -24,9 +24,11 @@ const DIR = path.join('dist', 'figma');
 export function scopesFor(collection, name) {
   const [group, sub] = name.split('/');
   if (collection === 'Cranach Semantic') {
-    if (sub === 'text') return ['TEXT_FILL'];
-    if (sub === 'border' || sub === 'focus') return ['STROKE_COLOR'];
-    return ['ALL_FILLS', 'STROKE_COLOR'];
+    const surface = ['FRAME_FILL', 'SHAPE_FILL'];
+    if (sub === 'text' || name === 'color/link/default' || name === 'color/link/hover-text') return ['TEXT_FILL'];
+    if (sub === 'border' || sub === 'focus' || name === 'color/link/underline') return ['STROKE_COLOR'];
+    if (sub === 'accent') return [...surface, 'STROKE_COLOR'];
+    return surface; // background/*, link/hover-background
   }
   if (group === 'space') return sub === 'fluid' ? [] : ['GAP', 'WIDTH_HEIGHT'];
   if (group === 'radius') return ['CORNER_RADIUS'];

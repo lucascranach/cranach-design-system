@@ -79,7 +79,8 @@ function fakeFigma() {
             (resolvedType === 'FLOAT' && typeof value === 'number') ||
             (resolvedType === 'STRING' && typeof value === 'string');
           if (!ok) throw new Error(`Wert ${JSON.stringify(value)} passt nicht zu ${resolvedType}`);
-          this.valuesByMode[modeId] = value;
+          // Figma speichert Zahlen mit 32 Bit: 0.6 kommt als 0.6000000238… zurück
+          this.valuesByMode[modeId] = typeof value === 'number' ? Math.fround(value) : value;
         },
         setVariableCodeSyntax(platform, value) {
           this.codeSyntax = { ...this.codeSyntax, [platform]: value };
@@ -95,9 +96,11 @@ function fakeFigma() {
   return { figma: { variables: variablesApi }, collections, variables };
 }
 
-/** Führt das Skript aus; das Ergebnis per JSON zurück, weil Arrays aus dem vm-Kontext einen
-    anderen Prototyp haben und deepStrictEqual sonst scheitert */
-const run = async (figma) => JSON.parse(JSON.stringify(await vm.runInNewContext(SCRIPT, { figma })));
+/** Führt das Skript aus wie use_figma: als Rumpf einer async-Funktion (daher return am Ende).
+    Das Ergebnis per JSON zurück, weil Arrays aus dem vm-Kontext einen anderen Prototyp haben
+    und deepStrictEqual sonst scheitert. */
+const run = async (figma) =>
+  JSON.parse(JSON.stringify(await vm.runInNewContext(`(async () => {\n${SCRIPT}\n})()`, { figma })));
 
 test('leere Datei: legt Sammlungen, Modi und alle Variablen an', async () => {
   const f = fakeFigma();
@@ -123,6 +126,8 @@ test('leere Datei: legt Sammlungen, Modi und alle Variablen an', async () => {
   assert.equal(byName('font/family/sans').valuesByMode[value], 'IBM Plex Sans');
   assert.deepEqual(byName('color/neutral/0').scopes, []);
   assert.deepEqual(byName('color/text/default').scopes, ['TEXT_FILL']);
+  assert.deepEqual(byName('color/background/default').scopes, ['FRAME_FILL', 'SHAPE_FILL']);
+  assert.deepEqual(byName('color/link/underline').scopes, ['STROKE_COLOR']);
 });
 
 test('zweiter Lauf ändert nichts (idempotent)', async () => {
