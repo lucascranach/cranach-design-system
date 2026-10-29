@@ -12,8 +12,8 @@
  *   </footer>
  *
  * Fläche background.subtle mit Trennlinie oben, Schrift eine Stufe kleiner. Links wie in der
- * Header-Navigation: ohne Unterstreichung, beim Überfahren hellgrauer Strich (border.hover),
- * aktuelle Seite (aria-current) mit gelbem Strich (link.underline).
+ * Header-Navigation: ohne Unterstreichung, beim Überfahren hellgrauer Strich (border.hover).
+ * Die aktuelle Seite wird im Footer nicht hervorgehoben.
  *
  * Dunkel wie in cranach-artefacts: data-theme="dark" am Footer. Das dunkle Theme gilt dann nur
  * dort (ADR 0007), Links und Fokusring darin bekommen automatisch die dunklen Farben.
@@ -45,8 +45,9 @@
     margin: 0;
     list-style: none;
 
-    /* Wie die Header-Navigation: ohne Unterstreichung, Strich beim Überfahren und für die
-       aktuelle Seite. Mindestens 24 px hoch, damit sie auch auf Touch-Geräten treffbar sind. */
+    /* Wie die Header-Navigation: ohne Unterstreichung, Strich beim Überfahren. Die aktuelle
+       Seite wird im Footer nicht hervorgehoben. Mindestens 24 px hoch, damit sie auch auf
+       Touch-Geräten treffbar sind. */
     & a {
       display: inline-block;
       padding-block: var(--cda-space-2xs);
@@ -61,10 +62,6 @@
         color: var(--cda-color-text-default);
         background-color: transparent;
         border-block-end-color: var(--cda-color-border-hover);
-      }
-
-      &[aria-current]:not([aria-current="false"]) {
-        border-block-end-color: var(--cda-color-link-underline);
       }
     }
   }
