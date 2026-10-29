@@ -73,7 +73,7 @@ Icon-Font „Cranach Symbols“, ein Subset von Material Symbols Sharp ([ADR 001
 
 ```sh
 npm install
-npm run build          # CSS prüfen, Tokens, Icons und CSS bauen, Kontraste prüfen
+npm run build          # CSS prüfen, Tokens, Icons, CSS und Figma-Sync bauen, Kontraste prüfen
 ```
 
 | Befehl | Wirkung |
@@ -83,6 +83,8 @@ npm run build          # CSS prüfen, Tokens, Icons und CSS bauen, Kontraste pr�
 | `npm run build:tokens` | erzeugt `dist/tokens.css`, `tailwind.css`, `custom-media.css`, `tokens.js`/`.d.ts`, `figma/tokens.figma.json` |
 | `npm run build:icons` | lädt das Icon-Subset über `icon_names` von Google Fonts nach `dist/fonts/cranach-symbols.woff2`; zwischengespeichert in `.cache/icons/`, `-- --refresh` lädt neu |
 | `npm run build:css` | erzeugt `dist/cranach.css` aus `src/` und kopiert die Schriften nach `dist/fonts/` (setzt `build:tokens` und `build:icons` voraus) |
+| `npm run build:figma` | erzeugt `dist/figma/figma-sync.js` für den Abgleich der Figma-Variablen (Anleitung: [`docs/figma-sync.md`](docs/figma-sync.md)) |
+| `npm run test:figma` | testet das Figma-Sync-Skript gegen eine nachgebaute Figma-API |
 | `npm run check:contrast` | prüft alle semantischen Farbpaarungen beider Themes gegen WCAG AA |
 | `npm run storybook` | baut und startet die Doku unter http://localhost:6006 |
 | `npm run build:storybook` | baut die Doku als statische Seite nach `storybook-static/` |

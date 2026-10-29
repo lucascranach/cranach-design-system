@@ -33,10 +33,12 @@
     "build:tokens": "node build/build-tokens.mjs",
     "build:icons": "node build/build-icons.mjs",
     "build:css": "node build/build-css.mjs",
+    "build:figma": "node build/build-figma.mjs",
     "check:contrast": "node build/check-contrast.mjs",
     "lint:css": "stylelint \"src/**/*.css\" \".storybook/**/*.css\"",
     "test:lint": "node --test build/stylelint.test.mjs",
-    "build": "npm run lint:css && npm run build:tokens && npm run build:icons && npm run build:css && npm run check:contrast",
+    "test:figma": "node --test build/figma-sync.test.mjs",
+    "build": "npm run lint:css && npm run build:tokens && npm run build:icons && npm run build:css && npm run build:figma && npm run check:contrast",
     "prepublishOnly": "npm run build",
     "storybook": "npm run build && storybook dev -p 6006 --no-open",
     "build:storybook": "npm run build && storybook build -o storybook-static"

@@ -34,12 +34,14 @@ Gemeinsame Design-Tokens, Grundstyles und Komponenten für die Frontends des Cra
 
 ```sh
 npm install
-npm run build            # CSS prüfen (Stylelint), Tokens, Icons und CSS bauen, Kontraste prüfen
+npm run build            # CSS prüfen (Stylelint), Tokens, Icons, CSS und Figma-Sync bauen, Kontraste prüfen
 npm run lint:css         # Stylelint über src/ und .storybook/
 npm run test:lint        # Tests der Stylelint-Regeln
 npm run build:tokens     # Token-Dateien in dist/ aus tokens/ erzeugen
 npm run build:icons      # Icon-Subset von Google Fonts nach dist/fonts/ (Cache: .cache/icons/)
 npm run build:css        # dist/cranach.css aus src/ + Schriften nach dist/fonts/
+npm run build:figma      # dist/figma/figma-sync.js für use_figma (Anleitung: docs/figma-sync.md)
+npm run test:figma       # Tests des Figma-Sync-Skripts
 npm run check:contrast   # WCAG-Prüfung beider Themes
 npm run storybook        # bauen und Doku unter http://localhost:6006 starten
 npm run build:storybook  # Doku statisch nach storybook-static/
@@ -52,7 +54,7 @@ npm pack --dry-run       # Paketinhalt kontrollieren
 |---|---|
 | `tokens/primitive/` | Paletten und Skalen (DTCG-JSON) |
 | `tokens/semantic/{light,dark}.json` | Bedeutungen je Theme |
-| `build/` | Build-Skripte (Style Dictionary, Icons, CSS und Schriften, Kontrastprüfung mit Paarungen in `contrast.mjs`, Stylelint-Plugin und -Tests, später Figma/Release) |
+| `build/` | Build-Skripte (Style Dictionary, Icons, CSS und Schriften, Kontrastprüfung mit Paarungen in `contrast.mjs`, Stylelint-Plugin und -Tests, Figma-Sync mit Vorlage und Tests, später Release) |
 | `stylelint.config.mjs` | CSS-Regeln: Layer, Präfix, Werte nur über Tokens, kein `!important`/`outline: none` |
 | `src/` | CSS für Reset und Grundstyles (`reset.css`, `base.css`), Komponenten in `src/components/`, Hilfsklassen `cda-u-*` in `utilities.css`; Reihenfolge in `build/build-css.mjs` |
 | `icons/` | `icons.json` (Icon-Namen mit nutzenden Projekten), Lizenztext Material Symbols |

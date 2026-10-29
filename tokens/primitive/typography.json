@@ -8,7 +8,11 @@
         "$extensions": { "org.lucascranach.design-system": { "figmaFontFamily": "IBM Plex Sans" } }
       },
       "mono": { "$value": ["IBM Plex Mono", "ui-monospace", "Menlo", "Consolas", "Liberation Mono", "monospace"] },
-      "icon": { "$value": ["Cranach Symbols"], "$description": "Subset von Material Symbols Sharp (ADR 0012)." }
+      "icon": {
+        "$value": ["Cranach Symbols"],
+        "$description": "Subset von Material Symbols Sharp (ADR 0012).",
+        "$extensions": { "org.lucascranach.design-system": { "figmaFontFamily": "Material Symbols Sharp" } }
+      }
     },
     "weight": {
       "$type": "fontWeight",
