@@ -108,12 +108,13 @@ test('leere Datei: legt Sammlungen, Modi und alle Variablen an', async () => {
   assert.deepEqual(r.errors, []);
   assert.deepEqual(f.collections.map((c) => [c.name, c.modes.map((m) => m.name)]), [
     ['Cranach Primitives', ['Value']],
+    ['Cranach Responsive', ['Mobile 375', 'Tablet 768', 'Desktop 1440']],
     ['Cranach Semantic', ['Light', 'Dark']],
   ]);
   assert.equal(f.variables.length, 121);
 
   const byName = (n) => f.variables.find((v) => v.name === n);
-  const [light, dark] = f.collections[1].modes.map((m) => m.modeId);
+  const [light, dark] = f.collections[2].modes.map((m) => m.modeId);
   const bg = byName('color/background/default');
   assert.equal(bg.valuesByMode[light].id, byName('color/neutral/0').id);
   assert.equal(bg.valuesByMode[dark].id, byName('color/neutral/900').id);
@@ -128,6 +129,13 @@ test('leere Datei: legt Sammlungen, Modi und alle Variablen an', async () => {
   assert.deepEqual(byName('color/text/default').scopes, ['TEXT_FILL']);
   assert.deepEqual(byName('color/background/default').scopes, ['FRAME_FILL', 'SHAPE_FILL']);
   assert.deepEqual(byName('color/link/underline').scopes, ['STROKE_COLOR']);
+
+  // Fließende Abstände: Zahlen je Bildschirmbreite statt clamp()-Text
+  const fluid = byName('space/fluid/m');
+  assert.equal(fluid.resolvedType, 'FLOAT');
+  assert.equal(fluid.variableCollectionId, f.collections[1].id);
+  assert.deepEqual(f.collections[1].modes.map((m) => fluid.valuesByMode[m.modeId]), [16, 23, 37]);
+  assert.equal(f.variables.filter((v) => v.name.startsWith('space/fluid/')).length, 3);
 });
 
 test('zweiter Lauf ändert nichts (idempotent)', async () => {
@@ -138,7 +146,7 @@ test('zweiter Lauf ändert nichts (idempotent)', async () => {
   assert.deepEqual(r.changed, []);
   assert.equal(r.unchanged, 121);
   assert.equal(f.variables.length, 121);
-  assert.equal(f.collections.length, 2);
+  assert.equal(f.collections.length, 3);
 });
 
 test('von Hand geänderte Werte werden zurückgesetzt', async () => {

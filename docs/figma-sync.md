@@ -12,7 +12,7 @@
 ## Ablauf
 
 1. `npm run build` – erzeugt unter anderem `dist/figma/figma-sync.js`.
-2. Claude Code bitten: „Figma-Sync ausführen“. Claude übergibt den Inhalt von `dist/figma/figma-sync.js` unverändert an `use_figma` und meldet die Zusammenfassung, beim ersten Lauf in eine leere Datei `123 angelegt` (2 Sammlungen, 121 Variablen), sonst etwa `0 angelegt, 3 geändert, 118 unverändert, 0 nicht mehr in den Tokens, 0 Fehler`.
+2. Claude Code bitten: „Figma-Sync ausführen“. Claude übergibt den Inhalt von `dist/figma/figma-sync.js` unverändert an `use_figma` und meldet die Zusammenfassung, beim ersten Lauf in eine leere Datei `124 angelegt` (3 Sammlungen, 121 Variablen), sonst etwa `0 angelegt, 3 geändert, 118 unverändert, 0 nicht mehr in den Tokens, 0 Fehler`.
 3. Claude prüft eine Stichprobe mit einem reinen Lese-Aufruf von `use_figma` (Modi, Verweise, Werte, Scopes, CSS-Namen). `get_variable_defs` eignet sich dafür nicht: Es zeigt nur Variablen, die an eine ausgewählte Ebene gebunden sind.
 4. In Figma ansehen; die Library erst nach gemeinsamer Prüfung veröffentlichen (ADR 0014).
 
@@ -23,8 +23,10 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 | Sammlung | Modi | Inhalt |
 |---|---|---|
 | Cranach Primitives | Value | Paletten und Skalen: Farben, Abstände, Radien, Rahmen, Schriften, z-Ebenen, Breakpoints, Dauern … |
+| Cranach Responsive | Mobile 375, Tablet 768, Desktop 1440 | fließende Abstände `space/fluid/*`, je Bildschirmbreite ausgerechnet |
 | Cranach Semantic | Light, Dark | Farben nach Bedeutung (`color/text/default` …), als Verweis auf die primitiven Farben |
 
+- **Fließende Abstände:** Im Code sind `space/fluid/*` mit `clamp()` und `vw` definiert, z. B. `clamp(16px, 2vw + 8px, 48px)`. Das kann Figma nicht abbilden; der Build rechnet deshalb für jede Bildschirmbreite den Wert aus, den `clamp()` dort ergibt (`space/fluid/m`: 16 / 23 / 37). In Figma bekommt ein Frame den passenden Modus („Mobile 375“ usw.), alle daran gebundenen fließenden Abstände passen sich an. Breiten der Modi: `VIEWPORTS` in `build/build-figma.mjs`.
 - **Anlegen und abgleichen:** fehlende Sammlungen, Modi und Variablen werden angelegt; Werte, Beschreibungen, Scopes und CSS-Namen werden auf den Stand der Tokens gebracht. Von Hand in Figma geänderte Werte setzt der nächste Lauf zurück.
 - **Nichts löschen:** Variablen, die es in den Tokens nicht mehr gibt, werden nur gemeldet („nicht mehr in den Tokens“). Sie können noch in Entwürfen verwendet sein; gelöscht wird von Hand, nach Rücksprache.
 - **Typkonflikt:** Hat eine Variable in Figma einen anderen Typ als in den Tokens (etwa Zahl statt Text), meldet das Skript einen Fehler und lässt sie aus. Figma kann den Typ nicht ändern – die Variable muss von Hand gelöscht werden, der nächste Lauf legt sie neu an.
@@ -40,12 +42,12 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 | `color/border/*`, `color/focus/*`, `color/link/underline` | Konturfarbe |
 | `color/background/*`, `color/link/hover-background` | Fläche (Rahmen und Formen) |
 | `color/accent/*` | Fläche und Kontur |
-| `space/*` (ohne `fluid`) | Abstand (Auto-Layout) und Breite/Höhe |
+| `space/*`, auch `space/fluid/*` | Abstand (Auto-Layout) und Breite/Höhe |
 | `radius/*` | Eckenradius |
 | `border-width/*`, `focus/ring-*` | Konturstärke |
 | `size/*` | Breite/Höhe |
 | `font/size/*`, `font/weight/*`, `font/family/*` | Schriftgröße, -stärke, -familie |
-| z-Ebenen, Breakpoints, Dauern, Deckkraft, Zeilenhöhe, `space/fluid/*` | keiner – nur zur Information, Figma hat dafür kein passendes Feld |
+| z-Ebenen, Breakpoints, Dauern, Deckkraft, Zeilenhöhe | keiner – nur zur Information, Figma hat dafür kein passendes Feld |
 
 Die Zuordnung steht in `build/build-figma.mjs` (`scopesFor`).
 
@@ -68,3 +70,5 @@ Dabei geklärt:
 - **Größe:** `use_figma` nimmt bis zu 50.000 Zeichen Code; die rund 27 KB passen in einen Aufruf.
 - **Zahlen mit 32 Bit:** Figma speichert Zahlen ungenauer, 0,6 kommt als 0,60000002… zurück. Der zweite Lauf meldete deshalb zunächst Deckkraft und Zeilenhöhen als geändert. Zahlen werden jetzt mit einer kleinen Toleranz verglichen; der Nachbau in den Tests rundet genauso (`Math.fround`). Danach: `0 angelegt, 0 geändert, 121 unverändert`.
 - **Schriften:** IBM Plex Sans, IBM Plex Mono und Material Symbols Sharp sind in Figma vorhanden und laden. Die Schnitte heißen dort z. B. „SemiBold“ (ohne Leerzeichen).
+
+Danach ergänzt (Entscheidung Volker): fließende Abstände als eigene Sammlung „Cranach Responsive“ mit den Modi Mobile 375, Tablet 768 und Desktop 1440. Die drei Text-Variablen `space/fluid/*` aus den Primitives wurden in Figma einmalig von Hand entfernt; der Kontrolllauf meldet `0 angelegt, 0 geändert, 121 unverändert, 0 nicht mehr in den Tokens`.

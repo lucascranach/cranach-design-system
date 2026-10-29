@@ -8,6 +8,10 @@
  *   - css:    den Namen der Custom Property, den Figma im Dev Mode anzeigt,
  *   - alias.collection: in welcher Sammlung das Ziel eines Verweises liegt.
  *
+ * Fließende Abstände (space/fluid/*, clamp() mit vw) kann Figma nicht abbilden. Sie kommen statt
+ * als Text in den Primitives als Zahlen in eine eigene Sammlung „Cranach Responsive“, je
+ * Bildschirmbreite ein Modus (VIEWPORTS), mit dem Wert, den clamp() bei dieser Breite ergibt.
+ *
  * Setzt voraus, dass build-tokens.mjs vorher gelaufen ist.
  */
 import { readFile, writeFile } from 'node:fs/promises';
@@ -30,7 +34,7 @@ export function scopesFor(collection, name) {
     if (sub === 'accent') return [...surface, 'STROKE_COLOR'];
     return surface; // background/*, link/hover-background
   }
-  if (group === 'space') return sub === 'fluid' ? [] : ['GAP', 'WIDTH_HEIGHT'];
+  if (group === 'space') return ['GAP', 'WIDTH_HEIGHT'];
   if (group === 'radius') return ['CORNER_RADIUS'];
   if (group === 'border-width' || name === 'focus/ring-width' || name === 'focus/ring-offset') return ['STROKE_FLOAT'];
   if (group === 'size') return ['WIDTH_HEIGHT'];
@@ -43,13 +47,50 @@ export function scopesFor(collection, name) {
 /** Name der Custom Property im CSS: color/text/default → var(--cda-color-text-default) */
 export const cssFor = (name) => `var(--cda-${name.replaceAll('/', '-')})`;
 
+/** Bildschirmbreiten der Modi in „Cranach Responsive“: typisches Smartphone, Breakpoint md, Laptop */
+export const VIEWPORTS = { 'Mobile 375': 375, 'Tablet 768': 768, 'Desktop 1440': 1440 };
+
+const RESPONSIVE = 'Cranach Responsive';
+
+/** Wert von clamp(MINpx, Avw + Bpx, MAXpx) bei einer Fensterbreite, auf ganze px gerundet */
+export function resolveClamp(value, width) {
+  const m = /^clamp\(\s*([\d.]+)px\s*,\s*([\d.]+)vw\s*\+\s*([\d.]+)px\s*,\s*([\d.]+)px\s*\)$/.exec(value);
+  if (!m) throw new Error(`Fließender Wert nicht lesbar: ${value}`);
+  const [min, vw, px, max] = m.slice(1).map(Number);
+  return Math.round(Math.min(max, Math.max(min, (vw * width) / 100 + px)));
+}
+
+/** space/fluid/* aus den Primitives in eine eigene Sammlung mit einem Modus je Bildschirmbreite */
+function splitFluid(collections) {
+  const isFluid = (v) => v.name.startsWith('space/fluid/');
+  const fluid = collections.flatMap((c) => c.variables.filter(isFluid));
+  const rest = collections.map((c) => ({ ...c, variables: c.variables.filter((v) => !isFluid(v)) }));
+  if (!fluid.length) return rest;
+  const responsive = {
+    name: RESPONSIVE,
+    modes: Object.keys(VIEWPORTS),
+    variables: fluid.map((v) => {
+      const css = Object.values(v.values)[0];
+      return {
+        name: v.name,
+        type: 'FLOAT',
+        description: `${css} – im Code fließend, hier je Bildschirmbreite ausgerechnet`,
+        values: Object.fromEntries(Object.entries(VIEWPORTS).map(([mode, width]) => [mode, resolveClamp(css, width)])),
+      };
+    }),
+  };
+  // Hinter die Primitives, vor die semantischen Farben
+  return [rest[0], responsive, ...rest.slice(1)];
+}
+
 export async function buildFigmaData() {
   const tokens = JSON.parse(await readFile(path.join(DIR, 'tokens.figma.json'), 'utf8'));
+  const collections = splitFluid(tokens.collections);
   const home = new Map();
-  for (const c of tokens.collections) for (const v of c.variables) home.set(v.name, c.name);
+  for (const c of collections) for (const v of c.variables) home.set(v.name, c.name);
 
   return {
-    collections: tokens.collections.map((c) => ({
+    collections: collections.map((c) => ({
       name: c.name,
       modes: c.modes,
       variables: c.variables.map((v) => ({
