@@ -1,0 +1,58 @@
+/*
+ * Footer – Layer cda.components
+ *
+ *   <footer class="cda-footer">
+ *     <nav class="cda-footer__nav" aria-label="Rechtliches und Kontakt">
+ *       <ul class="cda-footer__links">
+ *         <li><a href="/de/impressum/">Impressum</a></li>
+ *         <li><a href="/de/datenschutz/">Datenschutz</a></li>
+ *       </ul>
+ *     </nav>
+ *     <p class="cda-footer__copyright">© Stiftung Museum Kunstpalast, Düsseldorf / Technische Hochschule Köln, 2026</p>
+ *   </footer>
+ *
+ * Fläche background.subtle mit Trennlinie oben, Schrift eine Stufe kleiner. Links behalten das
+ * Aussehen der Grundstyles (gelbe Unterstreichung, gelbe Fläche beim Überfahren).
+ *
+ * Dunkel wie in cranach-artefacts: data-theme="dark" am Footer. Das dunkle Theme gilt dann nur
+ * dort (ADR 0007), Links und Fokusring darin bekommen automatisch die dunklen Farben.
+ *
+ * Vorlagen: main-footer aus cranach-artefacts (Copyright, dunkle Fläche) und cranach-kirby
+ * (Links zu den Seiten und zum Impressum).
+ */
+@layer cda.components {
+  .cda-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cda-space-s) var(--cda-space-xl);
+    align-items: baseline;
+    justify-content: space-between;
+    padding: var(--cda-space-l) var(--cda-space-fluid-m);
+    font-family: var(--cda-font-family-sans);
+    font-size: var(--cda-font-size-s);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-default);
+    background-color: var(--cda-color-background-subtle);
+    border-block-start: var(--cda-border-width-s) solid var(--cda-color-border-default);
+  }
+
+  .cda-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cda-space-2xs) var(--cda-space-l);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    /* Zeilenhöhe der Links mindestens 24 px, damit sie auch auf Touch-Geräten treffbar sind */
+    & a {
+      display: inline-block;
+      padding-block: var(--cda-space-2xs);
+    }
+  }
+
+  .cda-footer__copyright {
+    margin: 0;
+    color: var(--cda-color-text-muted);
+  }
+}

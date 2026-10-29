@@ -41,6 +41,7 @@ const SOURCES = [
   'src/components/loader.css',
   'src/components/card.css',
   'src/components/header.css',
+  'src/components/footer.css',
 ];
 
 /** Icon-Font aus build-icons.mjs (ADR 0012) */
