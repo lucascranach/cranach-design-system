@@ -39,6 +39,7 @@ const SOURCES = [
   'src/components/switcher.css',
   'src/components/accordion.css',
   'src/components/loader.css',
+  'src/components/card.css',
 ];
 
 /** Icon-Font aus build-icons.mjs (ADR 0012) */

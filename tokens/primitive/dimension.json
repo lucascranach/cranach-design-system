@@ -41,6 +41,14 @@
     "xl": { "$value": "1280px" },
     "2xl": { "$value": "1536px" }
   },
+  "size": {
+    "$type": "dimension",
+    "card": {
+      "$description": "Mindestbreite einer Karte im Raster (.cda-card-grid). Aus cranach-search ($tile-s 16em, $tile-xxs 8em).",
+      "min": { "$value": "256px" },
+      "min-small": { "$value": "128px" }
+    }
+  },
   "focus": {
     "ring-width": { "$type": "dimension", "$value": "2px" },
     "ring-offset": { "$type": "dimension", "$value": "2px" }

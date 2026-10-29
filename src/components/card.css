@@ -1,0 +1,200 @@
+/*
+ * Werk-Karte – Layer cda.components
+ *
+ *   <ul class="cda-card-grid">
+ *     <li>
+ *       <article class="cda-card">
+ *         <div class="cda-card__image"><img src="…" alt="" loading="lazy"></div>
+ *         <div class="cda-card__content">
+ *           <h2 class="cda-card__title"><a class="cda-card__link" href="…">Adam und Eva, 1526</a></h2>
+ *           <p class="cda-card__subtitle">Öl auf Holz</p>
+ *           <p class="cda-card__text">Courtauld Gallery, London</p>
+ *         </div>
+ *         <button type="button" class="cda-card__favorite" aria-pressed="false"
+ *                 aria-label="Adam und Eva merken">
+ *           <span class="cda-icon" aria-hidden="true">add</span>
+ *         </button>
+ *       </article>
+ *     </li>
+ *   </ul>
+ *
+ * Ein einziger Link pro Karte (im Titel); seine Klickfläche wird über die ganze Karte gezogen.
+ * So gibt es einen Tab-Stopp pro Karte statt zwei, und Screenreader lesen den Titel als Linktext.
+ * Das Bild ist dekorativ (alt=""), weil der Titel daneben steht. Kleine Karten ohne Text
+ * (cda-card-grid--small) haben den Link um das Bild, dann trägt das Bild den Titel als alt.
+ *
+ * Vorlage: artefact-card aus cranach-search und cranach-artefacts. Anders als dort: ein Link
+ * statt zwei, Merken als Button mit aria-pressed statt <a> ohne href, Merken-Button auch per
+ * Tastatur und auf Touch-Geräten sichtbar, Fokusring um die ganze Karte.
+ */
+@layer cda.components {
+  /* ---------- Raster ---------- */
+
+  .cda-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cda-size-card-min)), 1fr));
+    gap: var(--cda-space-s);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  /* Nur Bilder, wie die kleine Kachelansicht in cranach-search */
+  .cda-card-grid--small {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cda-size-card-min-small)), 1fr));
+    gap: var(--cda-space-2xs);
+  }
+
+  /* ---------- Karte ---------- */
+
+  .cda-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+    margin: 0;
+    color: var(--cda-color-text-default);
+  }
+
+  .cda-card__image {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    background-color: var(--cda-color-background-muted);
+    transition: background-color var(--cda-duration-fast) var(--cda-easing-default);
+
+    /* Absolut, sonst dehnen hochformatige Bilder die quadratische Fläche */
+    & img {
+      position: absolute;
+      inset: 0;
+      display: block;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .cda-card__content {
+    flex-grow: 1;
+    padding-block: var(--cda-space-s);
+
+    /* Platz für die gelbe Linie beim Überfahren ist immer reserviert, damit nichts springt */
+    border-block-start: var(--cda-border-width-m) solid transparent;
+    transition: border-color var(--cda-duration-fast) var(--cda-easing-default);
+  }
+
+  .cda-card__title {
+    margin: 0 0 var(--cda-space-2xs);
+    font-size: var(--cda-font-size-m);
+    font-weight: var(--cda-font-weight-semibold);
+    line-height: var(--cda-font-line-height-tight);
+    color: var(--cda-color-text-default);
+
+    /* Treffer der Suche im Titel (Hervorhebung aus Elasticsearch) */
+    & em {
+      font-style: normal;
+      background-color: var(--cda-color-accent-subtle);
+    }
+  }
+
+  .cda-card__subtitle,
+  .cda-card__text {
+    margin: 0 0 var(--cda-space-2xs);
+    font-size: var(--cda-font-size-m);
+    line-height: var(--cda-font-line-height-tight);
+    color: var(--cda-color-text-muted);
+  }
+
+  /* ---------- Link über die ganze Karte ---------- */
+
+  .cda-card__link {
+    color: inherit;
+    text-decoration: none;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Grundstyles geben Links beim Überfahren eine gelbe Fläche; die Karte zeigt es anders */
+    &:hover {
+      color: inherit;
+      background-color: transparent;
+    }
+
+    /* Fokusring um die ganze Karte statt nur um den Titel. Der Ring der Grundstyles am Link
+       wird dafür durchsichtig, nicht entfernt: Im Kontrastmodus von Windows bleibt er sichtbar. */
+    &:focus-visible {
+      outline-color: transparent;
+
+      &::after {
+        outline: var(--cda-focus-ring-width) solid var(--cda-color-focus-ring);
+        outline-offset: var(--cda-focus-ring-offset);
+      }
+    }
+  }
+
+  .cda-card:hover,
+  .cda-card:focus-within {
+    & .cda-card__image {
+      background-color: var(--cda-color-background-strong);
+    }
+
+    & .cda-card__content {
+      border-block-start-color: var(--cda-color-accent-default);
+    }
+  }
+
+  /* ---------- Merken ---------- */
+
+  .cda-card__favorite {
+    position: absolute;
+    inset-block-start: var(--cda-space-xs);
+    inset-inline-end: var(--cda-space-xs);
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--cda-space-xl);
+    block-size: var(--cda-space-xl);
+    padding: 0;
+    color: var(--cda-color-text-default);
+    cursor: pointer;
+    background-color: var(--cda-color-background-default);
+    border: var(--cda-border-width-s) solid var(--cda-color-border-strong);
+    border-radius: var(--cda-radius-full);
+
+    /* Erst beim Überfahren oder Fokus der Karte sichtbar (wie in der Vorlage), gemerkte Karten immer */
+    opacity: 0;
+    transition:
+      opacity var(--cda-duration-fast) var(--cda-easing-default),
+      color var(--cda-duration-fast) var(--cda-easing-default),
+      background-color var(--cda-duration-fast) var(--cda-easing-default);
+
+    & .cda-icon {
+      font-size: var(--cda-font-size-l);
+    }
+
+    &:hover,
+    &[aria-pressed="true"] {
+      color: var(--cda-color-text-on-accent);
+      background-color: var(--cda-color-accent-default);
+      border-color: var(--cda-color-text-on-accent);
+    }
+
+    &[aria-pressed="true"] {
+      opacity: 1;
+    }
+  }
+
+  .cda-card:hover .cda-card__favorite,
+  .cda-card:focus-within .cda-card__favorite {
+    opacity: 1;
+  }
+
+  /* Touch-Geräte kennen kein Überfahren: Button immer zeigen */
+  @media (hover: none) {
+    .cda-card__favorite {
+      opacity: 1;
+    }
+  }
+}

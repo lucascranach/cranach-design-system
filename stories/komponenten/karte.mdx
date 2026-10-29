@@ -1,0 +1,83 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Karte from './karte.stories.js';
+
+<Meta of={Karte} />
+
+# Werk-Karte
+
+Kachel für ein Werk in Trefferlisten und Übersichten: Bild, Titel mit Datierung, ein bis zwei Zeilen Angaben, optional ein Button zum Merken. Vorlage ist `artefact-card` aus cranach-search und cranach-artefacts. Die Klassen heißen allgemein `cda-card`, weil dieselbe Karte auch für Archivalien oder Literatur passt.
+
+```html
+<ul class="cda-card-grid">
+  <li>
+    <article class="cda-card">
+      <div class="cda-card__image"><img src="…" alt="" loading="lazy"></div>
+      <div class="cda-card__content">
+        <h2 class="cda-card__title"><a class="cda-card__link" href="…">Adam und Eva, 1526</a></h2>
+        <p class="cda-card__subtitle">Öl auf Holz</p>
+        <p class="cda-card__text">Courtauld Gallery, London</p>
+      </div>
+      <button type="button" class="cda-card__favorite" aria-pressed="false" aria-label="Adam und Eva merken">
+        <span class="cda-icon" aria-hidden="true">add</span>
+      </button>
+    </article>
+  </li>
+</ul>
+```
+
+<Canvas of={Karte.Raster} />
+
+## Aufbau
+
+- **Ein Link pro Karte**, im Titel. Seine Klickfläche reicht über die ganze Karte, Bild eingeschlossen. Per Tab gibt es damit einen Halt pro Karte, und Screenreader lesen den Titel als Linktext. In der Vorlage waren Bild und Text zwei getrennte Links zum selben Ziel.
+- **Bild mit `alt=""`**, weil der Titel direkt daneben steht; sonst hörte man ihn doppelt. Das Bild wird in die quadratische Fläche eingepasst, nicht beschnitten.
+- **Überschriften-Ebene** passend zur Seite wählen (`h2`, `h3` …); die Klasse bleibt `cda-card__title`.
+- **Treffer der Suche** im Titel als `<em>` (so liefert sie Elasticsearch) werden hellgelb hinterlegt.
+- **Raster:** `cda-card-grid` füllt die Breite mit Spalten von mindestens 256 px (Token `size.card.min`, aus `$tile-s` in cranach-search).
+
+## Merken
+
+Der Button schaltet die Merkliste um: `aria-pressed="true"`, wenn das Werk gemerkt ist, dazu wechselt das Icon von `add` zu `remove`. Das `aria-label` enthält den Titel, damit man in einer Liste von Buttons weiß, welcher zu welchem Werk gehört. Umschalten und Speichern übernimmt das Projekt per JavaScript – in dieser Doku probierbar.
+
+Wie in der Vorlage erscheint der Button erst beim Überfahren der Karte; neu ist, dass er auch beim Fokus per Tastatur und auf Touch-Geräten sichtbar ist. Gemerkte Werke zeigen ihn immer, gelb hinterlegt.
+
+## Ohne Merken
+
+Wie die Abzüge einer Grafik in cranach-artefacts: nur Bild und Angaben.
+
+<Canvas of={Karte.OhneMerken} />
+
+## Klein
+
+Nur Bilder, für die kleine Kachelansicht. Ohne Text steht der Link um das Bild, und das Bild trägt den Titel als `alt`.
+
+```html
+<ul class="cda-card-grid cda-card-grid--small">
+  <li>
+    <article class="cda-card">
+      <a class="cda-card__link cda-card__image" href="…"><img src="…" alt="Adam und Eva, 1526" loading="lazy"></a>
+    </article>
+  </li>
+</ul>
+```
+
+<Canvas of={Karte.Klein} />
+
+## Zustände
+
+| Zustand | Aussehen |
+|---|---|
+| Überfahren oder Fokus | Bildfläche dunkler, gelbe Linie über dem Text, Merken-Button erscheint |
+| Fokus per Tastatur | zusätzlich Fokusring um die ganze Karte |
+| gemerkt | Merken-Button gelb mit Icon `remove`, immer sichtbar |
+
+## Änderungen gegenüber den Vorlagen
+
+| | cranach-search / cranach-artefacts | Designsystem |
+|---|---|---|
+| Links | search: zwei Links pro Karte (Bild und Text); artefacts: ein Link um alles | ein Link im Titel, Klickfläche über die ganze Karte |
+| Merken | `<a>` ohne `href`, nicht per Tastatur erreichbar | Button mit `aria-pressed` und Titel im Namen |
+| Merken sichtbar | verschwindet nach einer Sekunde, danach nur beim Überfahren | beim Überfahren, beim Fokus und auf Touch-Geräten |
+| Fokus | Browser-Standard um Bild bzw. Text | Fokusring um die ganze Karte |
+| Bildalternative | search leer, artefacts Titel als `alt` neben dem Text | `alt=""` neben dem Titel; nur kleine Karten ohne Text haben den Titel als `alt` |
+| Farben | Titel `$dark`, Text `$dark` in leichter Schrift | Titel `text.default` halbfett, Angaben `text.muted` regulär |
