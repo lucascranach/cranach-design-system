@@ -86,10 +86,11 @@
       transform: translateY(-10%) rotate(45deg);
     }
 
+    /* Strich als Rahmenlinie statt Fläche: bleibt im Kontrastmodus von Windows sichtbar */
     &:indeterminate::before {
       inline-size: 0.6em;
       block-size: var(--cda-border-width-m);
-      background-color: currentcolor;
+      border-block-start: var(--cda-border-width-m) solid currentcolor;
     }
 
     &:hover:not(:disabled, :checked, :indeterminate) {
