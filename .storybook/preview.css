@@ -153,3 +153,8 @@
     border-radius: var(--cda-radius-m);
   }
 }
+
+/* Skip-Link dauerhaft zeigen, nur für das Beispiel „Aussehen“ (sonst erst mit Fokus sichtbar) */
+.docs-skip-link-visible a {
+  translate: 0 0;
+}

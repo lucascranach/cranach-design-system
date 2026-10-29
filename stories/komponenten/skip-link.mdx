@@ -1,0 +1,35 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as SkipLink from './skip-link.stories.js';
+
+<Meta of={SkipLink} />
+
+# Skip-Link
+
+„Zum Inhalt springen“: Wer mit der Tastatur oder einem Screenreader unterwegs ist, überspringt damit Logo, Navigation und Sprachwahl und landet direkt im Inhalt (WCAG 2.4.1 „Bereiche überspringen“). Keines der Bestandsprojekte hat bisher einen Skip-Link.
+
+```html
+<body>
+  <a class="cda-skip-link" href="#inhalt">Zum Inhalt springen</a>
+  <header class="cda-header">…</header>
+  <main id="inhalt">…</main>
+  …
+</body>
+```
+
+<Canvas of={SkipLink.Ausprobieren} />
+
+## So funktioniert er
+
+- Er ist das **erste fokussierbare Element** der Seite, direkt nach `<body>`.
+- Ohne Fokus liegt er unsichtbar oberhalb des Fensters. Mit dem ersten Tab gleitet er oben links ins Bild – über allem anderen, auch über dem fixierten Header und Dialogen (z-Ebene `skip-link`, ADR 0011).
+- Enter springt zum Ziel. Der nächste Tab geht dort weiter, nicht wieder im Header.
+- Gelbe Fläche mit dunkler Schrift wie der primäre Button (ADR 0008), dazu der Fokusring der Grundstyles.
+
+<Canvas of={SkipLink.Aussehen} />
+
+## Hinweise
+
+- **Ziel:** `id` am `<main>`. Ein `tabindex="-1"` am Ziel ist in aktuellen Browsern nicht nötig; ohne ihn zeigt der Browser auch keinen Fokusring um den ganzen Inhalt.
+- **Text auf Englisch:** „Skip to content“.
+- **Mehrere Sprungziele** (etwa „Zur Suche springen“ in cranach-search): weitere Links mit derselben Klasse direkt dahinter. Sichtbar ist immer nur der gerade fokussierte.
+- **Nicht verstecken** mit `display: none`, `visibility: hidden` oder `hidden` – dann ist er auch per Tastatur nicht mehr erreichbar.

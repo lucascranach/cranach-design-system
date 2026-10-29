@@ -1,0 +1,54 @@
+/*
+ * Skip-Link – Layer cda.components (WCAG 2.4.1, ADR 0011)
+ *
+ *   <body>
+ *     <a class="cda-skip-link" href="#inhalt">Zum Inhalt springen</a>
+ *     <header class="cda-header">…</header>
+ *     <main id="inhalt">…</main>
+ *
+ * Erstes fokussierbares Element der Seite. Unsichtbar oberhalb des Fensters, bis er per Tab den
+ * Fokus bekommt; dann gleitet er oben links ins Bild, über allem anderen (z-Ebene skip-link,
+ * auch über dem fixierten Header und Dialogen – ein fokussiertes Element darf nicht verdeckt
+ * sein, WCAG 2.4.11). Gelbe Fläche mit dunkler Schrift wie der primäre Button (ADR 0008).
+ *
+ * Mehrere Sprungziele (etwa „Zur Suche springen“): weitere Links mit derselben Klasse direkt
+ * dahinter. Sichtbar ist immer nur der gerade fokussierte.
+ *
+ * Neu – keines der Bestandsprojekte hat einen Skip-Link.
+ */
+@layer cda.components {
+  .cda-skip-link {
+    position: fixed;
+    inset-block-start: var(--cda-space-xs);
+    inset-inline-start: var(--cda-space-xs);
+    z-index: var(--cda-z-skip-link);
+    padding: var(--cda-space-xs) var(--cda-space-m);
+    font-family: var(--cda-font-family-sans);
+    font-size: var(--cda-font-size-m);
+    font-weight: var(--cda-font-weight-semibold);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-on-accent);
+    text-decoration: none;
+    background-color: var(--cda-color-accent-default);
+
+    /* Unsichtbarer Rahmen: wird im Kontrastmodus von Windows sichtbar */
+    border: var(--cda-border-width-s) solid transparent;
+    box-shadow: var(--cda-shadow-m);
+
+    /* Ohne Fokus oberhalb des Fensters: weiter per Tab erreichbar und von Screenreadern
+       gelesen, aber nicht zu sehen (anders als display: none oder visibility: hidden).
+       Weit genug, dass auch der Schatten nicht ins Bild ragt. */
+    translate: 0 calc(-100% - var(--cda-space-2xl));
+    transition: translate var(--cda-duration-fast) var(--cda-easing-default);
+
+    &:focus {
+      translate: 0 0;
+    }
+
+    /* Grundstyles geben Links beim Überfahren eine gelbe Fläche; die hat er schon */
+    &:hover {
+      color: var(--cda-color-text-on-accent);
+      background-color: var(--cda-color-accent-hover);
+    }
+  }
+}
