@@ -27,7 +27,7 @@ const SUBSETS = ['latin', 'latin-ext'];
 const require = createRequire(import.meta.url);
 
 /** Reihenfolge der Quell-Dateien in cranach.css */
-const SOURCES = ['src/reset.css', 'src/base.css', 'src/components/icon.css'];
+const SOURCES = ['src/reset.css', 'src/base.css', 'src/components/icon.css', 'src/components/button.css'];
 
 /** Icon-Font aus build-icons.mjs (ADR 0012) */
 const ICON_FONT = 'cranach-symbols.woff2';

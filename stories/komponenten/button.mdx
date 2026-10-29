@@ -1,0 +1,60 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as Button from './button.stories.js';
+
+<Meta of={Button} />
+
+# Button
+
+Schaltflächen für Aktionen. Zusammengeführt aus `.btn` (cranach-search) und `.button` (cranach-artefacts); die Mängel der Vorlagen sind behoben: keine weiße Schrift auf Gelb, kein Springen beim Überfahren, Fokus immer sichtbar.
+
+```html
+<button type="button" class="cda-button">Merken</button>
+```
+
+## Spielwiese
+
+<Canvas of={Button.Spielwiese} />
+
+<Controls of={Button.Spielwiese} />
+
+## Varianten
+
+| Klasse | Aussehen | Verwendung |
+|---|---|---|
+| `cda-button` | graue Fläche | Standard für Aktionen |
+| `cda-button cda-button--primary` | gelbe Fläche, dunkle Schrift | die **eine** Hauptaktion eines Bereichs, z. B. „Suchen“ |
+| `cda-button cda-button--ghost` | ohne Fläche, Fläche beim Überfahren | Nebenaktionen, Werkzeugleisten, Schließen |
+
+<Canvas of={Button.Varianten} />
+
+## Mit Icon
+
+Das Icon steht als `.cda-icon` mit `aria-hidden="true"` im Button, vor oder nach dem Text. Den Abstand setzt der Button.
+
+<Canvas of={Button.MitIcon} />
+
+## Nur Icon
+
+`cda-button--icon` macht den Button quadratisch. Ohne sichtbaren Text braucht er einen zugänglichen Namen über `aria-label`, sonst lesen Screenreader nur „Schaltfläche“ vor.
+
+<Canvas of={Button.NurIcon} />
+
+## Deaktiviert
+
+`disabled` am `<button>`. Deaktivierte Buttons sind nicht fokussierbar und für viele schwer zu entdecken – wo möglich lieber aktiv lassen und beim Klick erklären, was fehlt.
+
+<Canvas of={Button.Deaktiviert} />
+
+## Als Link
+
+Führt eine Schaltfläche zu einer anderen Seite, ist sie ein Link: `<a href class="cda-button">`. Ein Link ohne Ziel bekommt `role="link"` und `aria-disabled="true"` statt `href`.
+
+<Canvas of={Button.AlsLink} />
+
+## Barrierefreiheit
+
+- **`<button type="button">`** verwenden, nicht `<div>` oder `<span>`: Nur echte Buttons sind ohne Zusatzaufwand per Tastatur bedienbar (Tab, Enter, Leertaste). `type="button"` verhindert, dass der Button in Formularen ungewollt absendet.
+- **Fokus:** Der Fokusring kommt aus den Grundstyles (`:focus-visible`), mit der Tab-Taste ausprobieren.
+- **Größe:** mindestens 40 × 40 px, über dem Minimum von 24 × 24 px (WCAG 2.5.8).
+- **Kontraste:** Text auf Grau 18,76:1 (hell) bzw. 11,25:1 (dunkel), auf Gelb 11,99:1; in allen Varianten und Zuständen mindestens 8,7:1. Alle Paarungen prüft `npm run check:contrast`.
+- **Kontrastmodus von Windows:** Ein unsichtbarer Rahmen macht die Fläche dort sichtbar.

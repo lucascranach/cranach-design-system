@@ -19,10 +19,10 @@ Die Bestandsprojekte (`../cranach-*`, `../cda-orga`) werden in dieser Phase **ni
 - [x] Familienname „Cranach Sans“ für IBM Plex Sans (ADR 0017, am Haltepunkt nach Schritt 6 von Volker entschieden) – Token `font.family.sans`, `build-css.mjs` liest den Namen aus dem Token, Figma-Export behält „IBM Plex Sans“ über `$extensions`.
 - [x] Link-Unterstreichung im hellen Theme yellow-700 statt yellow-500 (3,38:1 statt 1,75:1; ADR 0018, am Haltepunkt nach Schritt 6 von Volker entschieden) – Hover-Fläche bleibt yellow-500; `check:contrast` prüft die Unterstreichung jetzt mit mindestens 3:1.
 - [x] 7 · Stylelint – `stylelint` 17.16.0 und `stylelint-config-standard` 40.0.0 (exakt gepinnt), `stylelint.config.mjs`. Verboten in `src/`: Regeln außerhalb von `@layer cda.*` (eigene Regel `cda/require-layer` in `build/stylelint-plugin-cda.mjs`), `!important`, `outline: none`/`0`, Klassen ohne `cda-`-Präfix (BEM-Schema), Custom Properties ohne `--cda-`, ID-Selektoren, Hex-Farben, Farbnamen, Farbfunktionen, px außerhalb von Media Queries, `z-index` ohne `--cda-z-*`. Ausnahme: `-webkit-text-size-adjust` (Safari). `.storybook/`: Präfix `docs-`, ohne Layer-Pflicht. `npm run lint:css` läuft als erster Schritt in `npm run build`; `npm run test:lint` prüft jede Regel mit Negativbeispielen. CI-Anbindung, sobald es eine CI gibt.
+- [x] 8 · Komponente Button – `src/components/button.css`: `.cda-button` (graue Fläche, aus cranach-artefacts), `--primary` (Gelb mit dunkler Schrift, aus cranach-search mit behobenem Kontrast), `--ghost` (ohne Fläche), `--icon` (quadratisch, mit `aria-label`); auf `<button>` und `<a>`, deaktiviert über `disabled` bzw. `aria-disabled`. Einheitlich 42 px hoch, unsichtbarer Rahmen für den Kontrastmodus von Windows. Neues Token `color.background.strong` (hell #e0e0e0, dunkel #444444) für den Hover der grauen Fläche, in der Kontrastprüfung. Story mit Spielwiese, deutsche Doku-Seite. Weggelassen: Sprung beim Überfahren (search), drehendes Icon (artefacts).
 
 ## Offen
 
-- [ ] **8 · Komponente Button**
 - [ ] **9 · Komponente Textfeld/Suchfeld**
 - [ ] **10 · Komponente Checkbox**
   - ⏸ **Haltepunkt:** die ersten drei Komponenten von Volker prüfen lassen.

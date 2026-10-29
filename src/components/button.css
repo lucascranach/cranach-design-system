@@ -1,0 +1,84 @@
+/*
+ * Button – Layer cda.components
+ *
+ *   <button type="button" class="cda-button">Merken</button>
+ *   <button type="button" class="cda-button cda-button--primary">Suchen</button>
+ *   <button type="button" class="cda-button cda-button--ghost">Zurücksetzen</button>
+ *   <button type="button" class="cda-button cda-button--icon" aria-label="Schließen">
+ *     <span class="cda-icon" aria-hidden="true">close</span>
+ *   </button>
+ *
+ * Varianten (aus cranach-artefacts und cranach-search zusammengeführt):
+ *   ohne Modifier  graue Fläche – Standard
+ *   --primary      gelbe Fläche mit dunkler Schrift – nur für die Hauptaktion (ADR 0008)
+ *   --ghost        ohne Fläche, Fläche erst beim Überfahren
+ *   --icon         quadratisch, nur Icon; braucht aria-label
+ *
+ * Funktioniert auch auf <a href>. Deaktiviert über disabled (button) bzw.
+ * aria-disabled="true" (Link ohne href). Der Fokusring kommt aus den Grundstyles.
+ */
+@layer cda.components {
+  .cda-button {
+    display: inline-flex;
+    gap: var(--cda-space-xs);
+    align-items: center;
+    justify-content: center;
+
+    /* Gleiche Höhe mit und ohne Icon: Icon (24 px) + Innenabstand + Rahmen */
+    min-block-size: calc(var(--cda-font-size-xl) + 2 * var(--cda-space-xs) + 2 * var(--cda-border-width-s));
+    padding-block: var(--cda-space-xs);
+    padding-inline: var(--cda-space-s);
+    font-family: var(--cda-font-family-sans);
+    font-size: var(--cda-font-size-m);
+    font-weight: var(--cda-font-weight-regular);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-default);
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: var(--cda-color-background-muted);
+
+    /* Unsichtbarer Rahmen: wird im Kontrastmodus von Windows (forced-colors) sichtbar */
+    border: var(--cda-border-width-s) solid transparent;
+    border-radius: var(--cda-radius-m);
+    transition:
+      color var(--cda-duration-fast) var(--cda-easing-default),
+      background-color var(--cda-duration-fast) var(--cda-easing-default);
+
+    &:disabled,
+    &[aria-disabled="true"] {
+      cursor: not-allowed;
+      opacity: var(--cda-opacity-medium);
+    }
+
+    &:hover:not(:disabled, [aria-disabled="true"]) {
+      color: var(--cda-color-text-default);
+      background-color: var(--cda-color-background-strong);
+    }
+  }
+
+  /* ---------- Varianten ---------- */
+
+  .cda-button--primary {
+    color: var(--cda-color-text-on-accent);
+    background-color: var(--cda-color-accent-default);
+
+    &:hover:not(:disabled, [aria-disabled="true"]) {
+      color: var(--cda-color-text-on-accent);
+      background-color: var(--cda-color-accent-hover);
+    }
+  }
+
+  .cda-button--ghost {
+    background-color: transparent;
+
+    &:hover:not(:disabled, [aria-disabled="true"]) {
+      background-color: var(--cda-color-background-muted);
+    }
+  }
+
+  .cda-button--icon {
+    padding: var(--cda-space-xs);
+  }
+}

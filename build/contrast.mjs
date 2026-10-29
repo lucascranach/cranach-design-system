@@ -25,6 +25,7 @@ export const pairs = [
   ['text.default', 'background.default', TEXT],
   ['text.default', 'background.subtle', TEXT],
   ['text.default', 'background.muted', TEXT],
+  ['text.default', 'background.strong', TEXT],
   ['text.muted', 'background.default', TEXT],
   ['text.muted', 'background.subtle', TEXT],
   ['text.accent', 'background.default', TEXT],
