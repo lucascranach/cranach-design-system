@@ -53,6 +53,7 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 
 ## Offene Punkte (nicht blockierend)
 
+- **Header inhaltlich überarbeiten** (Anmerkung Volker, 29.10.2026, nach Schritt 16): Aufbau und Inhalte des Headers stehen vorerst, sollen aber noch einmal überarbeitet werden. Details klärt Volker.
 - **Logo im Paket?** Das CDA-Logo liegt bisher nur für die Doku in `stories/logo.js` (SVG mit `fill="currentColor"`, ersetzt die Farbvarianten `cda-logo-bw/-gw/-ws/-ys`). Soll es als Datei bzw. Snippet ins Paket, damit die Projekte es von dort beziehen? Entscheidung Volker.
 - **Vor dem ersten Release – Sichtbarkeit des GitHub-Repos:** Das Repo ist derzeit privat. npm erzeugt Provenance-Angaben beim Veröffentlichen nur aus öffentlichen Repos; Trusted Publishing selbst funktioniert auch privat.
 - Ist ein SSH-Deploy aus GitHub Actions auf den Hochschul-Server zulässig? (erst für die automatische Release-Action relevant)
