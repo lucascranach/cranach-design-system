@@ -73,11 +73,13 @@ Icon-Font „Cranach Symbols“, ein Subset von Material Symbols Sharp ([ADR 001
 
 ```sh
 npm install
-npm run build          # Tokens, Icons und CSS bauen, Kontraste prüfen
+npm run build          # CSS prüfen, Tokens, Icons und CSS bauen, Kontraste prüfen
 ```
 
 | Befehl | Wirkung |
 |---|---|
+| `npm run lint:css` | prüft `src/` und die Storybook-Styles mit Stylelint (läuft auch in `npm run build`) |
+| `npm run test:lint` | testet, dass die Stylelint-Regeln anschlagen |
 | `npm run build:tokens` | erzeugt `dist/tokens.css`, `tailwind.css`, `custom-media.css`, `tokens.js`/`.d.ts`, `figma/tokens.figma.json` |
 | `npm run build:icons` | lädt das Icon-Subset über `icon_names` von Google Fonts nach `dist/fonts/cranach-symbols.woff2`; zwischengespeichert in `.cache/icons/`, `-- --refresh` lädt neu |
 | `npm run build:css` | erzeugt `dist/cranach.css` aus `src/` und kopiert die Schriften nach `dist/fonts/` (setzt `build:tokens` und `build:icons` voraus) |
@@ -86,6 +88,19 @@ npm run build          # Tokens, Icons und CSS bauen, Kontraste prüfen
 | `npm run build:storybook` | baut die Doku als statische Seite nach `storybook-static/` |
 
 Die Doku (Storybook 10, HTML-Renderer mit Vite) liegt in `stories/`, die Konfiguration in `.storybook/`. Storybook bindet das gebaute `dist/cranach.css` ein; nach Änderungen in `src/` oder `tokens/` `npm run build` erneut ausführen und Storybook neu starten, weil der laufende Dev-Server die neu gebauten Dateien nicht übernimmt. Der Pinsel in der Werkzeugleiste schaltet zwischen hellem und dunklem Theme, der Reiter „Accessibility“ zeigt die axe-Prüfung jeder Story.
+
+### Regeln für das CSS
+
+Stylelint (`stylelint.config.mjs`, Grundlage `stylelint-config-standard`) bricht den Build ab bei:
+
+- Regeln außerhalb von `@layer cda.*` (eigene Regel `cda/require-layer` in `build/stylelint-plugin-cda.mjs`),
+- `!important`, `outline: none` bzw. `outline: 0`,
+- Klassen ohne Präfix `cda-` (Schema `cda-block`, `cda-block__element`, `cda-block--modifier`), Custom Properties ohne `--cda-`, ID-Selektoren,
+- Hex-Farben, Farbnamen und Farbfunktionen wie `rgb()` – Farben nur über `var(--cda-color-…)`,
+- px-Werten außerhalb von Media Queries – Maße nur über Tokens,
+- `z-index` ohne `var(--cda-z-…)`.
+
+Fehlt ein Wert, kommt er zuerst als Token nach `tokens/`. Die Hilfsstyles der Doku in `.storybook/` nutzen das Präfix `docs-` und brauchen keinen Layer.
 
 ## Commits
 

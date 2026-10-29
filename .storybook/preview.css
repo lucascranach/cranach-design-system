@@ -31,6 +31,7 @@
 .docs-code {
   font-family: var(--cda-font-family-mono);
   font-size: var(--cda-font-size-s);
+
   /* Token-Namen nicht an Bindestrichen umbrechen */
   white-space: nowrap;
 }

@@ -14,6 +14,7 @@
 @layer cda.components {
   .cda-icon {
     display: inline-block;
+
     /* Feste Breite: Während die Font lädt (font-display: block), nimmt das unsichtbare Wort
        sonst seine volle Breite ein und das Layout springt. */
     inline-size: 1em;
