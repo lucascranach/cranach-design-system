@@ -26,6 +26,10 @@ const preview = {
   },
   parameters: {
     layout: 'padded',
+    // Vorführ-Skripte der Stories (play) auch auf den Doku-Seiten ausführen; Storybook tut das
+    // dort sonst nicht – Ansichtswahl, Löschen im Suchfeld und Zwischenzustand der Checkbox
+    // funktionierten sonst nur in der Einzelansicht
+    docs: { story: { autoplay: true } },
     // axe: Verstöße gelten als Fehler, nicht nur als Hinweis
     a11y: { test: 'error' },
     options: {
