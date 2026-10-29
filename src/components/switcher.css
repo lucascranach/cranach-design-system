@@ -1,0 +1,87 @@
+/*
+ * Switcher (Sprache, Ansicht) – Layer cda.components
+ *
+ * Sprache – Links zur selben Seite in einer anderen Sprache:
+ *   <nav aria-label="Sprache">
+ *     <ul class="cda-switcher">
+ *       <li><a class="cda-switcher__item" href="/de/…" hreflang="de" lang="de"
+ *              aria-label="Deutsch, DE" aria-current="page">DE</a></li>
+ *       <li><a class="cda-switcher__item" href="/en/…" hreflang="en" lang="en"
+ *              aria-label="English, EN">EN</a></li>
+ *     </ul>
+ *   </nav>
+ *
+ * Ansicht – Auswahl auf derselben Seite:
+ *   <div class="cda-switcher" role="group" aria-label="Ansicht">
+ *     <button type="button" class="cda-switcher__item" aria-pressed="true" aria-label="Kacheln">
+ *       <span class="cda-icon" aria-hidden="true">view_module</span>
+ *     </button>
+ *     …
+ *   </div>
+ *
+ * Aktiv: aria-current (Links) bzw. aria-pressed="true" (Buttons) – volle Textfarbe und Strich
+ * darunter, damit der Zustand nicht nur an der Farbe hängt. Vorlage: .switcher und .lang-selector
+ * aus cranach-search und cranach-artefacts; ohne Vergrößern beim Überfahren und ohne Fettschrift,
+ * damit nichts springt.
+ */
+@layer cda.components {
+  .cda-switcher {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--cda-space-2xs);
+    align-items: stretch;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    & > li {
+      display: flex;
+    }
+  }
+
+  .cda-switcher__item {
+    display: inline-flex;
+    gap: var(--cda-space-2xs);
+    align-items: center;
+    justify-content: center;
+
+    /* Klickfläche wie beim Button: mindestens 40 px breit und 42 px hoch */
+    min-inline-size: calc(var(--cda-font-size-xl) + 2 * var(--cda-space-xs));
+    min-block-size: calc(var(--cda-font-size-xl) + 2 * var(--cda-space-xs) + 2 * var(--cda-border-width-s));
+    padding-inline: var(--cda-space-xs);
+    font-family: var(--cda-font-family-sans);
+    font-size: var(--cda-font-size-m);
+    font-weight: var(--cda-font-weight-regular);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-muted);
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+
+    /* Platz für den Strich ist immer reserviert, damit nichts springt */
+    border-block-end: var(--cda-border-width-m) solid transparent;
+    border-radius: 0;
+    transition:
+      color var(--cda-duration-fast) var(--cda-easing-default),
+      border-color var(--cda-duration-fast) var(--cda-easing-default);
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: var(--cda-opacity-medium);
+    }
+
+    /* Grundstyles geben Links beim Überfahren eine gelbe Fläche; im Switcher nicht */
+    &:hover:not(:disabled) {
+      color: var(--cda-color-text-default);
+      background-color: transparent;
+      border-block-end-color: var(--cda-color-border-strong);
+    }
+
+    &[aria-current]:not([aria-current="false"]),
+    &[aria-pressed="true"] {
+      color: var(--cda-color-text-default);
+      border-block-end-color: var(--cda-color-text-default);
+    }
+  }
+}

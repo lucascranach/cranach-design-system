@@ -1,0 +1,76 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Switcher from './switcher.stories.js';
+
+<Meta of={Switcher} />
+
+# Switcher
+
+Umschalter zwischen wenigen gleichrangigen Optionen – vor allem **Sprache** (DE/EN) und **Ansicht** (Kacheln, Liste, Tabelle). Vorlage sind `.switcher` und `.lang-selector` aus cranach-search und cranach-artefacts.
+
+Das Aussehen ist für beide Zwecke gleich, das Markup nicht:
+
+| Zweck | Element | aktiver Eintrag |
+|---|---|---|
+| Sprache wechseln (andere Seite) | `<a href>` in `<nav>` | `aria-current="page"` |
+| Ansicht wechseln (dieselbe Seite) | `<button>` in `role="group"` | `aria-pressed="true"` |
+
+Inaktive Einträge sind grau, der aktive hat die volle Textfarbe und einen Strich darunter – so hängt der Zustand nicht nur an der Farbe.
+
+## Sprache
+
+```html
+<nav aria-label="Sprache">
+  <ul class="cda-switcher">
+    <li><a class="cda-switcher__item" href="/de/…" hreflang="de" lang="de"
+           aria-label="Deutsch, DE" aria-current="page">DE</a></li>
+    <li><a class="cda-switcher__item" href="/en/…" hreflang="en" lang="en"
+           aria-label="English, EN">EN</a></li>
+  </ul>
+</nav>
+```
+
+<Canvas of={Switcher.Sprache} />
+
+- `hreflang` sagt Suchmaschinen und Browsern, in welcher Sprache das Ziel ist, `lang` lässt Screenreader den Namen richtig aussprechen.
+- `aria-label` mit dem ausgeschriebenen Sprachnamen, weil „DE“ und „EN“ allein buchstabiert vorgelesen würden. Das Kürzel steht mit im Namen („Deutsch, DE“): Wer per Sprachsteuerung „DE“ sagt, findet den Link so (WCAG 2.5.3).
+- Auch die aktuelle Sprache bleibt ein Link (`aria-current="page"`), wie in cranach-artefacts.
+
+## Ansicht
+
+```html
+<div class="cda-switcher" role="group" aria-label="Ansicht">
+  <button type="button" class="cda-switcher__item" aria-pressed="true" aria-label="Kacheln">
+    <span class="cda-icon" aria-hidden="true">view_module</span>
+  </button>
+  <button type="button" class="cda-switcher__item" aria-pressed="false" aria-label="Liste">
+    <span class="cda-icon" aria-hidden="true">view_list</span>
+  </button>
+  …
+</div>
+```
+
+Beim Klick setzt das Projekt per JavaScript `aria-pressed` um – in dieser Doku probierbar.
+
+<Canvas of={Switcher.Ansicht} />
+
+## Ansicht mit Text
+
+Wo Platz ist, helfen sichtbare Bezeichnungen; dann entfällt `aria-label`.
+
+<Canvas of={Switcher.AnsichtMitText} />
+
+## Ansicht, teilweise deaktiviert
+
+In cranach-search sind im eingeschränkten Modus nicht alle Ansichten verfügbar. Nicht verfügbare Optionen bekommen `disabled`.
+
+<Canvas of={Switcher.AnsichtTeilweiseDeaktiviert} />
+
+## Änderungen gegenüber den Vorlagen
+
+| | cranach-search / cranach-artefacts | Designsystem |
+|---|---|---|
+| Sprache in search | `<span>` mit Klick-Handler | Link, per Tastatur erreichbar |
+| Ansicht in search | `<i>` mit Klick-Handler | Button mit `aria-pressed` |
+| Aktiv | nur volle statt halber Deckkraft | volle Textfarbe und Strich darunter |
+| Überfahren | Eintrag vergrößert sich (`scale(1.2)`) | Textfarbe und grauer Strich, nichts springt |
+| Klickfläche | Textgröße | mindestens 40 × 42 px |

@@ -36,6 +36,7 @@ const SOURCES = [
   'src/components/search.css',
   'src/components/checkbox.css',
   'src/components/toggle.css',
+  'src/components/switcher.css',
 ];
 
 /** Icon-Font aus build-icons.mjs (ADR 0012) */
