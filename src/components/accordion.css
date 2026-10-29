@@ -1,0 +1,86 @@
+/*
+ * Accordion – Layer cda.components
+ *
+ *   <div class="cda-accordion">
+ *     <details class="cda-accordion__item">
+ *       <summary class="cda-accordion__summary">Datierung</summary>
+ *       <div class="cda-accordion__content">…</div>
+ *     </details>
+ *     …
+ *   </div>
+ *
+ * Aufklappbare Abschnitte mit den nativen Elementen details und summary: per Tab erreichbar,
+ * mit Enter oder Leertaste zu öffnen, Screenreader sagen „aufgeklappt/zugeklappt“, und die
+ * Suche im Browser (Strg+F) öffnet in den meisten Browsern Abschnitte mit Treffern.
+ * Kein JavaScript nötig.
+ *
+ * Mit name="…" an allen details derselben Gruppe ist immer nur ein Abschnitt offen.
+ *
+ * Vorlage: Accordion und .toggle aus cranach-search (Filter in der Seitenleiste), details-summary
+ * aus cranach-artefacts. Anders als dort: summary statt <span> mit Klick-Handler, Pfeil in der
+ * Textfarbe statt in Gelb (ADR 0008), Klickfläche mindestens 40 px hoch.
+ */
+@layer cda.components {
+  .cda-accordion {
+    color: var(--cda-color-text-default);
+  }
+
+  .cda-accordion__item {
+    border-block-start: var(--cda-border-width-s) solid var(--cda-color-border-default);
+  }
+
+  .cda-accordion__summary {
+    display: flex;
+    gap: var(--cda-space-xs);
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-block: var(--cda-space-xs);
+    font-size: var(--cda-font-size-m);
+    font-weight: var(--cda-font-weight-regular);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-default);
+    cursor: pointer;
+
+    /* Dreieck des Browsers ausblenden; der Pfeil rechts ersetzt es */
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    /* Pfeil aus der Icon-Font, so hoch wie die erste Textzeile (24 px). Der Text nach dem
+       Schrägstrich ist der Name für Screenreader – leer, damit sie nicht „expand_more“ vorlesen.
+       Browser ohne diese Schreibweise nehmen die Zeile davor. */
+    &::after {
+      content: "expand_more";
+      content: "expand_more" / "";
+      flex: none;
+      inline-size: 1em;
+      block-size: 1em;
+      overflow: hidden;
+      font-family: var(--cda-font-family-icon);
+      font-size: var(--cda-font-size-xl);
+      font-weight: var(--cda-font-weight-regular);
+      line-height: 1;
+      color: var(--cda-color-text-muted);
+      white-space: nowrap;
+      font-feature-settings: "liga";
+      -webkit-font-smoothing: antialiased;
+      transition:
+        color var(--cda-duration-fast) var(--cda-easing-default),
+        rotate var(--cda-duration-fast) var(--cda-easing-default);
+    }
+
+    &:hover::after {
+      color: var(--cda-color-text-default);
+    }
+  }
+
+  .cda-accordion__item[open] > .cda-accordion__summary::after {
+    rotate: 180deg;
+  }
+
+  .cda-accordion__content {
+    padding-block-end: var(--cda-space-m);
+  }
+}

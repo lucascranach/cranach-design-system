@@ -1,0 +1,70 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Accordion from './accordion.stories.js';
+
+<Meta of={Accordion} />
+
+# Accordion
+
+Aufklappbare Abschnitte – etwa die Filter in der Seitenleiste der Suche oder Zusatzangaben zu einem Werk. Vorlage sind Accordion und `.toggle` aus cranach-search sowie `details-summary.scss` aus cranach-artefacts.
+
+```html
+<div class="cda-accordion">
+  <details class="cda-accordion__item">
+    <summary class="cda-accordion__summary">Datierung</summary>
+    <div class="cda-accordion__content">
+      …
+    </div>
+  </details>
+  …
+</div>
+```
+
+Das Accordion nutzt die nativen Elemente `details` und `summary` und braucht **kein JavaScript**. Der Browser übernimmt:
+
+- Tab erreicht jede Überschrift, Enter oder Leertaste klappt auf und zu.
+- Screenreader sagen den Zustand an („aufgeklappt“, „zugeklappt“).
+- Die Suche im Browser (Strg+F bzw. ⌘+F) öffnet in den meisten Browsern Abschnitte, in denen sie etwas findet.
+
+Offene Abschnitte bekommen das Attribut `open`. Soll ein Abschnitt beim Laden offen sein, steht es im HTML; merkt sich das Projekt den Zustand (wie die Filter in cranach-search), setzt es `open` beim Erzeugen der Seite und liest Änderungen über das Ereignis `toggle`.
+
+<Canvas of={Accordion.Standard} />
+
+## Nur einer offen
+
+Haben alle `details` einer Gruppe dasselbe Attribut `name`, schließt das Öffnen eines Abschnitts die anderen. Browser, die das noch nicht kennen, lassen einfach mehrere offen.
+
+```html
+<details class="cda-accordion__item" name="werk" open>…</details>
+<details class="cda-accordion__item" name="werk">…</details>
+```
+
+<Canvas of={Accordion.NurEinerOffen} />
+
+## Einzeln
+
+Auch ein einzelner Abschnitt steht in `.cda-accordion`, etwa für die Auflagen einer Grafik in cranach-artefacts.
+
+<Canvas of={Accordion.Einzeln} />
+
+## Lange Überschrift
+
+Die Überschrift bricht um, der Pfeil bleibt neben der ersten Zeile.
+
+<Canvas of={Accordion.LangeUeberschrift} />
+
+## Hinweise
+
+- **Nur Text in `summary`.** `summary` ist für Screenreader ein Button; Überschriften, Links oder Formularelemente darin verlieren ihre Bedeutung oder sind nicht bedienbar. Braucht die Seite eine Überschrift für die Gliederung, steht sie vor dem Accordion.
+- **Pfeil** aus der Icon-Font (`expand_more`), dreht sich beim Öffnen. Er hat für Screenreader keinen Namen; den Zustand sagt `details` selbst an.
+- **Beim Überfahren** wird der Pfeil dunkler; die Linie und die Fläche bleiben, damit nichts springt.
+
+## Änderungen gegenüber den Vorlagen
+
+| | cranach-search / cranach-artefacts | Designsystem |
+|---|---|---|
+| Element | `<span>` mit Klick-Handler (search), `details` (artefacts) | `details` und `summary` |
+| Tastatur | nicht erreichbar (search) | Tab, Enter, Leertaste |
+| Zustand für Screenreader | keiner (search) | „aufgeklappt/zugeklappt“ |
+| Pfeil | Gelb (`$accent`, `$accent-dark`), unter 3:1 | Textfarbe gedämpft, beim Überfahren voll |
+| Klickfläche | so hoch wie der Text | ganze Zeile, mindestens 40 px hoch |
+| Trennlinie | `$darken-strong` über jedem Eintrag | `color.border.default` über jedem Eintrag |
