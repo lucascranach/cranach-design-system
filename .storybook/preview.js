@@ -40,6 +40,7 @@ const preview = {
           'Grundlagen',
           ['Farben', 'Typografie', 'Abstände', 'z-Ebenen', 'Icons'],
           'Komponenten',
+          'Utilities',
         ],
       },
     },

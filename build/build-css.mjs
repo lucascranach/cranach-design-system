@@ -1,7 +1,8 @@
 /**
  * Baut die zentrale Einbinde-Datei und die Schriften nach dist/.
  *
- *   dist/cranach.css   Layer-Reihenfolge, @import von tokens.css, @font-face, Reset, Grundstyles
+ *   dist/cranach.css   Layer-Reihenfolge, @import von tokens.css, @font-face, Reset, Grundstyles,
+ *                      Komponenten, Utilities (prüft, dass es zu jedem z-Token eine Utility gibt)
  *   dist/fonts/        IBM Plex Sans (variabel, wght, normal + kursiv, als „Cranach Sans“) und IBM Plex Mono 400,
  *                      je Subset Latin und Latin-Ext, mit OFL-Lizenztexten
  *
@@ -43,6 +44,7 @@ const SOURCES = [
   'src/components/header.css',
   'src/components/footer.css',
   'src/components/skip-link.css',
+  'src/utilities.css',
 ];
 
 /** Icon-Font aus build-icons.mjs (ADR 0012) */
@@ -148,9 +150,21 @@ async function buildFonts() {
   return { rules, files };
 }
 
+/** Bricht ab, wenn zu einem z-Token die Utility-Klasse .cda-u-z-* fehlt (ADR 0011) */
+async function checkZUtilities(utilitiesCss) {
+  const { z } = JSON.parse(await readFile('tokens/primitive/z-index.json', 'utf8'));
+  const missing = Object.keys(z)
+    .filter((key) => !key.startsWith('$'))
+    .filter((key) => !utilitiesCss.includes(`.cda-u-z-${key} {\n    z-index: var(--cda-z-${key});`));
+  if (missing.length) {
+    throw new Error(`src/utilities.css: Klasse fehlt für ${missing.map((k) => `--cda-z-${k}`).join(', ')}`);
+  }
+}
+
 async function main() {
   const { rules, files } = await buildFonts();
   const sources = await Promise.all(SOURCES.map((f) => readFile(f, 'utf8')));
+  await checkZUtilities(sources[SOURCES.indexOf('src/utilities.css')]);
 
   const css = [
     '/* Cranach Design System – generiert aus src/ und tokens/, nicht von Hand bearbeiten. */',

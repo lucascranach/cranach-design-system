@@ -62,7 +62,7 @@ Icon-Font „Cranach Symbols“, ein Subset von Material Symbols Sharp ([ADR 001
 |---|---|
 | `tokens/` | Design-Tokens im DTCG-Format (Primitive und Semantik) |
 | `build/` | Build-Skripte (Style Dictionary, Icons, Figma-Sync) |
-| `src/` | CSS für Grundstyles und Komponenten |
+| `src/` | CSS für Grundstyles, Komponenten und Hilfsklassen (`cda-u-*`) |
 | `icons/` | Liste der benötigten Material-Symbols-Icons |
 | `stories/` | Storybook-Doku: deutsche MDX-Seiten und Stories |
 | `.storybook/` | Storybook-Konfiguration und Hilfsstyles der Doku |

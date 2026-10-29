@@ -21,7 +21,7 @@ Statt freier Zahlen wie 99999 gibt es benannte Ebenen. Die Werte stammen unverä
 
 ## Regeln
 
-- **Nur über Tokens.** Feste z-Index-Werte im Code vermeiden.
+- **Nur über Tokens.** Feste z-Index-Werte im Code vermeiden. Im Markup gibt es dafür je Ebene eine Klasse `.cda-u-z-*` (siehe [Utilities](?path=/docs/utilities--docs)).
 - **Dialoge** bevorzugt mit `<dialog>` oder der Popover-API: Sie liegen im Top-Layer und brauchen keinen z-Index.
 - **Drawer** verwenden `modal-bg` für die Abdunkelung und `modal` für den Inhalt.
 - **toast** liegt über `modal`, damit Benachrichtigungen auch bei offenem Dialog oder Bildviewer sichtbar sind.

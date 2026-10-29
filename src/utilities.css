@@ -1,0 +1,103 @@
+/*
+ * Utilities – Layer cda.utilities
+ *
+ * Kleine Hilfsklassen mit genau einer Aufgabe. Der Layer liegt nach cda.components und gewinnt
+ * deshalb gegen Komponenten – ohne !important (ADR 0003). Eigene Styles der Projekte außerhalb
+ * der Layer gewinnen weiterhin.
+ */
+@layer cda.utilities {
+  /* ---------- hidden ----------
+   * Das Attribut hidden blendet aus, auch an Komponenten mit eigenem display (z. B.
+   * <div class="cda-loader" hidden>). Ohne diese Regel gewinnt das display der Komponente gegen
+   * die Regel des Browsers. hidden="until-found" (Suche im Browser) bleibt ausgenommen. */
+
+  [hidden]:not([hidden="until-found"]) {
+    display: none;
+  }
+
+  /* ---------- Nur für Screenreader ----------
+   * Unsichtbar, aber vorgelesen – etwa ein Text zu einem Icon-Button oder eine Überschrift, die
+   * nur der Gliederung dient. Nicht display: none oder visibility: hidden, die verbergen auch
+   * vor Screenreadern.
+   *
+   *   <span class="cda-u-visually-hidden">Treffer 1 bis 20 von 1.204</span>
+   *
+   * -focusable: wird sichtbar, sobald es selbst oder etwas darin den Fokus bekommt. */
+
+  .cda-u-visually-hidden,
+  .cda-u-visually-hidden-focusable:not(:focus, :focus-within) {
+    position: absolute;
+    inline-size: var(--cda-border-width-s);
+    block-size: var(--cda-border-width-s);
+    padding: 0;
+    margin: calc(-1 * var(--cda-border-width-s));
+    overflow: hidden;
+    white-space: nowrap;
+    border: 0;
+    clip-path: inset(50%);
+  }
+
+  /* ---------- z-Ebenen (ADR 0011) ----------
+   * Eine Klasse je Token --cda-z-*. Wirkt nur an positionierten Elementen (position ≠ static)
+   * und an Flex- oder Grid-Kindern. build-css.mjs prüft, dass zu jedem Token eine Klasse da ist. */
+
+  .cda-u-z-background-bottom {
+    z-index: var(--cda-z-background-bottom);
+  }
+
+  .cda-u-z-background {
+    z-index: var(--cda-z-background);
+  }
+
+  .cda-u-z-background-top {
+    z-index: var(--cda-z-background-top);
+  }
+
+  .cda-u-z-content-bottom {
+    z-index: var(--cda-z-content-bottom);
+  }
+
+  .cda-u-z-content {
+    z-index: var(--cda-z-content);
+  }
+
+  .cda-u-z-content-top {
+    z-index: var(--cda-z-content-top);
+  }
+
+  .cda-u-z-nav {
+    z-index: var(--cda-z-nav);
+  }
+
+  .cda-u-z-fab {
+    z-index: var(--cda-z-fab);
+  }
+
+  .cda-u-z-popover {
+    z-index: var(--cda-z-popover);
+  }
+
+  .cda-u-z-tooltip {
+    z-index: var(--cda-z-tooltip);
+  }
+
+  .cda-u-z-nav-fixed {
+    z-index: var(--cda-z-nav-fixed);
+  }
+
+  .cda-u-z-modal-bg {
+    z-index: var(--cda-z-modal-bg);
+  }
+
+  .cda-u-z-modal {
+    z-index: var(--cda-z-modal);
+  }
+
+  .cda-u-z-toast {
+    z-index: var(--cda-z-toast);
+  }
+
+  .cda-u-z-skip-link {
+    z-index: var(--cda-z-skip-link);
+  }
+}

@@ -1,0 +1,61 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Utilities from './utilities.stories.js';
+
+<Meta of={Utilities} />
+
+# Utilities
+
+Kleine Hilfsklassen mit genau einer Aufgabe, Präfix `cda-u-`. Sie liegen im Layer `cda.utilities` nach den Komponenten und gewinnen deshalb gegen sie – ohne `!important` (ADR 0003). Eigene Styles eines Projekts außerhalb der Layer gewinnen weiterhin.
+
+| Klasse / Regel | Wofür |
+|---|---|
+| `.cda-u-visually-hidden` | unsichtbar, aber von Screenreadern gelesen |
+| `.cda-u-visually-hidden-focusable` | ebenso, wird aber sichtbar, sobald es den Fokus bekommt |
+| `.cda-u-z-*` | z-Ebene aus den Tokens (ADR 0011) |
+| `[hidden]` | blendet auch Komponenten mit eigenem `display` aus |
+
+## Nur für Screenreader
+
+```html
+<span class="cda-u-visually-hidden">Filter schließen</span>
+```
+
+Für Text, den Sehende nicht brauchen, Screenreader aber schon: die Beschriftung eines Icon-Buttons, eine Überschrift nur für die Gliederung, „Treffer 1 bis 20 von 1.204“. Nicht mit `display: none` oder `visibility: hidden` lösen – das verbirgt auch vor Screenreadern.
+
+<Canvas of={Utilities.NurFuerScreenreader} />
+
+Bei einem Icon-Button sind `aria-label` und dieser Text gleichwertig. Der Text hat den Vorteil, dass Übersetzungswerkzeuge im Browser ihn mit übersetzen.
+
+## Sichtbar mit Fokus
+
+```html
+<a class="cda-u-visually-hidden-focusable" href="#filter">Zu den Filtern springen</a>
+```
+
+Unsichtbar, bis es selbst oder etwas darin den Fokus bekommt – dann steht es an seinem normalen Platz. Für weitere Sprungmarken innerhalb der Seite; der Skip-Link ganz oben hat eine [eigene Komponente](?path=/docs/komponenten-skip-link--docs).
+
+<Canvas of={Utilities.SichtbarMitFokus} />
+
+## hidden an Komponenten
+
+Das Attribut `hidden` blendet ein Element aus – eigentlich. Hat eine Komponente ein eigenes `display` (etwa `.cda-loader` mit `display: grid`), gewinnt dieses gegen die Regel des Browsers, und das Element bliebe sichtbar. Die Utilities setzen deshalb `[hidden] { display: none }` in ihrem Layer. Ausgenommen ist `hidden="until-found"`, das die Suche im Browser selbst aufklappt.
+
+```html
+<div class="cda-loader" role="status" hidden>…</div>
+```
+
+<Canvas of={Utilities.Hidden} />
+
+## z-Ebenen
+
+```html
+<div class="cda-u-z-nav-fixed">…</div>
+```
+
+Eine Klasse je Token. Wirkt nur an positionierten Elementen (`position` nicht `static`) sowie an Flex- und Grid-Kindern. Der Build prüft, dass es zu jedem Token eine Klasse gibt. Bedeutung der Ebenen: [z-Ebenen](?path=/docs/grundlagen-z-ebenen--docs).
+
+<Canvas of={Utilities.ZEbenen} />
+
+## Bewusst nicht dabei
+
+Die Projekte haben weitere Hilfsklassen wie `.is-hidden` (mit `!important`), `.has-interaction` (Zeiger beim Überfahren) oder `.is-remark` (graue Schrift). Dafür gibt es jetzt das Attribut `hidden`, die Komponenten mit eigenem Zeiger und die Tokens (`color.text.muted`). Abstands- oder Layout-Utilities wie in Tailwind sind nicht geplant – Projekte mit Tailwind nutzen dessen Klassen (ADR 0003).
