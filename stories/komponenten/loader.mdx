@@ -1,0 +1,89 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Loader from './loader.stories.js';
+
+<Meta of={Loader} />
+
+# Loader
+
+Drei Bausteine für „wird geladen“. Sie ersetzen `cloak` aus cranach-search, den Download-Spinner aus cranach-artefacts und das Skeleton aus cranach-timeline.
+
+| Baustein | Wofür | Beispiel |
+|---|---|---|
+| **Spinner** | kurze Wartezeit an einer Stelle | Download wird vorbereitet |
+| **Lade-Overlay** | vorhandener Inhalt wird ersetzt | Trefferliste nach Filterwahl |
+| **Skeleton** | Inhalt kommt zum ersten Mal | Karten beim ersten Laden der Suche |
+
+## Spinner
+
+```html
+<span class="cda-spinner" aria-hidden="true"></span>
+```
+
+Ein Ring in der Textfarbe, so groß wie die Schrift (`1em`). Größer wird er über `font-size` am Spinner oder am umgebenden Element.
+
+<Canvas of={Loader.Spinner} />
+
+Der Spinner selbst sagt Screenreadern nichts (`aria-hidden="true"`). Was passiert, steht als Text daneben oder im Element, an dem er hängt.
+
+### Am Link
+
+Wie beim Download in cranach-artefacts: Solange die Datei entsteht, setzt das Projekt den Spinner in den Link und `aria-busy="true"` an den Link; danach entfernt es beides wieder.
+
+```html
+<a href="…" aria-busy="true">Bild in voller Größe herunterladen <span class="cda-spinner" aria-hidden="true"></span></a>
+```
+
+<Canvas of={Loader.AmLink} />
+
+## Lade-Overlay
+
+```html
+<div style="position: relative" aria-busy="true">
+  … Inhalt, der neu geladen wird …
+  <div class="cda-loader" role="status">
+    <div class="cda-loader__panel">
+      <span class="cda-spinner" aria-hidden="true"></span>
+      Ergebnisse werden geladen
+    </div>
+  </div>
+</div>
+```
+
+Das Overlay legt sich über den ganzen umgebenden Bereich; dieser braucht dafür `position: relative`. Ein heller Schleier zeigt, dass der Inhalt darunter gerade nicht aktuell ist (im dunklen Theme ein dunkler). Spinner und Text stehen auf einer festen Fläche und bleiben bei langen Listen beim Scrollen im Bild.
+
+<Canvas of={Loader.Overlay} />
+
+- **Text immer angeben.** Er sagt sehenden Nutzern und Screenreadern, was geladen wird. `role="status"` meldet ihn höflich, ohne andere Ansagen zu unterbrechen; ob er beim Erscheinen vorgelesen wird, hängt vom Screenreader ab. Wichtiger ist, das Ergebnis danach anzusagen (etwa „120 Treffer“).
+- `aria-busy="true"` am Bereich, solange geladen wird – danach entfernen.
+- Das Projekt blendet das Overlay ein und aus (Element einfügen bzw. entfernen oder `hidden`).
+
+## Skeleton
+
+```html
+<div aria-busy="true">
+  <div aria-hidden="true">
+    <div class="cda-skeleton cda-skeleton--text"></div>
+    <div class="cda-skeleton cda-skeleton--text"></div>
+  </div>
+</div>
+```
+
+Platzhalter in der Form des kommenden Inhalts, damit die Seite beim Laden nicht springt. `cda-skeleton--text` ist eine Textzeile; die letzte Zeile eines Blocks ist kürzer. Ohne Modifier füllt das Skeleton die Breite, Höhe oder Seitenverhältnis gibt das Projekt vor (etwa `aspect-ratio` für ein Bild).
+
+<Canvas of={Loader.Skeleton} />
+
+Skeletons sind für Screenreader ausgeblendet (`aria-hidden="true"`); `aria-busy="true"` am Bereich sagt, dass Inhalt folgt.
+
+## Reduzierte Bewegung
+
+Ist im Betriebssystem „Bewegung reduzieren“ eingestellt, drehen sich Spinner nicht und Skeletons pulsieren nicht (ADR 0010). Deshalb gehört zu jedem Lade-Zustand ein Text.
+
+## Änderungen gegenüber den Vorlagen
+
+| | Vorlage | Designsystem |
+|---|---|---|
+| Overlay (search `cloak`) | 20 % Schwarz über dem Inhalt, weiße Punkte unten rechts, kein Text | heller Schleier, Spinner und Text auf fester Fläche in der Mitte des sichtbaren Bereichs |
+| Spinner (artefacts) | nur am Download-Link | eigene Klasse, überall einsetzbar |
+| Skeleton (timeline) | Tailwind `bg-accent animate-pulse` | eigene Klasse mit `background.muted`, Textzeilen als Modifier |
+| Bewegung reduzieren | nicht berücksichtigt | alles steht still |
+| Kontrastmodus (Windows) | Punkte und Skeleton verschwinden | Spinner und Rahmen bleiben sichtbar |

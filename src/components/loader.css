@@ -1,0 +1,146 @@
+/*
+ * Loader – Layer cda.components
+ *
+ * Drei Bausteine für „wird geladen“:
+ *
+ * Spinner – kleiner Kreis, so groß wie die Schrift, in der Textfarbe:
+ *   <span class="cda-spinner" aria-hidden="true"></span>
+ *
+ * Lade-Overlay – über einem Bereich, dessen Inhalt neu geladen wird (der Bereich braucht
+ * position: relative):
+ *   <div class="cda-loader" role="status">
+ *     <div class="cda-loader__panel">
+ *       <span class="cda-spinner" aria-hidden="true"></span>
+ *       Ergebnisse werden geladen
+ *     </div>
+ *   </div>
+ *
+ * Skeleton – Platzhalter in der Form des kommenden Inhalts:
+ *   <div aria-hidden="true">
+ *     <div class="cda-skeleton cda-skeleton--text"></div>
+ *   </div>
+ *
+ * Vorlagen: cloak aus cranach-search (Abdunkelung mit weißen Punkten unten rechts),
+ * Download-Spinner aus cranach-artefacts (.download-link--resized.is-loading), Skeleton aus
+ * cranach-timeline (shadcn/ui). Anders als dort: Overlay hellt den Inhalt auf statt ihn
+ * abzudunkeln, Spinner und Text stehen auf einer festen Fläche (Kontrast) und bleiben beim
+ * Scrollen im Bild; bei reduzierter Bewegung steht alles still (ADR 0010).
+ */
+@layer cda.components {
+  /* ---------- Spinner ---------- */
+
+  .cda-spinner {
+    display: inline-block;
+    flex: none;
+    box-sizing: border-box;
+    inline-size: 1em;
+    block-size: 1em;
+    vertical-align: -0.125em;
+
+    /* Ring in der Textfarbe mit einer Lücke oben, die sich dreht */
+    border: var(--cda-border-width-m) solid currentcolor;
+    border-block-start-color: transparent;
+    border-radius: var(--cda-radius-full);
+    animation: cda-spin var(--cda-duration-slow) linear infinite;
+
+    /* Im Kontrastmodus von Windows würde die Lücke sonst eingefärbt und die Drehung unsichtbar.
+       currentcolor ist dort bereits die Systemfarbe des umgebenden Texts. */
+    forced-color-adjust: none;
+  }
+
+  @keyframes cda-spin {
+    to {
+      rotate: 1turn;
+    }
+  }
+
+  /* ---------- Lade-Overlay ---------- */
+
+  .cda-loader {
+    position: absolute;
+    inset: 0;
+    z-index: var(--cda-z-content-top);
+    display: grid;
+    place-items: center;
+    animation: cda-fade-in var(--cda-duration-fast) var(--cda-easing-default);
+
+    /* Schleier: Inhalt darunter aufhellen (im dunklen Theme abdunkeln), damit er als
+       „gerade nicht aktuell“ erkennbar ist – wie deaktivierte Elemente */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: var(--cda-color-background-default);
+      opacity: var(--cda-opacity-medium);
+    }
+  }
+
+  .cda-loader__panel {
+    /* Bei hohen Bereichen (lange Trefferliste) bleibt das Panel beim Scrollen im Bild */
+    position: sticky;
+    inset-block: 40%;
+    display: inline-flex;
+    gap: var(--cda-space-xs);
+    align-items: center;
+    padding: var(--cda-space-s) var(--cda-space-m);
+    font-size: var(--cda-font-size-m);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-default);
+    background-color: var(--cda-color-background-default);
+
+    /* Unsichtbarer Rahmen: wird im Kontrastmodus von Windows sichtbar */
+    border: var(--cda-border-width-s) solid transparent;
+    box-shadow: var(--cda-shadow-m);
+
+    & > .cda-spinner {
+      font-size: var(--cda-font-size-xl);
+    }
+  }
+
+  @keyframes cda-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* ---------- Skeleton ---------- */
+
+  .cda-skeleton {
+    display: block;
+    box-sizing: border-box;
+    background-color: var(--cda-color-background-muted);
+
+    /* Unsichtbarer Rahmen: wird im Kontrastmodus von Windows sichtbar */
+    border: var(--cda-border-width-s) solid transparent;
+    border-radius: var(--cda-radius-s);
+    animation: cda-pulse var(--cda-duration-slow) var(--cda-easing-default) infinite alternate;
+  }
+
+  /* Eine Textzeile: so hoch wie die Schrift, mit dem Zeilenabstand darüber und darunter */
+  .cda-skeleton--text {
+    block-size: 1em;
+    margin-block: calc((1lh - 1em) / 2);
+
+    /* Letzte Zeile eines Absatzes kürzer */
+    &:last-child:not(:only-child) {
+      inline-size: 60%;
+    }
+  }
+
+  @keyframes cda-pulse {
+    to {
+      opacity: var(--cda-opacity-medium);
+    }
+  }
+
+  /* ---------- Reduzierte Bewegung (ADR 0010) ----------
+   * Die Dauer-Tokens werden dort fast null; eine endlose Animation würde dann flackern.
+   * Deshalb stehen Spinner und Skeleton still, der Text sagt, dass geladen wird. */
+
+  @media (prefers-reduced-motion: reduce) {
+    .cda-spinner,
+    .cda-skeleton {
+      animation: none;
+    }
+  }
+}
