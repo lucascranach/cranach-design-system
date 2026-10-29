@@ -28,7 +28,10 @@
   .cda-switcher {
     display: inline-flex;
     flex-wrap: wrap;
-    gap: var(--cda-space-2xs);
+
+    /* Keine Lücken: Über der ganzen Leiste gilt die Hand als Mauszeiger, statt beim Bewegen
+       zwischen Hand und Pfeil zu wechseln. Den Abstand übernimmt der Innenabstand der Einträge. */
+    gap: 0;
     align-items: stretch;
     padding: 0;
     margin: 0;
@@ -40,6 +43,7 @@
   }
 
   .cda-switcher__item {
+    position: relative;
     display: inline-flex;
     gap: var(--cda-space-2xs);
     align-items: center;
@@ -48,7 +52,7 @@
     /* Klickfläche wie beim Button: mindestens 40 px breit und 42 px hoch */
     min-inline-size: calc(var(--cda-font-size-xl) + 2 * var(--cda-space-xs));
     min-block-size: calc(var(--cda-font-size-xl) + 2 * var(--cda-space-xs) + 2 * var(--cda-border-width-s));
-    padding-inline: var(--cda-space-xs);
+    padding-inline: var(--cda-space-s);
     font-family: var(--cda-font-family-sans);
     font-size: var(--cda-font-size-m);
     font-weight: var(--cda-font-weight-regular);
@@ -58,13 +62,19 @@
     cursor: pointer;
     background-color: transparent;
     border: 0;
-
-    /* Platz für den Strich ist immer reserviert, damit nichts springt */
-    border-block-end: var(--cda-border-width-m) solid transparent;
     border-radius: 0;
-    transition:
-      color var(--cda-duration-fast) var(--cda-easing-default),
-      border-color var(--cda-duration-fast) var(--cda-easing-default);
+    transition: color var(--cda-duration-fast) var(--cda-easing-default);
+
+    /* Strich unten, etwas eingerückt, damit benachbarte Striche nicht verschmelzen.
+       Als Rahmenlinie gezeichnet: bleibt im Kontrastmodus von Windows sichtbar. */
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: var(--cda-space-2xs);
+      inset-block-end: 0;
+      border-block-end: var(--cda-border-width-m) solid transparent;
+      transition: border-color var(--cda-duration-fast) var(--cda-easing-default);
+    }
 
     &:disabled {
       cursor: not-allowed;
@@ -75,13 +85,19 @@
     &:hover:not(:disabled) {
       color: var(--cda-color-text-default);
       background-color: transparent;
-      border-block-end-color: var(--cda-color-border-strong);
+
+      &::after {
+        border-block-end-color: var(--cda-color-border-strong);
+      }
     }
 
     &[aria-current]:not([aria-current="false"]),
     &[aria-pressed="true"] {
       color: var(--cda-color-text-default);
-      border-block-end-color: var(--cda-color-text-default);
+
+      &::after {
+        border-block-end-color: var(--cda-color-text-default);
+      }
     }
   }
 }
