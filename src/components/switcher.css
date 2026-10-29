@@ -75,7 +75,7 @@
     &:hover:not(:disabled) {
       color: var(--cda-color-text-default);
       background-color: transparent;
-      border-block-end-color: var(--cda-color-border-strong);
+      border-block-end-color: var(--cda-color-border-hover);
     }
 
     /* Strich in der Farbe der Link-Unterstreichung, wie die aktive Seite im Header */
