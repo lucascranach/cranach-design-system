@@ -23,13 +23,13 @@ Fußzeile mit Links zu Impressum, Datenschutz und Kontakt sowie dem Copyright-Ve
 <Canvas of={Footer.Standard} />
 
 - **`footer`** ist für Screenreader der Seitenfuß („Contentinfo“), wenn er direkt im `body` steht. Pro Seite nur einer.
-- **Links** in einer eigenen `nav` mit `aria-label`, damit sie sich von der Hauptnavigation unterscheiden. Sie sehen aus wie Links im Fließtext (gelbe Unterstreichung, gelbe Fläche beim Überfahren) und sind mindestens 24 px hoch.
+- **Links** in einer eigenen `nav` mit `aria-label`, damit sie sich von der Hauptnavigation unterscheiden. Sie sehen aus wie die Einträge im [Header](?path=/docs/komponenten-header--docs): ohne Unterstreichung, beim Überfahren ein hellgrauer Strich, die aktuelle Seite (`aria-current="page"`) mit gelbem Strich. Mindestens 24 px hoch.
 - **Copyright** in gedämpfter Schrift. Das Jahr setzt das Projekt beim Erzeugen der Seite.
 - Die Links im Beispiel sind Platzhalter. Öffentliche Stellen brauchen in der Regel eine **Erklärung zur Barrierefreiheit** (BITV 2.0); der Footer ist der übliche Ort für den Link.
 
 ## Dunkel
 
-Wie in cranach-artefacts: Mit `data-theme="dark"` am Footer gilt das dunkle Theme nur dort (ADR 0007). Links, Unterstreichung und Fokusring bekommen automatisch die dunklen Farben, die Kontraste sind mitgeprüft.
+Wie in cranach-artefacts: Mit `data-theme="dark"` am Footer gilt das dunkle Theme nur dort (ADR 0007). Schrift, Striche und Fokusring bekommen automatisch die dunklen Farben, die Kontraste sind mitgeprüft.
 
 ```html
 <footer class="cda-footer" data-theme="dark">…</footer>
@@ -48,5 +48,5 @@ Wie auf den Werkseiten in cranach-artefacts: ohne Links nur der Vermerk.
 | | cranach-artefacts / cranach-kirby | Designsystem |
 |---|---|---|
 | Fläche | `$dark` (#444) mit `$lighter` als Schrift, fest | `background.subtle`, folgt dem Theme; dunkel per `data-theme="dark"` |
-| Links | ohne `nav` (kirby), Klasse `funky-link` | eigene `nav` mit Namen, Aussehen wie Links im Text |
+| Links | ohne `nav` (kirby), Klasse `funky-link` | eigene `nav` mit Namen, Aussehen wie die Header-Navigation |
 | Aufteilung | Raster mit zwei gleich breiten Spalten (artefacts) | Links und Copyright nebeneinander, brechen bei wenig Platz um |
