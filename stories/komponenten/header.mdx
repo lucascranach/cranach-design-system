@@ -1,0 +1,86 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Header from './header.stories.js';
+
+<Meta of={Header} />
+
+# Header
+
+Kopfzeile mit Logo, Hauptnavigation, Sprachwahl und – bei wenig Platz – Menü-Button. Vorlagen sind `main-navigation` aus cranach-search und cranach-artefacts sowie `main-header` aus cranach-kirby.
+
+```html
+<header class="cda-header">
+  <a class="cda-header__brand" href="/de/" aria-label="Cranach Digital Archive, Startseite">
+    <svg viewBox="0 0 474 162" fill="currentColor" aria-hidden="true" focusable="false">…</svg>
+  </a>
+  <button type="button" class="cda-button cda-button--ghost cda-button--icon cda-header__toggle"
+          aria-expanded="false" aria-controls="hauptnavigation" aria-label="Menü">
+    <span class="cda-icon cda-header__icon-open" aria-hidden="true">menu</span>
+    <span class="cda-icon cda-header__icon-close" aria-hidden="true">close</span>
+  </button>
+  <nav class="cda-header__nav" id="hauptnavigation" aria-label="Hauptnavigation">
+    <ul class="cda-header__menu">
+      <li><a class="cda-header__link" href="/de/werke/" aria-current="page">Werke</a></li>
+      <li><a class="cda-header__link" href="/de/grafiken/">Grafiken</a></li>
+      …
+    </ul>
+  </nav>
+  <div class="cda-header__actions">
+    <nav aria-label="Sprache">
+      <ul class="cda-switcher">…</ul>
+    </nav>
+  </div>
+</header>
+```
+
+<Canvas of={Header.Standard} />
+
+## Aufbau
+
+- **`header`** ist für Screenreader der Seitenkopf („Banner“). Pro Seite nur einer.
+- **Logo** als Link zur Startseite. Das SVG hat `fill="currentColor"` und nimmt so die Textfarbe an: gedämpft, beim Überfahren voll, im dunklen Theme hell. Damit ersetzt eine Datei die Varianten `cda-logo-bw`, `-gw`, `-ws` und `-ys` der Bestandsprojekte. Den Namen trägt der Link (`aria-label`), das SVG ist ausgeblendet.
+- **Hauptnavigation** in `nav` mit `aria-label`. Die aktuelle Seite bekommt `aria-current="page"` (oder `"true"` für den Bereich, in dem sie liegt) und einen gelben Strich darunter – nicht nur eine andere Farbe.
+- **Sprachwahl** ist der [Switcher](?path=/docs/komponenten-switcher--docs) in einer zweiten `nav`.
+- **Sticky:** Mit `cda-header--sticky` bleibt der Header beim Scrollen oben (z-Ebene `nav-fixed`, ADR 0011) und bekommt einen leichten Schatten.
+
+## Werkseite
+
+Wie in cranach-artefacts: statt der Hauptnavigation die Wege zurück in die Suche.
+
+<Canvas of={Header.Werkseite} />
+
+## Schmal
+
+Ist der Header schmaler als **48rem** (768 px), liegt die Navigation hinter dem Menü-Button und klappt unter dem Header auf. Maßgeblich ist die Breite des Headers selbst (Container Query), nicht die des Fensters – der Header muss deshalb die volle Breite seines Elternelements einnehmen, wie ein normales Block-Element.
+
+<Canvas of={Header.Schmal} />
+
+Der Menü-Button steht im HTML direkt **vor** der Navigation: Wer das Menü per Tastatur öffnet, kommt mit Tab sofort zum ersten Eintrag. Optisch steht er trotzdem ganz rechts (`order`).
+
+Das Projekt schaltet per JavaScript nur `aria-expanded` am Button um. Das Ein- und Ausblenden der Navigation und der Wechsel des Icons von `menu` zu `close` kommen aus dem CSS. Der Name des Buttons bleibt „Menü“; ob es offen ist, sagt `aria-expanded`.
+
+```js
+const button = document.querySelector('.cda-header__toggle');
+const nav = document.getElementById(button.getAttribute('aria-controls'));
+const setOpen = (open) => button.setAttribute('aria-expanded', String(open));
+
+button.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
+nav.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    setOpen(false);
+    button.focus();
+  }
+});
+```
+
+In dieser Doku ist das Menü probierbar; Escape schließt es und setzt den Fokus zurück auf den Button.
+
+## Änderungen gegenüber den Vorlagen
+
+| | cranach-search / cranach-artefacts / cranach-kirby | Designsystem |
+|---|---|---|
+| Aktive Seite | search: Klasse `is-active`, gelber Strich bzw. gelbe Schrift im schmalen Menü; kirby: `aria-current` | `aria-current`, Strich in `link.underline` (mind. 3:1) |
+| Menü-Button | leerer Button mit Icon per CSS (search), „Menü Button“ (kirby) | Button „Menü“ mit `aria-expanded` und `aria-controls` |
+| Navigation in search | Kategorien als Klick-Elemente | Links in einer Liste |
+| Logo | Bild in Schwarz mit 30 % Deckkraft, im dunklen Theme unsichtbar; `alt="CDA Logo"` | SVG in der Textfarbe, Link mit Namen „Cranach Digital Archive, Startseite“ |
+| Umbruch | Fensterbreite 1200 px (search) | Breite des Headers, 48rem |
+| Überfahren im Menü | Eintrag rückt nach rechts (search, schmal) | grauer Strich darunter, nichts springt |

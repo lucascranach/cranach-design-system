@@ -1,0 +1,187 @@
+/*
+ * Header – Layer cda.components
+ *
+ *   <header class="cda-header">
+ *     <a class="cda-header__brand" href="/de/" aria-label="Cranach Digital Archive, Startseite">
+ *       <svg …>…</svg>                       (Logo, fill="currentColor", aria-hidden="true")
+ *     </a>
+ *     <button type="button" class="cda-button cda-button--ghost cda-button--icon cda-header__toggle"
+ *             aria-expanded="false" aria-controls="hauptnavigation" aria-label="Menü">
+ *       <span class="cda-icon cda-header__icon-open" aria-hidden="true">menu</span>
+ *       <span class="cda-icon cda-header__icon-close" aria-hidden="true">close</span>
+ *     </button>
+ *     <nav class="cda-header__nav" id="hauptnavigation" aria-label="Hauptnavigation">
+ *       <ul class="cda-header__menu">
+ *         <li><a class="cda-header__link" href="/de/werke/" aria-current="page">Werke</a></li>
+ *         …
+ *       </ul>
+ *     </nav>
+ *     <div class="cda-header__actions">
+ *       <nav aria-label="Sprache"><ul class="cda-switcher">…</ul></nav>
+ *     </div>
+ *   </header>
+ *
+ * Ist der Header mindestens 48rem (768 px, wie Breakpoint md) breit, steht die Navigation in der
+ * Zeile. Darunter liegt sie hinter dem Menü-Button und klappt unter dem Header auf. Maßgeblich ist
+ * die Breite des Headers selbst (Container Query), nicht die des Fensters. Das Projekt schaltet
+ * per JavaScript nur aria-expanded am Button um; Anzeigen der Navigation und Wechsel des Icons
+ * erledigt das CSS.
+ *
+ * Der Menü-Button steht im HTML direkt vor der Navigation, damit Tab nach dem Öffnen ins Menü
+ * führt. Optisch steht er per order ganz rechts.
+ *
+ * --sticky: bleibt beim Scrollen oben (wie in cranach-artefacts).
+ *
+ * Vorlagen: main-navigation aus cranach-search und cranach-artefacts, main-header aus cranach-kirby.
+ * Anders als dort: aktive Seite mit aria-current und Strich darunter statt nur Farbe, Menü-Button
+ * mit aria-expanded und Name auf Deutsch, Logo in der Textfarbe (auch im dunklen Theme sichtbar).
+ */
+@layer cda.components {
+  .cda-header {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cda-space-xs) var(--cda-space-l);
+    align-items: center;
+    padding: var(--cda-space-xs) var(--cda-space-fluid-m);
+    font-family: var(--cda-font-family-sans);
+    font-size: var(--cda-font-size-m);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-default);
+    background-color: var(--cda-color-background-default);
+    container: cda-header / inline-size;
+  }
+
+  .cda-header--sticky {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--cda-z-nav-fixed);
+    box-shadow: var(--cda-shadow-s);
+  }
+
+  /* ---------- Logo ---------- */
+
+  .cda-header__brand {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    min-block-size: calc(var(--cda-font-size-xl) + 2 * var(--cda-space-xs));
+
+    /* Logo zurückhaltend wie in den Vorlagen, beim Überfahren in voller Textfarbe */
+    color: var(--cda-color-text-muted);
+    text-decoration: none;
+
+    & svg,
+    & img {
+      display: block;
+      block-size: var(--cda-font-size-xl);
+      inline-size: auto;
+    }
+
+    &:hover {
+      color: var(--cda-color-text-default);
+      background-color: transparent;
+    }
+  }
+
+  /* ---------- Navigation ---------- */
+
+  .cda-header__nav {
+    flex: 1 1 auto;
+  }
+
+  .cda-header__menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--cda-space-l);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .cda-header__link {
+    display: flex;
+    align-items: center;
+    min-block-size: calc(var(--cda-font-size-xl) + 2 * var(--cda-space-xs));
+    color: var(--cda-color-text-default);
+    text-decoration: none;
+
+    /* Platz für den Strich ist immer reserviert, damit nichts springt */
+    border-block-end: var(--cda-border-width-m) solid transparent;
+    transition: border-color var(--cda-duration-fast) var(--cda-easing-default);
+
+    /* Grundstyles geben Links beim Überfahren eine gelbe Fläche; in der Navigation ein Strich */
+    &:hover {
+      color: var(--cda-color-text-default);
+      background-color: transparent;
+      border-block-end-color: var(--cda-color-border-strong);
+    }
+
+    /* Aktuelle Seite (oder ein Bereich, in dem sie liegt) */
+    &[aria-current]:not([aria-current="false"]) {
+      border-block-end-color: var(--cda-color-link-underline);
+    }
+  }
+
+  /* ---------- Sprache und Menü-Button ---------- */
+
+  .cda-header__actions {
+    display: flex;
+    flex: none;
+    gap: var(--cda-space-xs);
+    align-items: center;
+    margin-inline-start: auto;
+  }
+
+  .cda-header__toggle {
+    order: 1;
+
+    & .cda-header__icon-close {
+      display: none;
+    }
+
+    &[aria-expanded="true"] {
+      & .cda-header__icon-open {
+        display: none;
+      }
+
+      & .cda-header__icon-close {
+        display: inline-block;
+      }
+    }
+  }
+
+  /* ---------- Schmaler Header: Navigation hinter dem Menü-Button ---------- */
+
+  @container cda-header (width < 48rem) {
+    .cda-header__nav {
+      position: absolute;
+      inset-block-start: 100%;
+      inset-inline: 0;
+      z-index: var(--cda-z-nav);
+      display: none;
+      padding: var(--cda-space-xs) var(--cda-space-fluid-m) var(--cda-space-m);
+      background-color: var(--cda-color-background-default);
+      border-block-start: var(--cda-border-width-s) solid var(--cda-color-border-default);
+      box-shadow: var(--cda-shadow-s);
+    }
+
+    .cda-header:has(.cda-header__toggle[aria-expanded="true"]) .cda-header__nav {
+      display: block;
+    }
+
+    .cda-header__menu {
+      flex-direction: column;
+    }
+
+    .cda-header__link {
+      min-block-size: calc(var(--cda-font-size-xl) + 2 * var(--cda-space-s));
+    }
+  }
+
+  @container cda-header (width >= 48rem) {
+    .cda-header__toggle {
+      display: none;
+    }
+  }
+}
