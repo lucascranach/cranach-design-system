@@ -31,7 +31,7 @@ PHP, Jekyll und reines HTML binden die versionierte Kopie vom eigenen Server ein
 | Teil | Layer |
 |---|---|
 | Tokens als Custom Properties (per `@import "./tokens.css"`) | `cda.tokens` |
-| Schriften IBM Plex Sans (variabel, normal und kursiv) und IBM Plex Mono 400 | – (`@font-face`) |
+| Schriften IBM Plex Sans als „Cranach Sans“ (variabel, normal und kursiv) und IBM Plex Mono 400 | – (`@font-face`) |
 | Icon-Font „Cranach Symbols“ | – (`@font-face`) |
 | Reset | `cda.reset` |
 | Grundstyles: Fließtext, Überschriften, Links, Fokus | `cda.base` |
@@ -57,7 +57,7 @@ Alle Styles des Designsystems liegen in Cascade Layers:
 
 Styles **ohne** Layer gewinnen immer gegen Styles in einem Layer – unabhängig von der Spezifität. Ein Projekt kann das Designsystem also einbinden, ohne dass sich etwas ändert, und alte Regeln danach Schritt für Schritt entfernen (ADR 0003, ADR 0015).
 
-`cranach.css` **vor** den eigenen Styles einbinden. Projekte, die IBM Plex noch selbst mit dem alten, verschobenen Gewichts-Mapping registrieren (Datei „Light“ als 200 usw.), behalten dann ihre eigenen `@font-face`-Regeln: Bei gleichem Familiennamen und Gewicht gilt die später definierte Regel.
+IBM Plex Sans ist unter dem eigenen Namen **„Cranach Sans“** registriert (ADR 0017). Projekte, die IBM Plex noch selbst mit dem alten, verschobenen Gewichts-Mapping registrieren (Datei „Light“ als 200 usw.), behalten ihre eigenen `@font-face`-Regeln; beide kommen sich nicht in die Quere, gleich in welcher Reihenfolge sie eingebunden werden. Die Schrift immer über `var(--cda-font-family-sans)` setzen, nicht per Name.
 
 Das Designsystem verwendet kein `!important` und nie `outline: none`.
 

@@ -2,7 +2,7 @@
  * Baut die zentrale Einbinde-Datei und die Schriften nach dist/.
  *
  *   dist/cranach.css   Layer-Reihenfolge, @import von tokens.css, @font-face, Reset, Grundstyles
- *   dist/fonts/        IBM Plex Sans (variabel, wght, normal + kursiv) und IBM Plex Mono 400,
+ *   dist/fonts/        IBM Plex Sans (variabel, wght, normal + kursiv, als „Cranach Sans“) und IBM Plex Mono 400,
  *                      je Subset Latin und Latin-Ext, mit OFL-Lizenztexten
  *
  * Die Icon-Font (dist/fonts/cranach-symbols.woff2) legt build-icons.mjs ab; hier kommt nur
@@ -10,7 +10,8 @@
  *
  * Quelle der Schriften sind die Fontsource-Pakete (OFL 1.1, als devDependencies gepinnt).
  * Deren CSS wird nicht übernommen: Die @font-face-Regeln werden hier mit dem Familiennamen
- * aus den Tokens neu geschrieben; unicode-range kommt aus dem Paket. Siehe ADR 0009.
+ * aus den Tokens neu geschrieben (Sans als „Cranach Sans“, ADR 0017); unicode-range kommt aus dem Paket.
+ * Siehe ADR 0009.
  *
  * Setzt voraus, dass build-tokens.mjs und build-icons.mjs vorher gelaufen sind.
  */
@@ -34,7 +35,8 @@ const ICON_FONT = 'cranach-symbols.woff2';
 const FONTS = [
   {
     pkg: '@fontsource-variable/ibm-plex-sans',
-    family: 'IBM Plex Sans',
+    name: 'IBM Plex Sans',
+    token: 'sans',
     license: 'OFL-IBM-Plex-Sans.txt',
     faces: [
       { css: 'wght.css', block: (subset) => `ibm-plex-sans-${subset}-wght-normal` },
@@ -43,7 +45,8 @@ const FONTS = [
   },
   {
     pkg: '@fontsource/ibm-plex-mono',
-    family: 'IBM Plex Mono',
+    name: 'IBM Plex Mono',
+    token: 'mono',
     license: 'OFL-IBM-Plex-Mono.txt',
     faces: [{ css: '400.css', block: (subset) => `ibm-plex-mono-${subset}-400-normal` }],
   },
@@ -67,16 +70,22 @@ function findBlock(css, name) {
   return match[1];
 }
 
+/** Erster Eintrag eines font-family-Tokens, z. B. "'Cranach Sans', system-ui" → Cranach Sans */
+const firstFamily = (value) => String(value).split(',')[0].replace(/["']/g, '').trim();
+
 async function buildFonts() {
   await mkdir(FONT_DIR, { recursive: true });
   const rules = [];
   const files = [];
+  const { tokens } = await import(pathToFileURL(path.join(DIST, 'tokens.js')).href);
 
   for (const font of FONTS) {
     const dir = pkgDir(font.pkg);
     const { version } = JSON.parse(await readFile(path.join(dir, 'package.json'), 'utf8'));
+    const family = firstFamily(tokens.font.family[font.token]);
     await copyFile(path.join(dir, 'LICENSE'), path.join(FONT_DIR, font.license));
-    rules.push(`/* ${font.family} – ${font.pkg}@${version}, SIL Open Font License 1.1 (fonts/${font.license}) */`);
+    const label = family === font.name ? family : `${family} = ${font.name}`;
+    rules.push(`/* ${label} – ${font.pkg}@${version}, SIL Open Font License 1.1 (fonts/${font.license}) */`);
 
     for (const face of font.faces) {
       const css = await readFile(path.join(dir, face.css), 'utf8');
@@ -90,7 +99,7 @@ async function buildFonts() {
         rules.push(
           [
             '@font-face {',
-            `  font-family: "${font.family}";`,
+            `  font-family: "${family}";`,
             `  font-style: ${descriptor(body, 'font-style', name)};`,
             `  font-weight: ${descriptor(body, 'font-weight', name)};`,
             '  font-display: swap;',
@@ -106,12 +115,11 @@ async function buildFonts() {
   if (!existsSync(path.join(FONT_DIR, ICON_FONT))) {
     throw new Error(`dist/fonts/${ICON_FONT} fehlt – zuerst "npm run build:icons" ausführen.`);
   }
-  const { tokens } = await import(pathToFileURL(path.join(DIST, 'tokens.js')).href);
   rules.push(
     '/* Cranach Symbols – Subset von Material Symbols Sharp, Apache License 2.0 (fonts/LICENSE-Material-Symbols.txt) */',
     [
       '@font-face {',
-      `  font-family: "${String(tokens.font.family.icon).split(',')[0].replace(/["']/g, '').trim()}";`,
+      `  font-family: "${firstFamily(tokens.font.family.icon)}";`,
       '  font-style: normal;',
       '  font-weight: 400;',
       '  font-display: block;',

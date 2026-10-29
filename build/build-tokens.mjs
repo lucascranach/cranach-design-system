@@ -191,7 +191,16 @@ async function main() {
     if ((type === 'dimension' || type === 'number' || type === 'fontWeight') && /^-?\d+(\.\d+)?(px)?$/.test(String(v))) return 'FLOAT';
     return 'STRING';
   };
-  const figmaValue = (t, type) => (type === 'FLOAT' ? parseFloat(valueOf(t)) : String(valueOf(t)));
+  // Schriftfamilien: Figma braucht den echten Namen der Schrift, nicht den Familiennamen aus
+  // cranach.css und nicht die Fallback-Liste (ADR 0017)
+  const figmaFont = (t) =>
+    t.$extensions?.['org.lucascranach.design-system']?.figmaFontFamily ??
+    String(valueOf(t)).split(',')[0].replace(/["']/g, '').trim();
+  const figmaValue = (t, type) => {
+    if (type === 'FLOAT') return parseFloat(valueOf(t));
+    if (t.path[0] === 'font' && t.path[1] === 'family') return figmaFont(t);
+    return String(valueOf(t));
+  };
   const figmaName = (t) => t.path.join('/');
   const primVars = primitives
     .filter((t) => !['shadow', 'easing'].includes(t.path[0]) && !(t.path[0] === 'font' && t.path[1] === 'size'))

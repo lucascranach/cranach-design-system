@@ -1,6 +1,6 @@
 # 0009 – Typografie und Schriften
 
-**Status:** angenommen (Q7, Q26)
+**Status:** angenommen (Q7, Q26) · Familienname am 29.10.2026 ergänzt durch [ADR 0017](0017-familienname-cranach-sans.md)
 
 ## Kontext
 IBM Plex Sans ist überall gesetzt, aber in drei Builds (teils nur TTF) und mit einem verschobenen Gewichts-Mapping (Datei „Light“ als 200 registriert usw.). Fließtext in Plex Light bei 14,4 px ist schwer lesbar.

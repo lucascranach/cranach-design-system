@@ -32,7 +32,7 @@ npm i @lucascranach/design-system
 <link rel="stylesheet" href="/design-system/1.0.0/cranach.css">
 ```
 
-`cranach.css` enthält die Tokens (per `@import "./tokens.css"`), die Schriften IBM Plex Sans und IBM Plex Mono (`fonts/`), den Reset und die Grundstyles. Die Datei **vor** den eigenen Styles einbinden: Projekte, die IBM Plex noch selbst mit dem alten, verschobenen Gewichts-Mapping (Datei „Light“ als 200 usw.) registrieren, behalten dann ihre eigenen `@font-face`-Regeln, weil bei gleichem Familiennamen und passendem Gewicht die später definierte Regel Vorrang hat.
+`cranach.css` enthält die Tokens (per `@import "./tokens.css"`), die Schriften IBM Plex Sans und IBM Plex Mono (`fonts/`), den Reset und die Grundstyles. IBM Plex Sans ist unter dem eigenen Namen **„Cranach Sans“** registriert ([ADR 0017](docs/adr/0017-familienname-cranach-sans.md)). So kollidiert sie nicht mit Projekten, die IBM Plex noch selbst mit dem alten, verschobenen Gewichts-Mapping (Datei „Light“ als 200 usw.) registrieren – gleich, in welcher Reihenfolge die Dateien eingebunden werden. Die Schrift immer über `var(--cda-font-family-sans)` setzen, nicht per Name.
 
 **Tailwind-4-Projekte** zusätzlich:
 

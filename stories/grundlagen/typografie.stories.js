@@ -31,7 +31,7 @@ export const Schriftschnitte = {
   render: () =>
     sample(
       table(
-        'IBM Plex Sans als variable Schrift mit Standard-Gewichten, dazu Kursiv und IBM Plex Mono 400.',
+        'IBM Plex Sans (registriert als „Cranach Sans“) als variable Schrift mit Standard-Gewichten, dazu Kursiv und IBM Plex Mono 400.',
         ['Token', 'Wert', 'Beispiel'],
         [
           ...Object.entries(tokens.font.weight).map(([key, value]) => {
