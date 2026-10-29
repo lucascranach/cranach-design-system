@@ -1,0 +1,56 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as Toggle from './toggle.stories.js';
+
+<Meta of={Toggle} />
+
+# Toggle
+
+An/Aus-Schalter für Einstellungen, die **sofort wirken** – etwa Zoom, Bilder anzeigen oder ein Ansichtsmodus. Vorlage ist der Zoom-Schalter in cranach-timeline (gelbe Schiene, wenn an) und der Dark-Mode-Umschalter in cranach-map.
+
+```html
+<label class="cda-toggle">
+  <input class="cda-toggle__input" type="checkbox" role="switch">
+  <span class="cda-toggle__label">Bilder anzeigen</span>
+</label>
+```
+
+**Toggle oder Checkbox?** Der Toggle schaltet etwas sofort um, ohne Absenden. In Formularen und Filtern, deren Auswahl erst mit „Suchen“ oder „Speichern“ wirkt, ist die Checkbox richtig.
+
+## Spielwiese
+
+<Canvas of={Toggle.Spielwiese} />
+
+<Controls of={Toggle.Spielwiese} />
+
+## Zustände
+
+Aus: helle Schiene, grauer Knopf links. An: gelbe Schiene mit dunklem Rahmen, schwarzer Knopf rechts. Der Zustand ist an Farbe **und** Position des Knopfs erkennbar.
+
+<Canvas of={Toggle.Zustaende} />
+
+## Beschriftung vorn
+
+Die Reihenfolge im Markup bestimmt die Anordnung. Steht die Beschriftung vorn, wie beim Zoom-Schalter in cranach-timeline, kommt das `<span>` vor das `<input>`.
+
+<Canvas of={Toggle.BeschriftungVorn} />
+
+## Lange Beschriftung
+
+<Canvas of={Toggle.LangeBeschriftung} />
+
+## Änderungen gegenüber cranach-timeline
+
+| | cranach-timeline | Designsystem |
+|---|---|---|
+| Element | `<div>` mit Klick-Handler | `<input type="checkbox" role="switch">` |
+| Tastatur | nicht erreichbar | Tab, Leertaste |
+| Screenreader | nur Text „2× Zoom“ | „2× Zoom, Schalter, ein/aus“ |
+| Aus | Schiene halbtransparent (kaum sichtbar) | helle Schiene mit Rahmen (mindestens 3:1) |
+| Knopf | weiß mit Schatten | dunkel; im Kontrastmodus von Windows sichtbar |
+
+## Barrierefreiheit
+
+- **`role="switch"`** am Checkbox-Input: Screenreader sagen „Schalter, ein“ bzw. „aus“ statt „Kontrollkästchen, aktiviert“.
+- **Beschriftung** beschreibt, was eingeschaltet wird („Bilder anzeigen“), nicht den Zustand („An“).
+- **Wirkung sofort sichtbar** machen; ändert der Schalter Inhalte an anderer Stelle, diese bei Bedarf über eine Live-Region ansagen.
+- **Kontraste:** Rahmen und Knopf mindestens 3:1 gegen Schiene und Hintergrund, in beiden Themes.

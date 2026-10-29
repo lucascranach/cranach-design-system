@@ -1,0 +1,97 @@
+/*
+ * Toggle (An/Aus-Schalter) – Layer cda.components
+ *
+ *   <label class="cda-toggle">
+ *     <input class="cda-toggle__input" type="checkbox" role="switch">
+ *     <span class="cda-toggle__label">2× Zoom</span>
+ *   </label>
+ *
+ * Für Einstellungen, die sofort wirken (Zoom, dunkles Theme, Bilder anzeigen). Für Auswahl in
+ * Formularen und Filtern ist die Checkbox richtig.
+ *
+ * Vorlage: ZoomToggle aus cranach-timeline (gelbe Schiene, wenn an) und der Dark-Mode-Umschalter
+ * aus cranach-map. Anders als dort ein echtes Formularelement mit role="switch": per Tab erreichbar,
+ * mit der Leertaste umschaltbar, Screenreader sagen „Schalter, ein/aus“.
+ *
+ * Maße: Schiene 44 × 24 px, Knopf 16 px. Der Knopf ist ein dicker Rahmen statt einer Fläche,
+ * damit er auch im Kontrastmodus von Windows sichtbar bleibt. Er ist absolut positioniert und
+ * verschiebt deshalb die Grundlinie nicht (siehe Checkbox).
+ */
+@layer cda.components {
+  .cda-toggle {
+    display: inline-flex;
+    gap: var(--cda-space-xs);
+    align-items: flex-start;
+    min-block-size: var(--cda-font-size-xl);
+    font-size: var(--cda-font-size-m);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-default);
+    cursor: pointer;
+
+    &:has(.cda-toggle__input:disabled) {
+      cursor: not-allowed;
+      opacity: var(--cda-opacity-medium);
+    }
+  }
+
+  .cda-toggle__input {
+    position: relative;
+    display: block;
+    flex: none;
+    inline-size: calc(2 * var(--cda-font-size-xl) - var(--cda-space-2xs));
+    block-size: var(--cda-font-size-xl);
+
+    /* Schiene mittig zur ersten Textzeile */
+    margin: calc((var(--cda-font-size-m) * var(--cda-font-line-height-normal) - var(--cda-font-size-xl)) / 2) 0 0;
+
+    /* Farbe des Knopfs */
+    color: var(--cda-color-border-strong);
+    cursor: inherit;
+    background-color: var(--cda-color-background-default);
+    border: var(--cda-border-width-m) solid var(--cda-color-border-strong);
+    border-radius: var(--cda-radius-full);
+    appearance: none;
+    transition:
+      color var(--cda-duration-fast) var(--cda-easing-default),
+      background-color var(--cda-duration-fast) var(--cda-easing-default),
+      border-color var(--cda-duration-fast) var(--cda-easing-default);
+
+    /* Knopf: Kreis aus einem Rahmen in der Textfarbe, Abstand zur Schiene = Rahmenstärke */
+    &::before {
+      content: "";
+      position: absolute;
+      inset-block-start: var(--cda-border-width-m);
+      inset-inline-start: var(--cda-border-width-m);
+      box-sizing: border-box;
+      inline-size: calc(var(--cda-font-size-xl) - 4 * var(--cda-border-width-m));
+      block-size: calc(var(--cda-font-size-xl) - 4 * var(--cda-border-width-m));
+      border: calc(var(--cda-font-size-xl) / 2 - 2 * var(--cda-border-width-m)) solid currentcolor;
+      border-radius: var(--cda-radius-full);
+      transition: translate var(--cda-duration-fast) var(--cda-easing-default);
+    }
+
+    &:checked {
+      color: var(--cda-color-text-on-accent);
+      background-color: var(--cda-color-accent-default);
+      border-color: var(--cda-color-text-default);
+
+      /* Weg des Knopfs: Schienenbreite − Rahmen − Knopf − Abstände = 20 px */
+      &::before {
+        translate: calc(var(--cda-font-size-xl) - var(--cda-space-2xs)) 0;
+      }
+    }
+
+    &:hover:not(:disabled, :checked) {
+      color: var(--cda-color-text-default);
+      border-color: var(--cda-color-text-default);
+    }
+
+    &:hover:checked:not(:disabled) {
+      background-color: var(--cda-color-accent-hover);
+    }
+  }
+
+  .cda-toggle__label {
+    flex: 1 1 auto;
+  }
+}
