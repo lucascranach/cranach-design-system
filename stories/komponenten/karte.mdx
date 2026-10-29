@@ -67,8 +67,8 @@ Nur Bilder, für die kleine Kachelansicht. Ohne Text steht der Link um das Bild,
 
 | Zustand | Aussehen |
 |---|---|
-| Überfahren oder Fokus | Bildfläche dunkler, gelbe Linie über dem Text, Merken-Button erscheint |
-| Fokus per Tastatur | zusätzlich Fokusring um die ganze Karte |
+| Überfahren | Bildfläche dunkler, gelbe Linie über dem Text, Merken-Button erscheint |
+| Fokus per Tastatur | ebenso, zusätzlich Fokusring um die ganze Karte; nach einem Mausklick nicht |
 | gemerkt | Merken-Button gelb mit Icon `remove`, immer sichtbar |
 
 ## Änderungen gegenüber den Vorlagen
@@ -77,7 +77,7 @@ Nur Bilder, für die kleine Kachelansicht. Ohne Text steht der Link um das Bild,
 |---|---|---|
 | Links | search: zwei Links pro Karte (Bild und Text); artefacts: ein Link um alles | ein Link im Titel, Klickfläche über die ganze Karte |
 | Merken | `<a>` ohne `href`, nicht per Tastatur erreichbar | Button mit `aria-pressed` und Titel im Namen |
-| Merken sichtbar | verschwindet nach einer Sekunde, danach nur beim Überfahren | beim Überfahren, beim Fokus und auf Touch-Geräten |
+| Merken sichtbar | verschwindet nach einer Sekunde, danach nur beim Überfahren | beim Überfahren, beim Fokus per Tastatur und auf Touch-Geräten |
 | Fokus | Browser-Standard um Bild bzw. Text | Fokusring um die ganze Karte |
 | Bildalternative | search leer, artefacts Titel als `alt` neben dem Text | `alt=""` neben dem Titel; nur kleine Karten ohne Text haben den Titel als `alt` |
 | Farben | Titel `$dark`, Text `$dark` in leichter Schrift | Titel `text.default` halbfett, Angaben `text.muted` regulär |

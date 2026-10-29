@@ -135,8 +135,10 @@
     }
   }
 
+  /* Fokus nur per Tastatur (:focus-visible): Nach einem Mausklick bliebe die Karte sonst im
+     Hover-Zustand, bis man woanders klickt */
   .cda-card:hover,
-  .cda-card:focus-within {
+  .cda-card:has(:focus-visible) {
     & .cda-card__image {
       background-color: var(--cda-color-background-strong);
     }
@@ -163,7 +165,8 @@
     border: var(--cda-border-width-s) solid var(--cda-color-border-strong);
     border-radius: var(--cda-radius-full);
 
-    /* Erst beim Überfahren oder Fokus der Karte sichtbar (wie in der Vorlage), gemerkte Karten immer */
+    /* Erst beim Überfahren oder Tastaturfokus der Karte sichtbar (wie in der Vorlage), gemerkte
+       Karten immer */
     opacity: 0;
     transition:
       opacity var(--cda-duration-fast) var(--cda-easing-default),
@@ -187,7 +190,7 @@
   }
 
   .cda-card:hover .cda-card__favorite,
-  .cda-card:focus-within .cda-card__favorite {
+  .cda-card:has(:focus-visible) .cda-card__favorite {
     opacity: 1;
   }
 
