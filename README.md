@@ -85,7 +85,7 @@ npm run build          # Tokens, Icons und CSS bauen, Kontraste prüfen
 | `npm run storybook` | baut und startet die Doku unter http://localhost:6006 |
 | `npm run build:storybook` | baut die Doku als statische Seite nach `storybook-static/` |
 
-Die Doku (Storybook 10, HTML-Renderer mit Vite) liegt in `stories/`, die Konfiguration in `.storybook/`. Storybook bindet das gebaute `dist/cranach.css` ein; nach Änderungen in `src/` oder `tokens/` `npm run build` erneut ausführen. Der Pinsel in der Werkzeugleiste schaltet zwischen hellem und dunklem Theme, der Reiter „Accessibility“ zeigt die axe-Prüfung jeder Story.
+Die Doku (Storybook 10, HTML-Renderer mit Vite) liegt in `stories/`, die Konfiguration in `.storybook/`. Storybook bindet das gebaute `dist/cranach.css` ein; nach Änderungen in `src/` oder `tokens/` `npm run build` erneut ausführen und Storybook neu starten, weil der laufende Dev-Server die neu gebauten Dateien nicht übernimmt. Der Pinsel in der Werkzeugleiste schaltet zwischen hellem und dunklem Theme, der Reiter „Accessibility“ zeigt die axe-Prüfung jeder Story.
 
 ## Commits
 
