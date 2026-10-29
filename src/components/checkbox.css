@@ -39,9 +39,8 @@
 
   .cda-checkbox__input {
     position: relative;
-    display: grid;
+    display: block;
     flex: none;
-    place-content: center;
     inline-size: var(--cda-font-size-l);
     block-size: var(--cda-font-size-l);
 
@@ -57,11 +56,16 @@
       background-color var(--cda-duration-fast) var(--cda-easing-default),
       border-color var(--cda-duration-fast) var(--cda-easing-default);
 
-    /* Häkchen bzw. Strich, gezeichnet mit Rahmenlinien in der Textfarbe (Schwarz auf Gelb) */
+    /* Häkchen bzw. Strich, gezeichnet mit Rahmenlinien in der Textfarbe (Schwarz auf Gelb).
+       Absolut positioniert und mittig über inset/margin: So hat die Box keinen Inhalt im Fluss,
+       ihre Grundlinie bleibt beim Anhaken gleich, und die Zeile springt nicht. */
     &::before {
       content: "";
+      position: absolute;
+      inset: 0;
       display: none;
       box-sizing: border-box;
+      margin: auto;
     }
 
     &:checked,
