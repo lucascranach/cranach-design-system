@@ -1,7 +1,7 @@
 /**
  * Kontrastberechnung und geprüfte Farbpaarungen (ADR 0008).
  * Genutzt von check-contrast.mjs und von der Farb-Doku in Storybook.
- *   Text: 4,5:1 (WCAG 1.4.3 AA) · Bedienelemente/Fokus: 3:1 (WCAG 1.4.11)
+ *   Text: 4,5:1 (WCAG 1.4.3 AA) · Bedienelemente, Fokus, Link-Unterstreichung: 3:1 (WCAG 1.4.11, ADR 0018)
  */
 
 const lin = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
@@ -38,6 +38,8 @@ export const pairs = [
   ['link.default', 'background.default', TEXT],
   ['link.default', 'background.subtle', TEXT],
   ['link.hover-text', 'link.hover-background', TEXT],
+  ['link.underline', 'background.default', UI],
+  ['link.underline', 'background.subtle', UI],
   ['border.strong', 'background.default', UI],
   ['focus.ring', 'background.default', UI],
   ['focus.ring', 'background.subtle', UI],

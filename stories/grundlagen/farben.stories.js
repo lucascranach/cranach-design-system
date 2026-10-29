@@ -43,7 +43,7 @@ export const Kontraste = {
   render: () =>
     sample(
       table(
-        'Text braucht mindestens 4,5:1, Rahmen von Bedienelementen und Fokus mindestens 3:1. Das Beispiel zeigt das aktive Theme.',
+        'Text braucht mindestens 4,5:1, Rahmen von Bedienelementen, Fokus und Link-Unterstreichung mindestens 3:1. Das Beispiel zeigt das aktive Theme.',
         ['Vordergrund auf Hintergrund', 'Beispiel', 'Hell', 'Dunkel', 'Mindestens'],
         pairs.map(([fg, bg, min, note]) => {
           const vf = `var(${cssVar(['color', ...fg.split('.')])})`;
@@ -51,6 +51,8 @@ export const Kontraste = {
           let example;
           if (min === TEXT) {
             example = `<span class="docs-pair" style="color: ${vf}; background-color: ${vb}">Lucas Cranach</span>`;
+          } else if (fg === 'link.underline') {
+            example = `<span class="docs-pair" style="background-color: ${vb}; text-decoration: underline var(--cda-border-width-m) ${vf}; text-underline-offset: var(--cda-space-2xs)">Lucas Cranach</span>`;
           } else if (fg.startsWith('focus')) {
             example = `<span class="docs-pair" style="background-color: ${vb}; outline: var(--cda-focus-ring-width) solid ${vf}; outline-offset: var(--cda-focus-ring-offset)">Fokus</span>`;
           } else if (min === UI) {

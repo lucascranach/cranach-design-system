@@ -24,7 +24,7 @@
     },
     "link": {
       "default": { "$value": "{color.yellow.500}" },
-      "underline": { "$value": "{color.yellow.500}" },
+      "underline": { "$value": "{color.yellow.500}", "$description": "Mind. 3:1 gegen den Hintergrund (ADR 0018)" },
       "hover-background": { "$value": "{color.yellow.500}" },
       "hover-text": { "$value": "{color.neutral.1000}" }
     },

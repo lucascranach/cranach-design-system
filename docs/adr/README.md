@@ -23,3 +23,4 @@ Format: Status · Kontext · Entscheidung · Konsequenzen. Neue Entscheidungen b
 | [0015](0015-projektrollen-und-migration.md) | Projektrollen und Migrationsreihenfolge | angenommen |
 | [0016](0016-auslieferung-ueber-npmjs.md) | Auslieferung über npmjs.com und selbst gehostete Kopie | angenommen |
 | [0017](0017-familienname-cranach-sans.md) | Familienname „Cranach Sans“ für IBM Plex Sans | angenommen |
+| [0018](0018-link-unterstreichung.md) | Link-Unterstreichung mit mindestens 3:1 | angenommen |

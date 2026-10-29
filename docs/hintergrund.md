@@ -125,7 +125,7 @@ Quellen: `@bolt/core-v3.x@5.8.0` (`_settings-z-index.scss`, aus dem npm-Paket ge
 
 ## 6. Kontraste der Token-Farben (ADR 0008)
 
-Die Kontrastprüfung (`npm run check:contrast`) prüft jede semantische Text/Hintergrund-Paarung in beiden Themes: Text mindestens 4,5:1, Rahmen von Bedienelementen und Fokus mindestens 3:1. Ausgewählte Werte:
+Die Kontrastprüfung (`npm run check:contrast`) prüft jede semantische Text/Hintergrund-Paarung in beiden Themes: Text mindestens 4,5:1, Rahmen von Bedienelementen, Fokus und Link-Unterstreichung mindestens 3:1. Ausgewählte Werte:
 
 | Paar | Hell | Dunkel |
 |---|---|---|
@@ -134,3 +134,4 @@ Die Kontrastprüfung (`npm run check:contrast`) prüft jede semantische Text/Hin
 | Akzent-Text (Ocker bzw. Gelb) | 4,95:1 | 10,12:1 |
 | Schwarz auf Gelb | 11,99:1 | 11,99:1 |
 | Fokus-Ring | 4,95:1 | 10,12:1 |
+| Link-Unterstreichung (ADR 0018) | 3,38:1 | 10,12:1 |

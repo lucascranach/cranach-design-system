@@ -17,6 +17,7 @@ Die Bestandsprojekte (`../cranach-*`, `../cda-orga`) werden in dieser Phase **ni
 - [x] 6 · Storybook – Storybook 10.6.5 mit `@storybook/html-vite`, Vite 8.3.5, `addon-docs`, `addon-a11y` (axe, Verstöße als Fehler), `addon-themes` (hell/dunkel über `data-theme`, ohne Modus „System“), dazu `remark-gfm` 4.0.1 für Tabellen in MDX; alle exakt gepinnt, Telemetrie, Neuigkeiten-Hinweise und Einführungs-Checkliste aus. Deutsche Doku-Seiten in `stories/`: Einstieg, Einbinden, Grundlagen Farben (mit Kontrasttabelle aus `build/contrast.mjs`, dieselbe Liste wie `check:contrast`), Typografie (mit Grundstyles), Abstände (mit Radius, Rahmen, Schatten, Breakpoints, Bewegung), z-Ebenen, Icons. Die Werte kommen aus `dist/tokens.js` und `tokens/*.json`, nicht doppelt gepflegt. axe ohne Fehler in allen Stories, beide Themes. Node 24 (`.nvmrc`).
   - ⏸ **Haltepunkt:** Optik und Doku von Volker prüfen lassen.
 - [x] Familienname „Cranach Sans“ für IBM Plex Sans (ADR 0017, am Haltepunkt nach Schritt 6 von Volker entschieden) – Token `font.family.sans`, `build-css.mjs` liest den Namen aus dem Token, Figma-Export behält „IBM Plex Sans“ über `$extensions`.
+- [x] Link-Unterstreichung im hellen Theme yellow-700 statt yellow-500 (3,38:1 statt 1,75:1; ADR 0018, am Haltepunkt nach Schritt 6 von Volker entschieden) – Hover-Fläche bleibt yellow-500; `check:contrast` prüft die Unterstreichung jetzt mit mindestens 3:1.
 
 ## Offen
 
@@ -52,7 +53,6 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 
 ## Offene Punkte (nicht blockierend)
 
-- **Am Haltepunkt nach Schritt 6 entscheiden – gelbe Link-Unterstreichung:** Muster nach ADR 0008 freigegeben, die Unterstreichung #FEB701 hat auf Weiß aber nur 1,75:1. Manche Prüfer verlangen für die Kennzeichnung von Links 3:1 (WCAG 1.4.11).
 - **Vor dem ersten Release – Sichtbarkeit des GitHub-Repos:** Das Repo ist derzeit privat. npm erzeugt Provenance-Angaben beim Veröffentlichen nur aus öffentlichen Repos; Trusted Publishing selbst funktioniert auch privat.
 - Ist ein SSH-Deploy aus GitHub Actions auf den Hochschul-Server zulässig? (erst für die automatische Release-Action relevant)
 - **Automatische axe-Prüfung aller Stories in CI** (ADR 0013 „lokal und in CI“): mit `@storybook/addon-vitest` (Vitest, Playwright) nachrüsten, sobald es eine CI gibt. Bis dahin prüft axe jede Story in Storybook selbst.

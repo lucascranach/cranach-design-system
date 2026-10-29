@@ -13,8 +13,8 @@ Die Farben sind in zwei Ebenen gegliedert (ADR 0004, ADR 0008):
 ## Regeln
 
 - **Gelb nur als Fläche mit dunkler Schrift.** Das Akzent-Gelb #FEB701 erreicht als Text auf Weiß nur 1,75:1. Für farbig betonten Text gibt es `--cda-color-text-accent` (Ocker, 4,95:1).
-- **Links** haben die Textfarbe, eine gelbe Unterstreichung und beim Überfahren eine gelbe Fläche. Im dunklen Theme ist der Link selbst gelb.
-- **Jede Text/Hintergrund-Kombination** erreicht mindestens 4,5:1, Rahmen von Bedienelementen und der Fokusring mindestens 3:1. `npm run check:contrast` prüft das bei jedem Build.
+- **Links** haben die Textfarbe, eine gelbe Unterstreichung und beim Überfahren eine gelbe Fläche. Die Unterstreichung ist im hellen Theme ein dunkleres Gelb (yellow-700, 3,38:1), weil sie Links vom Fließtext unterscheidet und dafür mindestens 3:1 braucht (ADR 0018). Im dunklen Theme ist der Link selbst gelb.
+- **Jede Text/Hintergrund-Kombination** erreicht mindestens 4,5:1, Rahmen von Bedienelementen, der Fokusring und die Link-Unterstreichung mindestens 3:1. `npm run check:contrast` prüft das bei jedem Build.
 
 ## Semantische Farben
 
