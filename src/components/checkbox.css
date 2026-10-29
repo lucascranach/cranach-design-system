@@ -1,0 +1,125 @@
+/*
+ * Checkbox – Layer cda.components
+ *
+ *   <label class="cda-checkbox">
+ *     <input class="cda-checkbox__input" type="checkbox" name="typ" value="gemaelde">
+ *     <span class="cda-checkbox__label">Gemälde</span>
+ *     <span class="cda-checkbox__count">1.234</span>
+ *   </label>
+ *
+ * Gruppe:
+ *   <fieldset class="cda-checkbox-group">
+ *     <legend class="cda-checkbox-group__legend">Objekttyp</legend>
+ *     … mehrere .cda-checkbox …
+ *   </fieldset>
+ *
+ * Vorlage: .checkbox aus cranach-search und cranach-image-metadata (Gelb für „ausgewählt“,
+ * Trefferzahl hinter der Beschriftung). Geändert: größere Box (20 px statt rund 10 px), dunkler
+ * Rahmen und Häkchen, damit der Zustand mindestens 3:1 erreicht (WCAG 1.4.11); Zwischenzustand
+ * (indeterminate) für teilweise ausgewählte Gruppen. Fokusring aus den Grundstyles.
+ */
+@layer cda.components {
+  .cda-checkbox {
+    display: inline-flex;
+    gap: var(--cda-space-xs);
+    align-items: flex-start;
+
+    /* Klickfläche mindestens 24 px hoch (WCAG 2.5.8) */
+    min-block-size: var(--cda-font-size-xl);
+    font-size: var(--cda-font-size-m);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-default);
+    cursor: pointer;
+
+    &:has(.cda-checkbox__input:disabled) {
+      cursor: not-allowed;
+      opacity: var(--cda-opacity-medium);
+    }
+  }
+
+  .cda-checkbox__input {
+    position: relative;
+    display: grid;
+    flex: none;
+    place-content: center;
+    inline-size: var(--cda-font-size-l);
+    block-size: var(--cda-font-size-l);
+
+    /* Box mittig zur ersten Textzeile */
+    margin: calc((var(--cda-font-size-m) * var(--cda-font-line-height-normal) - var(--cda-font-size-l)) / 2) 0 0;
+    color: var(--cda-color-text-on-accent);
+    cursor: inherit;
+    background-color: var(--cda-color-background-default);
+    border: var(--cda-border-width-m) solid var(--cda-color-border-strong);
+    border-radius: var(--cda-radius-s);
+    appearance: none;
+    transition:
+      background-color var(--cda-duration-fast) var(--cda-easing-default),
+      border-color var(--cda-duration-fast) var(--cda-easing-default);
+
+    /* Häkchen bzw. Strich, gezeichnet mit Rahmenlinien in der Textfarbe (Schwarz auf Gelb) */
+    &::before {
+      content: "";
+      display: none;
+      box-sizing: border-box;
+    }
+
+    &:checked,
+    &:indeterminate {
+      background-color: var(--cda-color-accent-default);
+      border-color: var(--cda-color-text-default);
+
+      &::before {
+        display: block;
+      }
+    }
+
+    &:checked::before {
+      inline-size: 0.35em;
+      block-size: 0.65em;
+      border: solid currentcolor;
+      border-width: 0 var(--cda-border-width-m) var(--cda-border-width-m) 0;
+      transform: translateY(-10%) rotate(45deg);
+    }
+
+    &:indeterminate::before {
+      inline-size: 0.6em;
+      block-size: var(--cda-border-width-m);
+      background-color: currentcolor;
+    }
+
+    &:hover:not(:disabled, :checked, :indeterminate) {
+      border-color: var(--cda-color-text-default);
+    }
+  }
+
+  .cda-checkbox__label {
+    flex: 1 1 auto;
+  }
+
+  /* Trefferzahl, z. B. in Filtern; in cranach-search #b4b4b4 (2,07:1), hier text.muted */
+  .cda-checkbox__count {
+    flex: none;
+    color: var(--cda-color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Gruppe ---------- */
+
+  .cda-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cda-space-xs);
+    min-inline-size: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+
+  .cda-checkbox-group__legend {
+    padding: 0;
+    margin-block-end: var(--cda-space-xs);
+    font-size: var(--cda-font-size-s);
+    font-weight: var(--cda-font-weight-medium);
+  }
+}

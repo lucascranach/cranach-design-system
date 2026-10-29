@@ -34,6 +34,7 @@ const SOURCES = [
   'src/components/button.css',
   'src/components/text-field.css',
   'src/components/search.css',
+  'src/components/checkbox.css',
 ];
 
 /** Icon-Font aus build-icons.mjs (ADR 0012) */

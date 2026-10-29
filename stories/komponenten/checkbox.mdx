@@ -1,0 +1,66 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as Checkbox from './checkbox.stories.js';
+
+<Meta of={Checkbox} />
+
+# Checkbox
+
+Auswahl einzelner oder mehrerer Optionen, z. B. in Filtern. Vorlage ist `.checkbox` aus cranach-search und cranach-image-metadata: Gelb steht für „ausgewählt“, hinter der Beschriftung kann eine Trefferzahl stehen.
+
+```html
+<label class="cda-checkbox">
+  <input class="cda-checkbox__input" type="checkbox" name="typ" value="gemaelde">
+  <span class="cda-checkbox__label">Gemälde</span>
+  <span class="cda-checkbox__count">1.534</span>
+</label>
+```
+
+| Klasse | Element | Aufgabe |
+|---|---|---|
+| `cda-checkbox` | `<label>` | umschließt Box und Text; die ganze Zeile ist anklickbar |
+| `cda-checkbox__input` | `<input type="checkbox">` | die Box; echtes Formularelement, nur anders gezeichnet |
+| `cda-checkbox__label` | `<span>` | Beschriftung |
+| `cda-checkbox__count` | `<span>` | optionale Trefferzahl |
+| `cda-checkbox-group` | `<fieldset>` | Gruppe mit gemeinsamer Überschrift |
+| `cda-checkbox-group__legend` | `<legend>` | Überschrift der Gruppe |
+
+## Spielwiese
+
+<Canvas of={Checkbox.Spielwiese} />
+
+<Controls of={Checkbox.Spielwiese} />
+
+## Zustände
+
+Angehakt: gelbe Box mit dunklem Rahmen und Häkchen. **Teilweise** (Zwischenzustand) zeigt einen Strich – etwa für eine Obergruppe, von der nur einige Einträge ausgewählt sind. Der Zwischenzustand ist kein HTML-Attribut; er wird per JavaScript gesetzt: `input.indeterminate = true`. Das Attribut `data-indeterminate` in den Beispielen dient nur dieser Doku dazu.
+
+<Canvas of={Checkbox.Zustaende} />
+
+## Gruppe
+
+Mehrere zusammengehörige Checkboxen stehen in einem `<fieldset>` mit `<legend>`. Screenreader lesen die Überschrift beim Betreten der Gruppe vor.
+
+<Canvas of={Checkbox.Gruppe} />
+
+## Lange Beschriftung
+
+Die Box bleibt an der ersten Zeile, der Text bricht daneben um.
+
+<Canvas of={Checkbox.LangeBeschriftung} />
+
+## Änderungen gegenüber cranach-search
+
+| | cranach-search | Designsystem |
+|---|---|---|
+| Größe der Box | rund 10 px | 20 px, dazu die ganze Zeile als Klickfläche (mindestens 24 px hoch) |
+| Angehakt | gelber Punkt (1,75:1 zum Hintergrund) | gelbe Box mit dunklem Rahmen und Häkchen (mindestens 3:1) |
+| Form | Quadrat wird zum Kreis | bleibt quadratisch – ein Kreis steht üblicherweise für Radio-Buttons |
+| Trefferzahl | #b4b4b4 (2,07:1) | `text.muted` (mindestens 4,5:1) |
+| Fokus | teils ohne sichtbaren Fokus | Ring aus den Grundstyles |
+| Zwischenzustand | – | Strich |
+
+## Barrierefreiheit
+
+- **Echtes `<input type="checkbox">`**: Tastatur (Tab, Leertaste) und Screenreader funktionieren ohne Zusatzaufwand.
+- **`<label>` umschließt Box und Text**, damit ein Klick auf den Text die Box umschaltet und die Klickfläche groß genug ist (WCAG 2.5.8). Alternativ `<label for>` mit `id`.
+- **Kontraste:** Rahmen der leeren Box (`border.strong`) und der angehakten Box (`text.default`) mindestens 3:1, Häkchen auf Gelb 11,99:1.
