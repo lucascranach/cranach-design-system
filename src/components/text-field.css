@@ -1,0 +1,104 @@
+/*
+ * Textfeld – Layer cda.components
+ *
+ *   <div class="cda-field">
+ *     <label class="cda-field__label" for="titel">Titel</label>
+ *     <input class="cda-input" id="titel" type="text" aria-describedby="titel-hinweis">
+ *     <p class="cda-field__hint" id="titel-hinweis">Wie in der Sammlung angegeben.</p>
+ *   </div>
+ *
+ * .cda-input       das Eingabefeld (input, textarea); auch einzeln verwendbar, z. B. in .cda-search
+ * .cda-field       Hülle: Beschriftung, Feld, Hinweis und Fehlermeldung untereinander
+ * __label / __hint / __error
+ *
+ * Aussehen aus cranach-search und cranach-image-metadata: keine Fläche, Linie unten.
+ * Fehler: aria-invalid="true" am Feld, Meldung in .cda-field__error, über aria-describedby verbunden.
+ * Der Fokusring kommt aus den Grundstyles (:focus-visible).
+ */
+@layer cda.components {
+  .cda-input {
+    display: block;
+    inline-size: 100%;
+
+    /* Gleiche Höhe wie .cda-button, damit Feld und Button in einer Zeile bündig sind */
+    min-block-size: calc(var(--cda-font-size-xl) + 2 * var(--cda-space-xs) + 2 * var(--cda-border-width-s));
+    padding-block: var(--cda-space-xs);
+    padding-inline: 0;
+    font-family: var(--cda-font-family-sans);
+    font-size: var(--cda-font-size-m);
+    line-height: var(--cda-font-line-height-normal);
+    color: var(--cda-color-text-default);
+    background-color: transparent;
+    border: var(--cda-border-width-s) solid transparent;
+
+    /* Die Linie unten kennzeichnet das Feld; border.strong erreicht mindestens 3:1 */
+    border-block-end-color: var(--cda-color-border-strong);
+    border-radius: 0;
+    appearance: none;
+    transition: border-color var(--cda-duration-fast) var(--cda-easing-default);
+
+    &::placeholder {
+      color: var(--cda-color-text-muted);
+      opacity: 1;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: var(--cda-opacity-medium);
+    }
+
+    /* Nur lesbar: gestrichelte Linie, Kontrast bleibt bei mindestens 3:1 */
+    &:read-only:not(:disabled) {
+      border-block-end-style: dashed;
+    }
+
+    &:hover:not(:disabled, :read-only, [aria-invalid="true"]) {
+      border-block-end-color: var(--cda-color-text-default);
+    }
+
+    &[aria-invalid="true"] {
+      border-block-end-color: var(--cda-color-text-danger);
+    }
+  }
+
+  textarea.cda-input {
+    /* vier Zeilen Platz */
+    min-block-size: calc(4 * var(--cda-font-size-m) * var(--cda-font-line-height-normal) + 2 * var(--cda-space-xs));
+    resize: vertical;
+  }
+
+  /* ---------- Hülle mit Beschriftung, Hinweis und Fehler ---------- */
+
+  .cda-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cda-space-2xs);
+  }
+
+  .cda-field__label {
+    font-size: var(--cda-font-size-s);
+    font-weight: var(--cda-font-weight-medium);
+    color: var(--cda-color-text-default);
+  }
+
+  .cda-field__hint,
+  .cda-field__error {
+    margin: 0;
+    font-size: var(--cda-font-size-s);
+  }
+
+  .cda-field__hint {
+    color: var(--cda-color-text-muted);
+  }
+
+  .cda-field__error {
+    display: flex;
+    gap: var(--cda-space-2xs);
+    align-items: center;
+    color: var(--cda-color-text-danger);
+
+    & .cda-icon {
+      font-size: var(--cda-font-size-l);
+    }
+  }
+}

@@ -1,0 +1,41 @@
+/*
+ * Suchfeld – Layer cda.components
+ *
+ *   <form class="cda-search" role="search" action="/de/search/">
+ *     <input class="cda-input cda-search__input" type="search" name="q"
+ *            aria-label="Suchbegriff" placeholder="z. B. Bildnis, Inventarnummer">
+ *     <button type="button" class="cda-button cda-button--ghost cda-button--icon cda-search__reset"
+ *             aria-label="Eingabe löschen">
+ *       <span class="cda-icon" aria-hidden="true">backspace</span>
+ *     </button>
+ *     <button type="submit" class="cda-button cda-button--primary cda-button--icon" aria-label="Suchen">
+ *       <span class="cda-icon" aria-hidden="true">search</span>
+ *     </button>
+ *   </form>
+ *
+ * Baut auf .cda-input und .cda-button auf. Der Löschen-Button ist optional; er ist nur sichtbar,
+ * solange das Feld etwas enthält (dafür braucht das Feld ein placeholder-Attribut). Das Leeren
+ * selbst übernimmt das Projekt per JavaScript (Feld leeren, Fokus zurück ins Feld).
+ */
+@layer cda.components {
+  .cda-search {
+    display: flex;
+    gap: var(--cda-space-xs);
+    align-items: flex-end;
+  }
+
+  .cda-search__input {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+
+    /* Eigener Löschen-Button statt des browsereigenen Kreuzes */
+    &::-webkit-search-cancel-button {
+      appearance: none;
+    }
+  }
+
+  /* Löschen-Button nur zeigen, wenn das Feld etwas enthält */
+  .cda-search:has(.cda-search__input:placeholder-shown) .cda-search__reset {
+    display: none;
+  }
+}

@@ -1,0 +1,69 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as Textfeld from './textfeld.stories.js';
+
+<Meta of={Textfeld} />
+
+# Textfeld
+
+Eingabefeld mit Beschriftung, Hinweis und Fehlermeldung. Das Aussehen kommt aus cranach-search und cranach-image-metadata: keine Fläche, eine Linie unten. Anders als dort ist der Fokus immer sichtbar, und jedes Feld hat eine echte Beschriftung.
+
+```html
+<div class="cda-field">
+  <label class="cda-field__label" for="titel">Titel</label>
+  <input class="cda-input" id="titel" type="text">
+</div>
+```
+
+| Klasse | Element | Aufgabe |
+|---|---|---|
+| `cda-input` | `<input>`, `<textarea>` | das Eingabefeld; auch einzeln verwendbar, z. B. im Suchfeld |
+| `cda-field` | `<div>` | Hülle: Beschriftung, Feld, Hinweis und Fehler untereinander |
+| `cda-field__label` | `<label for>` | Beschriftung |
+| `cda-field__hint` | `<p>` | Hinweis, über `aria-describedby` mit dem Feld verbunden |
+| `cda-field__error` | `<p>` | Fehlermeldung mit Icon, ebenfalls über `aria-describedby` |
+
+## Spielwiese
+
+<Canvas of={Textfeld.Spielwiese} />
+
+<Controls of={Textfeld.Spielwiese} />
+
+## Standard
+
+<Canvas of={Textfeld.Standard} />
+
+## Mit Hinweis
+
+Der Hinweis steht unter dem Feld und wird über `aria-describedby` vorgelesen. Der Platzhalter zeigt nur ein Beispiel – er verschwindet beim Tippen und ersetzt nie die Beschriftung.
+
+<Canvas of={Textfeld.MitHinweis} />
+
+## Fehler
+
+`aria-invalid="true"` am Feld färbt die Linie rot. Die Meldung nennt, was zu tun ist, und hängt zusätzlich zum Hinweis an `aria-describedby`. Farbe allein reicht nicht; Icon und Text kennzeichnen den Fehler auch ohne Farbwahrnehmung.
+
+<Canvas of={Textfeld.Fehler} />
+
+## Deaktiviert
+
+<Canvas of={Textfeld.Deaktiviert} />
+
+## Nur lesbar
+
+`readonly`: Der Inhalt lässt sich markieren und kopieren, aber nicht ändern. Die Linie ist gestrichelt.
+
+<Canvas of={Textfeld.NurLesbar} />
+
+## Mehrzeilig
+
+`<textarea class="cda-input">` hat Platz für vier Zeilen und lässt sich in der Höhe ziehen.
+
+<Canvas of={Textfeld.Mehrzeilig} />
+
+## Barrierefreiheit
+
+- **Immer eine Beschriftung** mit `<label for>`. Ist kein Platz für eine sichtbare Beschriftung, `aria-label` am Feld – wie im Suchfeld.
+- **Passender `type`** (`email`, `url`, `number` …) und `autocomplete`, wo es passt: Das erleichtert die Eingabe auf Mobilgeräten und mit Hilfsmitteln.
+- **Fokus:** Der Ring kommt aus den Grundstyles und erscheint bei jedem Fokus im Feld.
+- **Kontraste:** Linie (`border.strong`) mindestens 3:1, Platzhalter und Hinweis (`text.muted`) mindestens 4,5:1, Fehlertext (`text.danger`) mindestens 4,5:1 in beiden Themes.
+- **Gleiche Höhe wie der Button** (42 px), damit Feld und Button in einer Zeile bündig sind.

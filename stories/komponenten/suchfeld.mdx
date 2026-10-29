@@ -1,0 +1,57 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Suchfeld from './suchfeld.stories.js';
+
+<Meta of={Suchfeld} />
+
+# Suchfeld
+
+Suchformular aus Eingabefeld (`cda-input`), optionalem Löschen-Button und Suchen-Button (`cda-button`). Vorlage ist die Suche in cranach-search; dort ließ sich das Löschen-Icon nur mit der Maus erreichen und erschien nur beim Überfahren.
+
+```html
+<form class="cda-search" role="search" action="/de/search/">
+  <input class="cda-input cda-search__input" type="search" name="q"
+         aria-label="Suchbegriff" placeholder="z. B. Bildnis, Inventarnummer">
+  <button type="button" class="cda-button cda-button--ghost cda-button--icon cda-search__reset"
+          aria-label="Eingabe löschen">
+    <span class="cda-icon" aria-hidden="true">backspace</span>
+  </button>
+  <button type="submit" class="cda-button cda-button--primary cda-button--icon" aria-label="Suchen">
+    <span class="cda-icon" aria-hidden="true">search</span>
+  </button>
+</form>
+```
+
+## Leer
+
+Der Löschen-Button ist ausgeblendet, solange das Feld leer ist. Das erkennt das CSS am Platzhalter (`:placeholder-shown`) – das Feld braucht deshalb ein `placeholder`-Attribut.
+
+<Canvas of={Suchfeld.Leer} />
+
+## Mit Suchbegriff
+
+Der Löschen-Button erscheint und ist ein echter Button, also auch per Tab erreichbar. Leeren und Fokus zurück ins Feld übernimmt das Projekt per JavaScript, etwa so:
+
+```js
+reset.addEventListener('click', () => {
+  input.value = '';
+  input.focus();
+});
+```
+
+<Canvas of={Suchfeld.MitBegriff} />
+
+## Ohne Löschen-Button
+
+<Canvas of={Suchfeld.OhneLoeschen} />
+
+## Mit Beschriftung
+
+Wo Platz ist, ist eine sichtbare Beschriftung besser als `aria-label`. Dann umschließt `cda-field` Beschriftung und Suchzeile, und `cda-search` sitzt auf einem `<div>`.
+
+<Canvas of={Suchfeld.MitBeschriftung} />
+
+## Barrierefreiheit
+
+- **`role="search"`** am Formular macht die Suche als Landmarke auffindbar. Gibt es mehrere Suchen auf einer Seite, bekommt jede einen eigenen Namen (`aria-label`).
+- **`type="search"`**: Mobilgeräte zeigen eine passende Tastatur, Enter schickt ab. Das browsereigene Kreuz ist ausgeblendet, weil es den eigenen Löschen-Button doppeln würde.
+- **Beide Icon-Buttons** haben einen zugänglichen Namen über `aria-label`.
