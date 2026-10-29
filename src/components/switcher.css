@@ -19,8 +19,8 @@
  *     …
  *   </div>
  *
- * Aktiv: aria-current (Links) bzw. aria-pressed="true" (Buttons) – volle Textfarbe und Strich
- * darunter, damit der Zustand nicht nur an der Farbe hängt. Vorlage: .switcher und .lang-selector
+ * Aktiv: aria-current (Links) bzw. aria-pressed="true" (Buttons) – volle Textfarbe und gelber
+ * Strich darunter (link.underline), damit der Zustand nicht nur an der Farbe hängt. Vorlage: .switcher und .lang-selector
  * aus cranach-search und cranach-artefacts; ohne Vergrößern beim Überfahren und ohne Fettschrift,
  * damit nichts springt.
  */
@@ -78,10 +78,11 @@
       border-block-end-color: var(--cda-color-border-strong);
     }
 
+    /* Strich in der Farbe der Link-Unterstreichung, wie die aktive Seite im Header */
     &[aria-current]:not([aria-current="false"]),
     &[aria-pressed="true"] {
       color: var(--cda-color-text-default);
-      border-block-end-color: var(--cda-color-text-default);
+      border-block-end-color: var(--cda-color-link-underline);
     }
   }
 }

@@ -14,7 +14,7 @@ Das Aussehen ist für beide Zwecke gleich, das Markup nicht:
 | Sprache wechseln (andere Seite) | `<a href>` in `<nav>` | `aria-current="page"` |
 | Ansicht wechseln (dieselbe Seite) | `<button>` in `role="group"` | `aria-pressed="true"` |
 
-Inaktive Einträge sind grau, der aktive hat die volle Textfarbe und einen Strich darunter – so hängt der Zustand nicht nur an der Farbe.
+Inaktive Einträge sind grau, der aktive hat die volle Textfarbe und einen gelben Strich darunter – so hängt der Zustand nicht nur an der Farbe. Der Strich hat die Farbe der Link-Unterstreichung (`link.underline`, ADR 0018), wie die aktive Seite im [Header](?path=/docs/komponenten-header--docs).
 
 ## Sprache
 
@@ -71,6 +71,6 @@ In cranach-search sind im eingeschränkten Modus nicht alle Ansichten verfügbar
 |---|---|---|
 | Sprache in search | `<span>` mit Klick-Handler | Link, per Tastatur erreichbar |
 | Ansicht in search | `<i>` mit Klick-Handler | Button mit `aria-pressed` |
-| Aktiv | nur volle statt halber Deckkraft | volle Textfarbe und Strich darunter |
+| Aktiv | nur volle statt halber Deckkraft | volle Textfarbe und gelber Strich darunter |
 | Überfahren | Eintrag vergrößert sich (`scale(1.2)`) | Textfarbe und grauer Strich, nichts springt |
 | Klickfläche | Textgröße | mindestens 40 × 42 px |
