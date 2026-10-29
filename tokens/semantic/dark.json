@@ -32,7 +32,7 @@
     "border": {
       "default": { "$value": "{color.neutral.700}", "$description": "Dekorative Trennlinien" },
       "strong": { "$value": "{color.neutral.400}", "$description": "Rahmen von Bedienelementen, mind. 3:1" },
-      "hover": { "$value": "{color.neutral.600}", "$description": "Linie unter Navigationseinträgen beim Überfahren; ohne Mindestkontrast, der Tastaturfokus hat seinen eigenen Ring" }
+      "hover": { "$value": "{color.neutral.500}", "$description": "Linie unter Navigationseinträgen beim Überfahren; ohne Mindestkontrast, der Tastaturfokus hat seinen eigenen Ring" }
     },
     "focus": {
       "ring": { "$value": "{color.yellow.500}", "$description": "Fokusring, mind. 3:1 gegen den Hintergrund" }
