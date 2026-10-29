@@ -47,7 +47,7 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 |---|---|---|
 | vor Schritt 5 (Font-Datei) | `npm run build:icons` auf einem Rechner mit Zugriff auf Google Fonts ausführen | entfällt – Google Fonts war in der Entwicklungsumgebung erreichbar |
 | vor dem ersten Push | GitHub-Repo `lucascranach/cranach-design-system` anlegen, Remote setzen | erledigt 28.10.2026 – privat, `origin` per SSH gesetzt, noch nichts gepusht |
-| vor Schritt 20 | leere Figma-Library-Datei im Team-Projekt anlegen, Link bereitstellen; Figma-MCP-Server in Claude Code verbinden | offen |
+| vor Schritt 20 | leere Figma-Library-Datei im Team-Projekt anlegen, Link bereitstellen; Figma-MCP-Server in Claude Code verbinden | Datei angelegt 29.10.2026: [Cranach Design System](https://www.figma.com/design/GV3vvoVc8GebPQ79YwA1yz/Cranach-Design-System) – MCP-Server noch nicht verbunden, danach Sync laut `docs/figma-sync.md` |
 | vor Schritt 21 | Zielordner und SSH-Host für `/design-system/` auf lucascranach.org | offen |
 | vor dem ersten Release | npm-Organisation `lucascranach` auf npmjs.com anlegen (falls belegt: `@lucas-cranach`, dann Paketname, README und ADR 0016 anpassen) | offen |
 
