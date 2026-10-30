@@ -105,9 +105,9 @@ Stylelint (`stylelint.config.mjs`, Grundlage `stylelint-config-standard`) bricht
 
 Fehlt ein Wert, kommt er zuerst als Token nach `tokens/`. Die Hilfsstyles der Doku in `.storybook/` nutzen das Präfix `docs-` und brauchen keinen Layer.
 
-## Commits
+## Mitarbeit
 
-Conventional Commits (`feat:`, `fix:`, `docs:` …), daraus erzeugt release-please Version und Changelog ([ADR 0006](docs/adr/0006-versionierung.md)).
+Änderungen auf einem eigenen Branch, per Pull Request nach `main` und dort per Squash-Merge. Der PR-Titel folgt Conventional Commits (`feat:`, `fix:`, `docs:` …) und wird zur Commit-Nachricht; daraus erzeugt release-please Version und Changelog ([ADR 0006](docs/adr/0006-versionierung.md), Ablauf in [`docs/release.md`](docs/release.md)).
 
 ## Lizenz
 

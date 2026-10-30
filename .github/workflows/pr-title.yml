@@ -1,0 +1,31 @@
+# Prüft den Titel jedes Pull Requests nach main (docs/release.md).
+#
+# Pull Requests werden per Squash gemergt; ihr Titel wird dabei zur Commit-Nachricht auf main.
+# release-please liest daraus Version und Changelog (ADR 0006). Der Titel muss deshalb dem Format
+# von Conventional Commits folgen, z. B. „feat: Komponente Tabelle“ oder „fix(header): Abstand“.
+name: PR-Titel
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  pr-title:
+    name: PR-Titel prüfen
+    runs-on: ubuntu-latest
+    steps:
+      - name: Titel nach Conventional Commits
+        env:
+          # Über eine Umgebungsvariable, nie direkt im Skript: Der Titel ist Eingabe von außen
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pattern='^(feat|fix|docs|refactor|perf|test|build|ci|chore|style|revert|deps)(\([a-z0-9-]+\))?!?: [^ ].*'
+          if printf '%s' "$TITLE" | grep -Eq "$pattern"; then
+            echo "PR-Titel in Ordnung: $TITLE"
+          else
+            echo "::error::PR-Titel „$TITLE“ entspricht nicht Conventional Commits. Beispiele: „feat: Komponente Tabelle“, „fix(header): Abstand im Menü“, „docs: Anleitung ergänzt“. Typen: feat, fix, docs, refactor, perf, test, build, ci, chore, style, revert, deps; „!“ nach dem Typ für einen Bruch."
+            exit 1
+          fi

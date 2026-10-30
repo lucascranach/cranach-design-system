@@ -16,6 +16,7 @@ Gemeinsame Design-Tokens, Grundstyles und Komponenten für die Frontends des Cra
 - **Nur in diesem Repo schreiben.** Die Nachbarordner (`../cranach-*`, `../cda-orga`, …) dürfen gelesen, aber nicht verändert werden (ADR 0015).
 - **ADRs sind verbindlich.** Weicht etwas davon ab oder fehlt eine Entscheidung, Volker fragen. Geänderte Entscheidungen bekommen eine neue ADR; die alte wird auf „ersetzt durch …“ gesetzt, nicht gelöscht.
 - **Schrittweise arbeiten:** ein Roadmap-Schritt = ein Commit; den Schritt in `docs/ROADMAP.md` im selben Commit abhaken. An den Haltepunkten anhalten und auf Freigabe warten.
+- **Branches:** Sobald das Repo auf GitHub liegt, kommt jede Änderung auf einen eigenen Branch (`feat/…`, `fix/…`, `docs/…`) und per Pull Request mit Squash-Merge nach `main`; der PR-Titel folgt Conventional Commits und wird zur Commit-Nachricht (`docs/release.md`). Bis dahin wird lokal auf `main` committet.
 - **Nichts veröffentlichen ohne Auftrag:** kein `git push`, kein `npm publish`, kein rsync auf den Server, keine Änderungen in Figma ohne ausdrückliche Bitte.
 - **Sprache:** Token-Namen, Klassen und Code Englisch; Doku, Kommentare in Doku-Dateien und Commit-Beschreibungen Deutsch; Commit-Typen nach Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:` …). `!`/`BREAKING CHANGE` nur für echte Brüche in veröffentlichten Versionen.
 
@@ -62,7 +63,7 @@ npm run release          # Probelauf des Releases (nichts wird veröffentlicht; 
 | `stories/` | Storybook-Doku: MDX-Seiten (Deutsch) und Stories; Grundlagen in `stories/grundlagen/`, Komponenten in `stories/komponenten/`, Utilities in `stories/utilities.*` |
 | `.storybook/` | Storybook-Konfiguration; `preview.css` mit Hilfsklassen `docs-*` nur für die Doku |
 | `docs/` | ADRs, Roadmap, Bestandsaufnahme, Hintergrund, Anleitungen (`figma-sync.md`, `release.md`), Archiv |
-| `.github/workflows/` | release-please (pflegt Release-PR und `CHANGELOG.md`, veröffentlicht nichts) |
+| `.github/workflows/` | release-please (pflegt Release-PR und `CHANGELOG.md`, veröffentlicht nichts), PR-Titel (prüft Conventional Commits) |
 | `dist/` | Build-Ergebnis (nicht eingecheckt) |
 
 ## Stand der Infrastruktur
