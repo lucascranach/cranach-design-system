@@ -11,7 +11,9 @@ Wie eine neue Version entsteht und ausgeliefert wird (ADR 0006, 0013, 0016). Rel
 | Release-PR prüfen und mergen | Volker | Tag `vX.Y.Z` und GitHub-Release |
 | Ausliefern: `npm run release -- --publish` | Volker, lokal | Paket auf npmjs.com, Kopie unter `lucascranach.org/design-system/X.Y.Z/`, Doku unter `/design-system/docs/` |
 
-Die Version ergibt sich aus den Commits: `fix:` → Patch, `feat:` → Minor, `!` bzw. `BREAKING CHANGE:` → Major. Vor 1.0.0 macht release-please aus `feat:` ebenfalls ein Minor-Release (0.1.0 → 0.2.0).
+Die Version ergibt sich aus den Commits: `fix:` → Patch, `feat:` → Minor, `!` bzw. `BREAKING CHANGE:` → Major.
+
+**Start mit 0.1.0** (Entscheidung Volker, 30.10.2026). Solange die Version unter 1.0.0 liegt, gilt das Designsystem als im Aufbau: `fix:` → 0.1.1, `feat:` → 0.2.0, und auch ein grundlegender Umbau (`feat!:`) ergibt nur 0.2.0 statt 1.0.0 (`bump-minor-pre-major` in `release-please-config.json`). Projekte mit `^0.1.0` bekommen dabei automatisch nur Fehlerbehebungen; einen Sprung auf 0.2.0 tragen sie bewusst ein. Auf 1.0.0 geht es, wenn das erste Projekt das Designsystem in Produktion nutzt und der Header überarbeitet ist – dann einmalig `"release-as": "1.0.0"` setzen und nach dem Release wieder entfernen. Ab 1.0.0 gilt die Deprecation-Regel aus ADR 0006.
 
 ## Ausliefern
 
@@ -45,7 +47,6 @@ Offene Aufgaben für Volker (Roadmap):
 - npm-Organisation `lucascranach` auf npmjs.com anlegen; das eigene npm-Konto mit Zwei-Faktor-Anmeldung als Besitzer.
 - Zielordner und SSH-Zugang für `/design-system/` auf lucascranach.org klären → `CDA_DEPLOY_TARGET`.
 - Das Repo nach GitHub pushen, damit die Action läuft; in den Repo-Einstellungen unter *Actions → General → Workflow permissions* „Allow GitHub Actions to create and approve pull requests“ einschalten, sonst kann release-please keinen PR anlegen.
-- Festlegen, ob das erste Release 0.1.0 (Standard) oder gleich 1.0.0 sein soll. Für 1.0.0 vor dem ersten Release-PR in `release-please-config.json` bei `"."` den Eintrag `"release-as": "1.0.0"` setzen und nach dem Release wieder entfernen.
 
 ## Später
 
