@@ -108,7 +108,7 @@
   .cda-skeleton {
     display: block;
     box-sizing: border-box;
-    background-color: var(--cda-color-background-muted);
+    background-color: var(--cda-color-background-medium);
 
     /* Unsichtbarer Rahmen: wird im Kontrastmodus von Windows sichtbar */
     border: var(--cda-border-width-s) solid transparent;

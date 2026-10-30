@@ -37,7 +37,7 @@
     text-decoration: none;
     vertical-align: middle;
     cursor: pointer;
-    background-color: var(--cda-color-background-muted);
+    background-color: var(--cda-color-background-medium);
 
     /* Unsichtbarer Rahmen: wird im Kontrastmodus von Windows (forced-colors) sichtbar */
     border: var(--cda-border-width-s) solid transparent;
@@ -74,7 +74,7 @@
     background-color: transparent;
 
     &:hover:not(:disabled, [aria-disabled="true"]) {
-      background-color: var(--cda-color-background-muted);
+      background-color: var(--cda-color-background-medium);
     }
   }
 

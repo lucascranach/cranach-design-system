@@ -60,7 +60,7 @@
     position: relative;
     display: block;
     aspect-ratio: 1;
-    background-color: var(--cda-color-background-muted);
+    background-color: var(--cda-color-background-medium);
     transition: background-color var(--cda-duration-fast) var(--cda-easing-default);
 
     /* Absolut, sonst dehnen hochformatige Bilder die quadratische Fläche */

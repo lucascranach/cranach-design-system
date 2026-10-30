@@ -4,7 +4,7 @@
     "background": {
       "default": { "$value": "{color.neutral.900}", "$description": "Seitenhintergrund" },
       "subtle": { "$value": "{color.neutral.800}", "$description": "Leicht abgesetzte Fläche (Karten, Seitenleisten)" },
-      "muted": { "$value": "{color.neutral.700}", "$description": "Stärker abgesetzte Fläche, Hover-Fläche neutraler Elemente" },
+      "medium": { "$value": "{color.neutral.700}", "$description": "Mittlere Stufe zwischen subtle und strong, Hover-Fläche neutraler Elemente (ADR 0019)" },
       "strong": { "$value": "{color.neutral.600}", "$description": "Kräftig abgesetzte Fläche, z. B. Hover des grauen Buttons" },
       "inverse": { "$value": "{color.neutral.0}" },
       "overlay": { "$value": "{color.alpha.black-60}", "$description": "Abdunkelung hinter Dialogen und Viewer" }
