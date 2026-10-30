@@ -30,6 +30,13 @@ const config = {
     // Keine Einführungs-Checkliste in der Seitenleiste
     sidebarOnboardingChecklist: false,
   },
+  /**
+   * Vite beobachtet im Entwicklungsmodus seinen Ausgabeordner nicht – Standard ist dist/.
+   * Genau dort liegen aber Tokens und CSS, die die Doku einbindet. Ohne diese Einstellung
+   * zeigt ein laufendes Storybook nach "npm run build" weiter den alten Stand.
+   */
+  viteFinal: (viteConfig, { configType }) =>
+    configType === 'DEVELOPMENT' ? { ...viteConfig, build: { ...viteConfig.build, emptyOutDir: false } } : viteConfig,
 };
 
 export default config;
