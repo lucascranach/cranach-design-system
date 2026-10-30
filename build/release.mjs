@@ -9,7 +9,9 @@
  *   4. Doku bauen: Storybook nach storybook-static/
  *   5. npm publish nach npmjs.com (übersprungen, wenn die Version dort schon liegt)
  *   6. dist/ per rsync nach <Ziel>/X.Y.Z/ (versioniert, wird nie überschrieben)
- *   7. Doku per rsync nach <Ziel>/docs/ (immer der neueste Stand)
+ *   7. Doku per rsync nach <Ziel>/docs/ (immer der neueste Stand) und nach <Ziel>/X.Y/docs/
+ *      (Fassung je Minor-Version, Fehlerbehebungen aktualisieren sie; mit „noindex“, damit
+ *      Suchmaschinen nur den neuesten Stand zeigen)
  *
  * Standard ist ein PROBELAUF: Schritte 1–4 laufen echt, 5–7 nur mit --dry-run bzw. gar nicht.
  * Veröffentlicht wird erst mit
@@ -22,7 +24,10 @@
  * Weitere Schalter: --skip-docs (Doku weder bauen noch hochladen).
  */
 import { spawnSync } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
+import { rmSync } from 'node:fs';
+import { cp, mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { createInterface } from 'node:readline/promises';
 
 const args = new Set(process.argv.slice(2));
@@ -35,6 +40,8 @@ const ALLOWED_FILES = [/^dist\//, /^package\.json$/, /^README\.md$/, /^LICENSE$/
 
 const pkg = JSON.parse(await readFile('package.json', 'utf8'));
 const VERSION = pkg.version;
+/** Minor-Version, z. B. 0.2 – Ordner der versionierten Doku */
+const MINOR = VERSION.split('.').slice(0, 2).join('.');
 const problems = [];
 
 const step = (text) => console.log(`\n▶ ${text}`);
@@ -49,6 +56,30 @@ function run(cmd, cmdArgs, { capture = false, optional = false } = {}) {
   return res;
 }
 const out = (cmd, cmdArgs) => run(cmd, cmdArgs, { capture: true }).stdout.trim();
+
+/**
+ * Kopie der Doku für <Ziel>/X.Y/docs/ mit <meta name="robots" content="noindex"> in jeder Seite,
+ * damit Suchmaschinen nur den neuesten Stand unter /docs/ zeigen. Liegt im Arbeitsordner unter
+ * X.Y/docs/; rsync überträgt den Ordner X.Y als Ganzes und legt so fehlende Ordner auf dem
+ * Server selbst an (das rsync von macOS kennt kein --mkpath).
+ */
+async function versionedDocs() {
+  const tmp = await mkdtemp(path.join(tmpdir(), 'cda-docs-'));
+  const dir = path.join(tmp, MINOR, 'docs');
+  await cp('storybook-static', dir, { recursive: true });
+  let pages = 0;
+  for (const entry of await readdir(dir, { recursive: true })) {
+    if (!entry.endsWith('.html')) continue;
+    const file = path.join(dir, entry);
+    const html = await readFile(file, 'utf8');
+    if (!/<head[^>]*>/i.test(html)) throw new Error(`Doku: kein <head> in ${entry}`);
+    await writeFile(file, html.replace(/<head[^>]*>/i, (head) => `${head}<meta name="robots" content="noindex">`));
+    pages += 1;
+  }
+  // Arbeitsordner beim Beenden wegräumen, auch nach Abbruch oder Fehler
+  process.on('exit', () => rmSync(tmp, { recursive: true, force: true }));
+  return { tmp, pages };
+}
 
 /** In der echten Veröffentlichung abbrechen, im Probelauf nur melden */
 function check(ok, message) {
@@ -85,9 +116,12 @@ async function main() {
   note(`${packed.files.length} Dateien, ${Math.round(packed.size / 1024)} KB gepackt – nur dist/, package.json, README.md, LICENSE`);
 
   // ---------- 4. Doku ----------
+  let versioned = null;
   if (!SKIP_DOCS) {
     step('Doku bauen (Storybook)');
     run('npm', ['exec', '--', 'storybook', 'build', '--quiet', '-o', 'storybook-static']);
+    versioned = await versionedDocs();
+    note(`Fassung für /${MINOR}/docs/ vorbereitet: ${versioned.pages} Seiten mit „noindex“`);
   }
 
   // ---------- Bestätigung ----------
@@ -120,12 +154,16 @@ async function main() {
     if (exists.status === 0) throw new Error(`${base}/${VERSION} gibt es auf dem Server schon – versionierte Ordner werden nie überschrieben`);
     const dry = PUBLISH ? [] : ['--dry-run'];
     run('rsync', ['-a', '--itemize-changes', ...dry, 'dist/', `${TARGET}/${VERSION}/`]);
-    if (!SKIP_DOCS) run('rsync', ['-a', '--delete', '--itemize-changes', ...dry, 'storybook-static/', `${TARGET}/docs/`]);
+    if (versioned) {
+      run('rsync', ['-a', '--delete', '--itemize-changes', ...dry, 'storybook-static/', `${TARGET}/docs/`]);
+      // Quelle ohne Schrägstrich am Ende: --delete wirkt nur innerhalb von X.Y/, Nachbarn bleiben
+      run('rsync', ['-a', '--delete', '--itemize-changes', ...dry, path.join(versioned.tmp, MINOR), `${TARGET}/`]);
+    }
   }
 
   console.log(
     PUBLISH
-      ? `\n✔ ${VERSION} veröffentlicht: npm i ${pkg.name}@${VERSION} und /design-system/${VERSION}/cranach.css`
+      ? `\n✔ ${VERSION} veröffentlicht: npm i ${pkg.name}@${VERSION}, /design-system/${VERSION}/cranach.css, Doku unter /design-system/docs/ und /design-system/${MINOR}/docs/`
       : `\n✔ Probelauf fertig${problems.length ? ` mit ${problems.length} Hinweis(en) – vor dem Veröffentlichen beheben` : ''}. Veröffentlichen: npm run release -- --publish`,
   );
 }

@@ -9,7 +9,7 @@ Wie eine neue Version entsteht und ausgeliefert wird (ADR 0006, 0013, 0016). Rel
 | Commits nach Conventional Commits auf `main` pushen | alle | – |
 | Release-PR pflegen | GitHub Action **release-please** (`.github/workflows/release-please.yml`) | PR „chore(main): release X.Y.Z“ mit Version in `package.json` und Eintrag in `CHANGELOG.md` |
 | Release-PR prüfen und mergen | Volker | Tag `vX.Y.Z` und GitHub-Release |
-| Ausliefern: `npm run release -- --publish` | Volker, lokal | Paket auf npmjs.com, Kopie unter `lucascranach.org/design-system/X.Y.Z/`, Doku unter `/design-system/docs/` |
+| Ausliefern: `npm run release -- --publish` | Volker, lokal | Paket auf npmjs.com, Kopie unter `lucascranach.org/design-system/X.Y.Z/`, Doku unter `/design-system/docs/` (neuester Stand) und `/design-system/X.Y/docs/` (je Minor-Version) |
 
 Die Version ergibt sich aus den Commits: `fix:` → Patch, `feat:` → Minor, `!` bzw. `BREAKING CHANGE:` → Major.
 
@@ -36,7 +36,7 @@ Das Skript `build/release.mjs`:
 5. **fragt nach** – zur Bestätigung die Versionsnummer eintippen.
 6. **`npm publish`** nach npmjs.com. Liegt die Version dort schon, wird der Schritt übersprungen; so lässt sich ein abgebrochener Lauf einfach wiederholen. npm fragt nach dem Einmalcode der Zwei-Faktor-Anmeldung.
 7. **kopiert `dist/` nach `<Ziel>/X.Y.Z/`.** Versionierte Ordner werden nie überschrieben: Gibt es den Ordner schon, bricht das Skript ab.
-8. **kopiert die Doku nach `<Ziel>/docs/`** – dort liegt immer der neueste Stand.
+8. **kopiert die Doku zweimal:** nach `<Ziel>/docs/` – dort liegt immer der neueste Stand – und nach `<Ziel>/X.Y/docs/`, eine Fassung je Minor-Version. Fehlerbehebungen (X.Y.1, X.Y.2 …) aktualisieren die Fassung ihrer Minor-Version; ältere Minor-Versionen bleiben unverändert stehen. Jede Seite der versionierten Fassung trägt `<meta name="robots" content="noindex">`, damit Suchmaschinen nur den neuesten Stand zeigen. Rund 10 MB je Minor-Version.
 
 Mit `--skip-docs` entfallen Bau und Upload der Doku.
 
