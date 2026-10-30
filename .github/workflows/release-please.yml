@@ -1,0 +1,26 @@
+# release-please (ADR 0006): pflegt bei jedem Push auf main einen Release-PR mit der nächsten
+# Version (aus den Conventional Commits) und dem Eintrag in CHANGELOG.md. Erst der Merge des
+# Release-PR erzeugt Tag und GitHub-Release.
+#
+# Veröffentlicht wird danach von Hand mit `npm run release -- --publish` (siehe docs/release.md).
+# Die Action selbst veröffentlicht nichts – npm Trusted Publishing und rsync aus GitHub folgen
+# erst, wenn geklärt ist, ob ein SSH-Deploy auf den Hochschul-Server zulässig ist.
+name: release-please
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      # v5.0.0, per Commit festgelegt
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

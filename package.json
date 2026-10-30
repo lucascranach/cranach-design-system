@@ -40,6 +40,7 @@
     "test:figma": "node --test build/figma-sync.test.mjs",
     "build": "npm run lint:css && npm run build:tokens && npm run build:icons && npm run build:css && npm run build:figma && npm run check:contrast",
     "prepublishOnly": "npm run build",
+    "release": "node build/release.mjs",
     "storybook": "npm run build && storybook dev -p 6006 --no-open",
     "build:storybook": "npm run build && storybook build -o storybook-static"
   },

@@ -85,6 +85,7 @@ npm run build          # CSS prüfen, Tokens, Icons, CSS und Figma-Sync bauen, K
 | `npm run build:css` | erzeugt `dist/cranach.css` aus `src/` und kopiert die Schriften nach `dist/fonts/` (setzt `build:tokens` und `build:icons` voraus) |
 | `npm run build:figma` | erzeugt `dist/figma/figma-sync.js` für den Abgleich der Figma-Variablen (Anleitung: [`docs/figma-sync.md`](docs/figma-sync.md)) |
 | `npm run test:figma` | testet das Figma-Sync-Skript gegen eine nachgebaute Figma-API |
+| `npm run release` | Probelauf des Releases; `-- --publish` liefert aus (npm und Server-Kopie, Anleitung: [`docs/release.md`](docs/release.md)) |
 | `npm run check:contrast` | prüft alle semantischen Farbpaarungen beider Themes gegen WCAG AA |
 | `npm run storybook` | baut und startet die Doku unter http://localhost:6006 |
 | `npm run build:storybook` | baut die Doku als statische Seite nach `storybook-static/` |
