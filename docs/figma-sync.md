@@ -72,3 +72,5 @@ Dabei geklärt:
 - **Schriften:** IBM Plex Sans, IBM Plex Mono und Material Symbols Sharp sind in Figma vorhanden und laden. Die Schnitte heißen dort z. B. „SemiBold“ (ohne Leerzeichen).
 
 Danach ergänzt (Entscheidung Volker): fließende Abstände als eigene Sammlung „Cranach Responsive“ mit den Modi Mobile 375, Tablet 768 und Desktop 1440. Die drei Text-Variablen `space/fluid/*` aus den Primitives wurden in Figma einmalig von Hand entfernt; der Kontrolllauf meldet `0 angelegt, 0 geändert, 121 unverändert, 0 nicht mehr in den Tokens`.
+
+Umbenennung (30.10.2026, ADR 0019): `color/background/muted` wurde in Figma vor dem Sync von Hand in `color/background/medium` umbenannt, damit Verknüpfungen in Entwürfen erhalten bleiben. Der Kontrolllauf übernahm Beschreibung und CSS-Name: `0 angelegt, 1 geändert, 120 unverändert, 0 nicht mehr in den Tokens, 0 Fehler`. So auch bei künftigen Umbenennungen vorgehen: erst in Figma umbenennen, dann synchronisieren.
