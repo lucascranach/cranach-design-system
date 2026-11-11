@@ -19,14 +19,7 @@ Die Klassen beginnen mit `cda-l-` und liegen im Layer `cda.layout` zwischen den 
 
 ## Einstellen
 
-Jeder Baustein liest wenige Variablen. Welche er nutzt und welche Standardwerte er hat, steht auf seiner Seite.
-
-| Variable | Wirkung | genutzt von |
-|---|---|---|
-| `--cda-l-space` | Abstand zwischen den Kindern, bei Center der Abstand zum Rand | allen |
-| `--cda-l-side` | Breite der schmalen Spalte | Sidebar |
-| `--cda-l-min` | Mindestbreite einer Spalte | Grid |
-| `--cda-l-max` | größte Breite | Center |
+Alle Bausteine lesen den Abstand aus `--cda-l-space`. Breiten wie die der schmalen Spalte oder die Mindestbreite im Grid haben eigene Variablen; sie stehen mit ihren Standardwerten auf der Seite des Bausteins.
 
 Jeder Baustein setzt seinen Standard selbst. Ein Wert wirkt deshalb nur an dem Element, an dem er gesetzt ist, und sickert nicht in verschachtelte Bausteine durch.
 
