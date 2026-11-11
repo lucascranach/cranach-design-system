@@ -26,3 +26,4 @@ Format: Status · Kontext · Entscheidung · Konsequenzen. Neue Entscheidungen b
 | [0018](0018-link-unterstreichung.md) | Link-Unterstreichung mit mindestens 3:1 | angenommen |
 | [0019](0019-stufenwoerter-semantischer-tokens.md) | Stufenwörter semantischer Tokens (`subtle`, `medium`, `strong`, `muted`) | angenommen |
 | [0020](0020-komponenten-aufnahme-und-katalog.md) | Aufnahme von Komponenten und Katalog der Projektkomponenten | angenommen |
+| [0021](0021-layout-bausteine-und-zustaende.md) | Layout-Bausteine und Regel für Zustände | Entwurf |
