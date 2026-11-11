@@ -23,11 +23,7 @@ Kinder untereinander mit gleichem Abstand. Der häufigste Layout-Baustein: für 
 |---|---|---|
 | `--cda-l-space` | `--cda-space-m` (16 px) | Abstand zwischen den Kindern |
 
-So lassen sich die Werte setzen, in dieser Reihenfolge (ADR 0021):
-
-1. **Abstand über eine Utility** – eine Klasse je Abstands-Token, siehe [Utilities](?path=/docs/utilities--docs): `class="cda-l-stack cda-u-space-xl"`.
-2. **Breiten und Sonderfälle in einer Regel im Projekt-CSS:** `.ergebnisse { --cda-l-space: var(--cda-space-xl); }`.
-3. **`style`-Attribut nur als Notlösung** – Projekte mit strenger Content-Security-Policy verbieten es, und Tippfehler fallen nicht auf.
+Wie die Werte gesetzt werden, steht in der [Übersicht](?path=/docs/layout-übersicht--docs).
 
 ```html
 <div class="cda-l-stack cda-u-space-xl">…</div>
@@ -38,5 +34,3 @@ So lassen sich die Werte setzen, in dieser Reihenfolge (ADR 0021):
 ## Hinweise
 
 - Der Abstand sitzt oben am zweiten und jedem weiteren Kind. Eigene Außenabstände der Kinder oben und unten entfallen; so addieren sich keine Abstände.
-- Verschachtelte Stacks setzen ihren Standard selbst – ein größerer Abstand außen wirkt nicht innen weiter.
-- Als Liste (`ul`, `ol`) verschwinden Aufzählungszeichen und Einzug; dann `role="list"` setzen, damit Safari die Liste weiter vorliest.

@@ -40,7 +40,7 @@ const preview = {
           'Grundlagen',
           ['Farben', 'Typografie', 'Abstände', 'z-Ebenen', 'Icons'],
           'Layout',
-          ['Stack', 'Cluster', 'Sidebar', 'Grid', 'Center'],
+          ['Übersicht', 'Stack', 'Cluster', 'Sidebar', 'Grid', 'Center'],
           'Komponenten',
           'Projektkomponenten',
           'Utilities',

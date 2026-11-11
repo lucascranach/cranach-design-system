@@ -1,0 +1,59 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Utilities from '../utilities.stories.js';
+
+<Meta title="Layout/Übersicht" />
+
+# Layout
+
+Bausteine, die nur anordnen: Abstände, Spalten, Umbruch. Sie wissen nichts über Farbe, Schrift oder die Komponente darin und kommen ohne Media Queries aus – sie reagieren auf den Platz, den sie haben, nicht auf die Fensterbreite. Die Idee stammt aus CUBE CSS (dort „Composition“) und Every Layout (ADR 0021).
+
+| Baustein | Aufgabe |
+|---|---|
+| [Stack](?path=/docs/layout-stack--docs) | untereinander mit gleichem Abstand |
+| [Cluster](?path=/docs/layout-cluster--docs) | nebeneinander, bricht bei Platzmangel um |
+| [Sidebar](?path=/docs/layout-sidebar--docs) | schmale Spalte neben breitem Inhalt, stapelt sich bei wenig Platz |
+| [Grid](?path=/docs/layout-grid--docs) | Raster mit Mindestbreite je Spalte |
+| [Center](?path=/docs/layout-center--docs) | mittig mit größter Breite, auch als Textspalte |
+
+Die Klassen beginnen mit `cda-l-` und liegen im Layer `cda.layout` zwischen den Grundstyles und den Komponenten. Komponenten können einen Baustein also anpassen, Utilities gewinnen gegen beide, Styles des Projekts ohne Layer gegen alles.
+
+## Einstellen
+
+Jeder Baustein liest wenige Variablen. Welche er nutzt und welche Standardwerte er hat, steht auf seiner Seite.
+
+| Variable | Wirkung | genutzt von |
+|---|---|---|
+| `--cda-l-space` | Abstand zwischen den Kindern, bei Center der Abstand zum Rand | allen |
+| `--cda-l-side` | Breite der schmalen Spalte | Sidebar |
+| `--cda-l-min` | Mindestbreite einer Spalte | Grid |
+| `--cda-l-max` | größte Breite | Center |
+
+Jeder Baustein setzt seinen Standard selbst. Ein Wert wirkt deshalb nur an dem Element, an dem er gesetzt ist, und sickert nicht in verschachtelte Bausteine durch.
+
+So lassen sich die Werte setzen, in dieser Reihenfolge:
+
+1. **Abstand über eine Utility.** Die Klasse ist `cda-u-` plus der Name des Abstands-Tokens, etwa `--cda-space-xl` → `cda-u-space-xl`:
+   ```html
+   <div class="cda-l-stack cda-u-space-xl">…</div>
+   ```
+2. **Breiten und Sonderfälle in einer Regel im Projekt-CSS:**
+   ```css
+   .ergebnisse { --cda-l-side: 25rem; }
+   ```
+3. **`style`-Attribut nur als Notlösung.** Projekte mit strenger Content-Security-Policy verbieten es, und Tippfehler fallen nicht auf – der Wert entfällt dann ohne Meldung.
+
+Feste Varianten mit eigener Bedeutung haben einen Modifier, etwa `.cda-l-sidebar--end` oder `.cda-l-grid--small`.
+
+## Abstände
+
+Alle Utilities für `--cda-l-space`, aus den Tokens erzeugt (auch unter [Utilities](?path=/docs/utilities--docs)):
+
+<Canvas of={Utilities.Abstaende} />
+
+## Listen
+
+Als Liste (`ul`, `ol`) verlieren Stack, Cluster und Grid Aufzählungszeichen und Einzug. Safari liest eine solche Liste dann nicht mehr als Liste vor – deshalb `role="list"` setzen:
+
+```html
+<ul class="cda-l-grid" role="list">…</ul>
+```
