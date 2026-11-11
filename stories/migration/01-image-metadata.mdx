@@ -114,6 +114,18 @@ Alle Variablen stehen in `style.css` im `:root`-Block. Die Grundgröße `--bfs` 
 
 </div>
 
+## Layout
+
+Eigene Layout-Regeln des Projekts, die ein [Layout-Baustein](?path=/docs/layout-stack--docs) ersetzen kann (ADR 0021).
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Layout">
+
+| Alt | Neu | Hinweis |
+|---|---|---|
+| `.layout` (Tabelle links, Filterleiste rechts mit `--sidebar-width`) | `.cda-l-sidebar--end` mit `--cda-l-side: var(--sidebar-width)` | unter 1024 px legt sich die Leiste heute über den Inhalt; dafür folgt die Seitenleiste (Schritt 26) |
+
+</div>
+
 ## Beim Umstellen beachten
 
 - **`outline: none` löschen:** in `style.css` am Suchfeld (schaltet auch den Tastaturfokus ab) und am Filterfeld der Tabelle, dazu die eigenen gelben Fokus-Outlines. Die mitgelieferte `tabulator.min.css` enthält sechsmal `outline: none` und braucht eine eigene Regel, die den Fokus wieder zeigt.

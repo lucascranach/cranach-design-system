@@ -74,8 +74,8 @@ Die Sass-Größen dienen als Abstand **und** als Schriftgröße. Deshalb zwei Sp
 | `$xl` | 20,16 px | `--cda-space-l` (24) | `--cda-font-size-l` (20) | |
 | `$xxl` | 25,92 px | `--cda-space-l` (24) | `--cda-font-size-xl` (24) | |
 | `$xxxl` | 37,44 px | `--cda-space-xl` (32) | `--cda-font-size-3xl` (40) | |
-| `$tile-xxs` in `minmax()` | 100,8 px | `.cda-card-grid--small` (`--cda-size-card-min-small`, 128) | | |
-| `$tile-xs` in `minmax()` | 201,6 px | `.cda-card-grid` (`--cda-size-card-min`, 256) | | Kacheln werden breiter |
+| `$tile-xxs` in `minmax()` | 100,8 px | `.cda-l-grid` mit `--cda-l-min: var(--cda-size-card-min-small)` (128) | | |
+| `$tile-xs` in `minmax()` | 201,6 px | `.cda-l-grid` (Standard `--cda-size-card-min`, 256) | | Kacheln werden breiter |
 | `$column-*`, `$term-width*`, `$image-small`, `$tile-s` | | kein Gegenstück | | bleiben im Projekt |
 
 </div>
@@ -140,7 +140,7 @@ Die alten Werte springen bei 1440 und 1800 px, die neuen wachsen gleitend. Abwei
 | `.foldable-block` mit `.is-expand-trigger` und `.expandable-content` | ebenso `.cda-accordion` | heute ein `<h2>` mit Klick-Handler (`js-expand-trigger`, 12×) – auf `details`/`summary` umbauen, dann ohne JavaScript |
 | `.download-link--resized.is-loading::after` | `<span class="cda-spinner" aria-hidden="true">` ([Loader](?path=/docs/komponenten-loader--docs)) im Link, dazu `aria-busy="true"` | das Skript fügt den Spinner ein statt der Klasse |
 | `.artefact-card` (`__image-holder`, `__content`, `__title`, `__subtitle`, `__text`, `__favorite`) | `article.cda-card` ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)) mit `__image`, `__content`, `__title` › `__link`, `__subtitle`, `__text`, `__favorite` | heute `<figure>` mit einem Link um alles; neu ein Link im Titel, Bild mit `alt=""` |
-| `.artefact-overview`, `.reprints-gallery` | `.cda-card-grid` bzw. `--small` | |
+| `.artefact-overview`, `.reprints-gallery` | `.cda-l-grid` mit `role="list"`, klein mit `--cda-l-min: var(--cda-size-card-min-small)` | siehe [Grid](?path=/docs/layout-grid--docs) |
 | `.main-navigation` (+ `.is-sticky`), `.primary-navigation`, `.secondary-navigation` | `header.cda-header` ([Header](?path=/docs/komponenten-header--docs)) (+ `--sticky`) mit `__brand`, `__nav`, `__menu`, `__link`, `__actions`, `__toggle` | heute `<nav>` ohne `<header>`; die Links „zur Werksuche“ bleiben Buttons |
 | `.cda-logo-wrap`, `.cda-logo` | `.cda-header__brand` mit Logo als Inline-SVG | **Präfix `cda-` ist reserviert** – die alten Klassen umbenennen; `aria-label` am Link statt `alt="CDA Logo"` |
 | `.main-footer` | `footer.cda-footer` ([Footer](?path=/docs/komponenten-footer--docs)) mit `data-theme="dark"`, `__copyright`, optional `__nav`, `__links` | Fläche #444 → dunkles Theme |
@@ -153,6 +153,21 @@ Die alten Werte springen bei 1440 und 1800 px, die neuen wachsen gleitend. Abwei
 **Gegenstück folgt** (Roadmap-Schritte 24–27, bis dahin bleiben sie im Projekt): `.notification` und Formularmeldungen → Meldung, `.overlay` → Dialog, `.drawer` → Seitenleiste, `.table`, `.info-table`, `.literature-table` → Tabelle.
 
 **Ohne Gegenstück, bleiben im Projekt:** `.definition-list`, `.related-item`, `.image-caption`, `.survey`, `.additional-content`, Bildviewer und Bildleisten (OpenSeadragon), SVG-Sprite für Dateitypen, die Trennstriche `.has-separator` u. ä. Links wie `a.link` folgen bereits dem Linkmuster der Grundstyles.
+
+## Layout
+
+Eigene Layout-Regeln des Projekts, die ein [Layout-Baustein](?path=/docs/layout-stack--docs) ersetzen kann (ADR 0021).
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Layout">
+
+| Alt | Neu | Hinweis |
+|---|---|---|
+| `.leporello-recog` (ab 768 px Bild links, Text rechts) | `.cda-l-sidebar` | Bild als schmale Spalte mit `--cda-l-side`; bricht ohne Media Query um, wenn der Text zu schmal würde |
+| Textspalte mit `max-width: $column-large` (720 px) | `.cda-l-center--measure` | 65ch statt 720 px – die Spalte wird etwa 100 px schmaler; auf einer Werkseite prüfen |
+| Abstände zwischen `.block`, `.foldable-block` | `.cda-l-stack` | Abstand über `--cda-l-space` |
+| `--responsive-padding-right-left` als Seitenrand | `.cda-l-center` | Randabstand `--cda-space-fluid-m`, größte Breite `size.page` (1536 px) |
+
+</div>
 
 ## Beim Umstellen beachten
 

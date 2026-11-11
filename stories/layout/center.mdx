@@ -1,0 +1,42 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Center from './center.stories.js';
+
+<Meta of={Center} />
+
+# Center
+
+Inhalt mittig mit einer größten Breite und Abstand zum Rand. Für den Rahmen einer Seite und für gut lesbare Textspalten. Die gestrichelte Linie in den Beispielen zeigt die Fläche des Bausteins.
+
+## Textbreite
+
+Mit `cda-l-center--measure` wird eine Textspalte höchstens `65ch` breit (Token `size.measure`): bei 16 px rund 620 px oder etwa 70–80 Zeichen je Zeile. Gut lesbar sind 45–75 Zeichen; WCAG 1.4.8 nennt höchstens 80. Ohne Randabstand, weil die Spalte meist schon in einem Seitenrahmen steht.
+
+```html
+<div class="cda-l-center cda-l-center--measure">
+  <p>…</p>
+</div>
+```
+
+<Canvas of={Center.Textbreite} />
+
+## Seitenbreite
+
+Ohne Modifier ist die größte Breite die des Seiteninhalts, 1536 px (Token `size.page`, gleich dem Breakpoint `2xl`): Oberhalb des letzten Breakpoints wächst das Layout nicht weiter. Der Randabstand wächst mit der Fensterbreite (`--cda-space-fluid-m`).
+
+```html
+<main class="cda-l-center">…</main>
+```
+
+<Canvas of={Center.Seitenbreite} />
+
+## Einstellen
+
+| Variable | Standard | Wirkung |
+|---|---|---|
+| `--cda-l-max` | `--cda-size-page` (1536 px), mit `--measure` `--cda-size-measure` (65ch) | größte Breite des Inhalts |
+| `--cda-l-space` | `--cda-space-fluid-m` (16–48 px), mit `--measure` 0 | Abstand zum Rand links und rechts |
+
+## Hinweise
+
+- Die größte Breite gilt für den Inhalt; der Randabstand kommt dazu.
+- Kachelansichten, die auf großen Bildschirmen bewusst viele Spalten zeigen (wie cranach-search), brauchen keinen Center oder setzen `--cda-l-max` selbst.

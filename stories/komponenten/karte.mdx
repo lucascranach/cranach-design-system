@@ -8,7 +8,7 @@ import * as Karte from './karte.stories.js';
 Kachel für ein Werk in Trefferlisten und Übersichten: Bild, Titel mit Datierung, ein bis zwei Zeilen Angaben, optional ein Button zum Merken. Vorlage ist `artefact-card` aus cranach-search und cranach-artefacts. Die Klassen heißen allgemein `cda-card`, weil dieselbe Karte auch für Archivalien oder Literatur passt.
 
 ```html
-<ul class="cda-card-grid">
+<ul class="cda-l-grid" role="list">
   <li>
     <article class="cda-card">
       <div class="cda-card__image"><img src="…" alt="" loading="lazy"></div>
@@ -33,7 +33,7 @@ Kachel für ein Werk in Trefferlisten und Übersichten: Bild, Titel mit Datierun
 - **Bild mit `alt=""`**, weil der Titel direkt daneben steht; sonst hörte man ihn doppelt. Das Bild wird in die quadratische Fläche eingepasst, nicht beschnitten.
 - **Überschriften-Ebene** passend zur Seite wählen (`h2`, `h3` …); die Klasse bleibt `cda-card__title`.
 - **Treffer der Suche** im Titel als `<em>` (so liefert sie Elasticsearch) werden hellgelb hinterlegt.
-- **Raster:** `cda-card-grid` füllt die Breite mit Spalten von mindestens 256 px (Token `size.card.min`, aus `$tile-s` in cranach-search).
+- **Raster:** Der Layout-Baustein [`cda-l-grid`](?path=/docs/layout-grid--docs) füllt die Breite mit Spalten von mindestens 256 px – sein Standard ist die Kartenbreite (Token `size.card.min`, aus `$tile-s` in cranach-search). `role="list"` sorgt dafür, dass Safari die Liste ohne Aufzählungszeichen weiter als Liste vorliest.
 
 ## Merken
 
@@ -49,10 +49,11 @@ Wie die Abzüge einer Grafik in cranach-artefacts: nur Bild und Angaben.
 
 ## Klein
 
-Nur Bilder, für die kleine Kachelansicht. Ohne Text steht der Link um das Bild, und das Bild trägt den Titel als `alt`.
+Nur Bilder, für die kleine Kachelansicht. Ohne Text steht der Link um das Bild, und das Bild trägt den Titel als `alt`. Das Raster bekommt eine kleinere Mindestbreite (Token `size.card.min-small`) und einen kleineren Abstand – über die Variablen des Layout-Bausteins, am Element oder in einer eigenen Regel im Projekt.
 
 ```html
-<ul class="cda-card-grid cda-card-grid--small">
+<ul class="cda-l-grid" role="list"
+    style="--cda-l-min: var(--cda-size-card-min-small); --cda-l-space: var(--cda-space-2xs)">
   <li>
     <article class="cda-card">
       <a class="cda-card__link cda-card__image" href="…"><img src="…" alt="Adam und Eva, 1526" loading="lazy"></a>

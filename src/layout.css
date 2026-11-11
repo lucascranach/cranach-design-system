@@ -1,0 +1,128 @@
+/*
+ * Layout-Bausteine – Layer cda.layout (ADR 0021)
+ *
+ * Bausteine, die nur anordnen: Abstände, Spalten, Umbruch. Sie wissen nichts über Farbe, Schrift
+ * oder die Komponente darin und kommen ohne Media Queries aus – der Browser verteilt den Platz
+ * nach den Regeln selbst. Idee aus CUBE CSS („Composition“) und Every Layout.
+ *
+ * Der Layer liegt zwischen cda.base und cda.components: Komponenten können einen Baustein
+ * anpassen, Utilities gewinnen gegen beide, Projekt-Styles ohne Layer gegen alles.
+ *
+ * Einstellbar über Custom Properties am Element. Jeder Baustein setzt seinen Standard selbst, damit
+ * ein Wert nicht in verschachtelte Bausteine durchsickert:
+ *   --cda-l-space  Abstand zwischen den Kindern (bei .cda-l-center: Abstand zum Rand)
+ *   --cda-l-side   Breite der schmalen Spalte (.cda-l-sidebar)
+ *   --cda-l-min    Mindestbreite einer Spalte (.cda-l-grid)
+ *   --cda-l-max    größte Breite (.cda-l-center)
+ *
+ *   <div class="cda-l-stack" style="--cda-l-space: var(--cda-space-l)">…</div>
+ *
+ * Als Liste (ul, ol) verlieren stack, cluster und grid Aufzählungszeichen und Einzug. Safari liest
+ * eine Liste ohne Aufzählungszeichen dann nicht mehr als Liste vor – deshalb role="list" setzen.
+ */
+@layer cda.layout {
+  :where(ul, ol):is(.cda-l-stack, .cda-l-cluster, .cda-l-grid) {
+    padding-inline-start: 0;
+    list-style: none;
+  }
+
+  /* ---------- Stack ----------
+   * Kinder untereinander mit gleichem Abstand (in CUBE „Flow“). Der Abstand sitzt oben am zweiten
+   * und jedem weiteren Kind; eigene Außenabstände der Kinder entfallen. */
+
+  .cda-l-stack {
+    --cda-l-space: var(--cda-space-m);
+
+    & > * {
+      margin-block: 0;
+    }
+
+    & > * + * {
+      margin-block-start: var(--cda-l-space);
+    }
+  }
+
+  /* ---------- Cluster ----------
+   * Kinder nebeneinander, brechen bei Platzmangel in die nächste Zeile um – Buttons, Filter,
+   * Schlagworte. */
+
+  .cda-l-cluster {
+    --cda-l-space: var(--cda-space-s);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cda-l-space);
+    align-items: center;
+  }
+
+  /* ---------- Sidebar ----------
+   * Schmale Spalte neben breitem Inhalt. Würde der Inhalt schmaler als die Hälfte, stehen beide
+   * untereinander – ohne Media Query, abhängig vom Platz im Elternelement.
+   * Die schmale Spalte ist das erste Kind; mit --end das letzte. Genau zwei Kinder. */
+
+  .cda-l-sidebar {
+    --cda-l-space: var(--cda-space-l);
+    --cda-l-side: var(--cda-size-card-min);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cda-l-space);
+
+    & > :first-child {
+      flex-grow: 1;
+      flex-basis: var(--cda-l-side);
+    }
+
+    & > :last-child {
+      flex-grow: 999;
+      flex-basis: 0;
+      min-inline-size: 50%;
+    }
+  }
+
+  .cda-l-sidebar--end {
+    & > :first-child {
+      flex-grow: 999;
+      flex-basis: 0;
+      min-inline-size: 50%;
+    }
+
+    & > :last-child {
+      flex-grow: 1;
+      flex-basis: var(--cda-l-side);
+    }
+  }
+
+  /* ---------- Grid ----------
+   * Raster mit Mindestbreite je Spalte; so viele Spalten, wie passen. Auf schmalen Bildschirmen
+   * nie breiter als der Platz (min(100%, …)). Standard ist die Mindestbreite einer Werk-Karte. */
+
+  .cda-l-grid {
+    --cda-l-space: var(--cda-space-s);
+    --cda-l-min: var(--cda-size-card-min);
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cda-l-min)), 1fr));
+    gap: var(--cda-l-space);
+  }
+
+  /* ---------- Center ----------
+   * Inhalt mittig mit größter Breite und Abstand zum Rand. Die Breite gilt für den Inhalt, der
+   * Randabstand kommt dazu (content-box). Standard ist die Seitenbreite; --measure begrenzt auf
+   * eine gut lesbare Zeilenlänge für Text und lässt den Randabstand weg. */
+
+  .cda-l-center {
+    --cda-l-max: var(--cda-size-page);
+    --cda-l-space: var(--cda-space-fluid-m);
+
+    box-sizing: content-box;
+    max-inline-size: var(--cda-l-max);
+    padding-inline: var(--cda-l-space);
+    margin-inline: auto;
+  }
+
+  .cda-l-center--measure {
+    --cda-l-max: var(--cda-size-measure);
+    --cda-l-space: 0;
+  }
+}

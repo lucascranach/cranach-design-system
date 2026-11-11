@@ -12,6 +12,9 @@ import vm from 'node:vm';
 
 const SCRIPT = await readFile('dist/figma/figma-sync.js', 'utf8');
 
+/** Anzahl der Variablen laut Tokens – aus den Daten im Skript, damit neue Tokens die Tests nicht brechen */
+const TOTAL = JSON.parse(SCRIPT.match(/^const DATA = (.*);$/m)[1]).collections.reduce((n, c) => n + c.variables.length, 0);
+
 /** Erlaubte Scopes je Variablentyp laut Figma-Plugin-API */
 const ALLOWED = {
   COLOR: ['ALL_SCOPES', 'ALL_FILLS', 'FRAME_FILL', 'SHAPE_FILL', 'TEXT_FILL', 'STROKE_COLOR', 'EFFECT_COLOR'],
@@ -111,7 +114,7 @@ test('leere Datei: legt Sammlungen, Modi und alle Variablen an', async () => {
     ['Cranach Responsive', ['Mobile 375', 'Tablet 768', 'Desktop 1440']],
     ['Cranach Semantic', ['Light', 'Dark']],
   ]);
-  assert.equal(f.variables.length, 121);
+  assert.equal(f.variables.length, TOTAL);
 
   const byName = (n) => f.variables.find((v) => v.name === n);
   const [light, dark] = f.collections[2].modes.map((m) => m.modeId);
@@ -144,8 +147,8 @@ test('zweiter Lauf ändert nichts (idempotent)', async () => {
   const r = await run(f.figma);
   assert.equal(r.created.length, 0);
   assert.deepEqual(r.changed, []);
-  assert.equal(r.unchanged, 121);
-  assert.equal(f.variables.length, 121);
+  assert.equal(r.unchanged, TOTAL);
+  assert.equal(f.variables.length, TOTAL);
   assert.equal(f.collections.length, 3);
 });
 
@@ -166,7 +169,7 @@ test('Variablen, die es nicht mehr gibt, werden gemeldet, nicht gelöscht', asyn
   f.figma.variables.createVariable('color/alt/grau', f.collections[0], 'COLOR');
   const r = await run(f.figma);
   assert.deepEqual(r.orphans, ['Cranach Primitives/color/alt/grau']);
-  assert.equal(f.variables.length, 122);
+  assert.equal(f.variables.length, TOTAL + 1);
 });
 
 test('falscher Typ in Figma: Fehler melden, Rest weiter abgleichen', async () => {
@@ -177,5 +180,5 @@ test('falscher Typ in Figma: Fehler melden, Rest weiter abgleichen', async () =>
   const r = await run(f.figma);
   assert.equal(r.errors.length, 1);
   assert.match(r.errors[0], /^duration\/fast: Typ FLOAT/);
-  assert.equal(r.unchanged, 120);
+  assert.equal(r.unchanged, TOTAL - 1);
 });

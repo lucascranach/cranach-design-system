@@ -56,8 +56,9 @@ const smallCard = ({ title, img }) =>
     '</article>',
   ].join('\n');
 
-const grid = (cards, modifier = '') =>
-  [`<ul class="cda-card-grid${modifier}">`, ...cards.map((c) => ['  <li>', indent(c, 2), '  </li>'].join('\n')), '</ul>'].join(
+/** Raster aus dem Layout-Baustein .cda-l-grid (ADR 0021); attrs z. B. für die kleine Ansicht */
+const grid = (cards, attrs = '') =>
+  [`<ul class="cda-l-grid" role="list"${attrs}>`, ...cards.map((c) => ['  <li>', indent(c, 2), '  </li>'].join('\n')), '</ul>'].join(
     '\n',
   );
 
@@ -98,5 +99,8 @@ export const OhneMerken = {
 };
 
 export const Klein = {
-  render: () => grid([...WORKS, ...WORKS].map((w) => smallCard(w)), ' cda-card-grid--small'),
+  render: () => grid(
+      [...WORKS, ...WORKS].map((w) => smallCard(w)),
+      ' style="--cda-l-min: var(--cda-size-card-min-small); --cda-l-space: var(--cda-space-2xs)"',
+    ),
 };

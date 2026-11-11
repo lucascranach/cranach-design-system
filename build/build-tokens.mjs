@@ -68,7 +68,7 @@ async function main() {
   const durations = primitives.filter((t) => t.path[0] === 'duration');
   const css = [
     header,
-    '@layer cda.tokens, cda.reset, cda.base, cda.components, cda.utilities;\n',
+    '@layer cda.tokens, cda.reset, cda.base, cda.layout, cda.components, cda.utilities;\n',
     '@layer cda.tokens {',
     block(':root', decl(primitives, byPath)),
     '',

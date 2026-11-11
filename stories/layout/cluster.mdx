@@ -1,0 +1,29 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Cluster from './cluster.stories.js';
+
+<Meta of={Cluster} />
+
+# Cluster
+
+Kinder nebeneinander, die bei Platzmangel in die nächste Zeile umbrechen – für Buttons, Filter, Schlagworte. Die Breite des Rahmens lässt sich an der Ecke unten rechts ziehen.
+
+```html
+<ul class="cda-l-cluster" role="list">
+  <li><button type="button" class="cda-button">Malerei</button></li>
+  <li><button type="button" class="cda-button">Zeichnung</button></li>
+  …
+</ul>
+```
+
+<Canvas of={Cluster.Schlagworte} />
+
+## Einstellen
+
+| Variable | Standard | Wirkung |
+|---|---|---|
+| `--cda-l-space` | `--cda-space-s` (12 px) | Abstand waagerecht und senkrecht |
+
+## Hinweise
+
+- Die Kinder sind senkrecht mittig ausgerichtet, damit Buttons und Text unterschiedlicher Höhe auf einer Linie stehen.
+- Für eine Reihe, die nie umbrechen soll, ist der Cluster nicht gedacht; dafür reicht `display: flex` im Projekt.

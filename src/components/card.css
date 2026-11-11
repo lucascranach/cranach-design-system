@@ -1,7 +1,7 @@
 /*
  * Werk-Karte – Layer cda.components
  *
- *   <ul class="cda-card-grid">
+ *   <ul class="cda-l-grid" role="list">
  *     <li>
  *       <article class="cda-card">
  *         <div class="cda-card__image"><img src="…" alt="" loading="lazy"></div>
@@ -21,30 +21,17 @@
  * Ein einziger Link pro Karte (im Titel); seine Klickfläche wird über die ganze Karte gezogen.
  * So gibt es einen Tab-Stopp pro Karte statt zwei, und Screenreader lesen den Titel als Linktext.
  * Das Bild ist dekorativ (alt=""), weil der Titel daneben steht. Kleine Karten ohne Text
- * (cda-card-grid--small) haben den Link um das Bild, dann trägt das Bild den Titel als alt.
+ * haben den Link um das Bild, dann trägt das Bild den Titel als alt.
+ *
+ * Das Raster kommt vom Layout-Baustein .cda-l-grid (ADR 0021), Standard ist die Mindestbreite
+ * einer Karte. Für kleine Karten:
+ *   <ul class="cda-l-grid" role="list" style="--cda-l-min: var(--cda-size-card-min-small); --cda-l-space: var(--cda-space-2xs)">
  *
  * Vorlage: artefact-card aus cranach-search und cranach-artefacts. Anders als dort: ein Link
  * statt zwei, Merken als Button mit aria-pressed statt <a> ohne href, Merken-Button auch per
  * Tastatur und auf Touch-Geräten sichtbar, Fokusring um die ganze Karte.
  */
 @layer cda.components {
-  /* ---------- Raster ---------- */
-
-  .cda-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cda-size-card-min)), 1fr));
-    gap: var(--cda-space-s);
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-
-  /* Nur Bilder, wie die kleine Kachelansicht in cranach-search */
-  .cda-card-grid--small {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cda-size-card-min-small)), 1fr));
-    gap: var(--cda-space-2xs);
-  }
-
   /* ---------- Karte ---------- */
 
   .cda-card {

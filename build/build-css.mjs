@@ -31,6 +31,7 @@ const require = createRequire(import.meta.url);
 const SOURCES = [
   'src/reset.css',
   'src/base.css',
+  'src/layout.css',
   'src/components/icon.css',
   'src/components/button.css',
   'src/components/text-field.css',
@@ -171,7 +172,7 @@ async function main() {
     '',
     '/* Layer-Reihenfolge (ADR 0003). In Tailwind-Projekten vorher',
     '   @layer theme, base, cda, components, utilities; deklarieren. */',
-    '@layer cda.tokens, cda.reset, cda.base, cda.components, cda.utilities;',
+    '@layer cda.tokens, cda.reset, cda.base, cda.layout, cda.components, cda.utilities;',
     '',
     '@import "./tokens.css";',
     '',

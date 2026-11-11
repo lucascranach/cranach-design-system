@@ -53,7 +53,7 @@ Von der Datei nutzt map nur wenige Werte: `colors.accent`, `dark`, `darkest`, `d
 | react-icons `FaChevronDown` / `FaChevronUp` | `.cda-icon` `expand_more` / `expand_less` oder der Pfeil des Accordions | `react-icons` kann dann entfallen |
 | `LocationItem` (`<li onClick>`) und `StyledLocationGroup` (`ResultsGroup.jsx`) | `.cda-accordion` ([Accordion](?path=/docs/komponenten-accordion--docs)) mit `__item`, `__summary`, `__content` | heute per Tastatur nicht erreichbar; `details`/`summary` mit Ereignis `toggle` statt `useState` |
 | `Card` (`components/layout/Card.jsx`) | `.cda-card` ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)) mit `__image`, `__content`, `__title` › `__link`, `__subtitle`, `__text` | ein Link im Titel statt zwei; `<img>` mit `alt=""`; `h3` → `p`. Die Karte ist heute waagerecht (Bild links); `.cda-card` ist eine Kachel – die Listenform folgt in Roadmap-Schritt 28 |
-| `List` (`components/styled/List.jsx`) | teilweise `.cda-card-grid` | Mindestbreite 256 statt 320 px |
+| `List` (`components/styled/List.jsx`) | `.cda-l-grid` mit `--cda-l-min: 20rem` | Mindestbreite wie heute; siehe [Grid](?path=/docs/layout-grid--docs) |
 | Karte (`Map.jsx`, `Layers.jsx`), Ergebnisleiste `Aside`, `Results` | bleiben im Projekt | |
 
 </div>

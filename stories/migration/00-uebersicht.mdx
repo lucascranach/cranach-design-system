@@ -31,7 +31,8 @@ Ausgeschlossen sind cranach-grafiken-gatsby (Archiv) und cranach-api-documentati
 
 1. **Einbinden.** `cranach.css` einbinden, wie unter [Einbinden](?path=/docs/einbinden--docs) beschrieben. Alle Styles des Designsystems liegen in Cascade Layers. Die Styles des Projekts haben ohne Layer immer Vorrang, deshalb ändert sich zunächst nichts am Aussehen.
 2. **Tokens zuordnen.** Die alten Variablen auf die neuen Tokens zeigen lassen, etwa `$accent: var(--cda-color-accent-default);` in Sass oder `--accent: var(--cda-color-accent-default);` in CSS. So stellt ein Projekt in einem Schritt um, ohne jede Stelle anzufassen. Danach die alten Namen nach und nach durch die neuen ersetzen und zuletzt entfernen.
-3. **Komponenten umstellen.** Eine Komponente nach der anderen: Markup auf die `cda-`-Klassen umstellen, die alten Styles dazu löschen, prüfen. Komponenten, die es im Designsystem nicht gibt, bleiben zunächst im Projekt und nutzen dort die Tokens. Sie stehen im Katalog [Projektkomponenten](?path=/docs/projektkomponenten--docs); braucht ein zweites Projekt sie, kommen sie ins Designsystem (ADR 0020).
+3. **Layouts umstellen.** Eigene Raster, Spalten und Container durch die [Layout-Bausteine](?path=/docs/layout-stack--docs) ersetzen (`cda-l-…`, ADR 0021). Jede Projektseite nennt dazu die passenden Klassen im Abschnitt „Layout“.
+4. **Komponenten umstellen.** Eine Komponente nach der anderen: Markup auf die `cda-`-Klassen umstellen, die alten Styles dazu löschen, prüfen. Komponenten, die es im Designsystem nicht gibt, bleiben zunächst im Projekt und nutzen dort die Tokens. Sie stehen im Katalog [Projektkomponenten](?path=/docs/projektkomponenten--docs); braucht ein zweites Projekt sie, kommen sie ins Designsystem (ADR 0020).
 
 ## Was sich sichtbar ändert
 

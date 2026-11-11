@@ -1,0 +1,44 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Sidebar from './sidebar.stories.js';
+
+<Meta of={Sidebar} />
+
+# Sidebar
+
+Eine schmale Spalte neben breitem Inhalt, etwa Bild und Text auf einer Werkseite oder Ergebnisse und Filter in der Suche. Würde der Inhalt schmaler als die Hälfte, stehen beide untereinander – ohne Media Query, abhängig vom Platz im Elternelement, nicht von der Fensterbreite. Zum Ausprobieren die Breite an der Ecke unten rechts ziehen.
+
+Nicht zu verwechseln mit einer Seitenleiste, die sich über den Inhalt schiebt: Die folgt als Komponente (Roadmap-Schritt 26).
+
+```html
+<div class="cda-l-sidebar">
+  <div>Schmale Spalte</div>
+  <div>Breiter Inhalt</div>
+</div>
+```
+
+<Canvas of={Sidebar.Links} />
+
+## Schmale Spalte rechts
+
+Mit `cda-l-sidebar--end` ist das letzte Kind die schmale Spalte. Die Reihenfolge im HTML bleibt die Lesereihenfolge.
+
+```html
+<div class="cda-l-sidebar cda-l-sidebar--end">
+  <div>Breiter Inhalt</div>
+  <div>Schmale Spalte</div>
+</div>
+```
+
+<Canvas of={Sidebar.Rechts} />
+
+## Einstellen
+
+| Variable | Standard | Wirkung |
+|---|---|---|
+| `--cda-l-side` | `--cda-size-card-min` (256 px) | Breite der schmalen Spalte |
+| `--cda-l-space` | `--cda-space-l` (24 px) | Abstand zwischen den Spalten |
+
+## Hinweise
+
+- Genau zwei Kinder.
+- Die schmale Spalte wird nie schmaler als `--cda-l-side`; der Inhalt bekommt den Rest. Untereinander stehen beide, sobald der Inhalt weniger als die Hälfte der Breite hätte.

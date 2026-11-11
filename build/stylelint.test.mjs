@@ -15,7 +15,7 @@ async function lint(code, file = 'src/test.css') {
 const inLayer = (css) => `@layer cda.components {\n  ${css}\n}\n`;
 
 test('gültiges CSS in src/ besteht', async () => {
-  const css = `@layer cda.tokens, cda.reset, cda.base, cda.components, cda.utilities;
+  const css = `@layer cda.tokens, cda.reset, cda.base, cda.layout, cda.components, cda.utilities;
 
 @layer cda.components {
   .cda-button {
@@ -38,6 +38,16 @@ test('gültiges CSS in src/ besteht', async () => {
   .cda-card__title,
   .cda-u-visually-hidden {
     inline-size: 1em;
+  }
+}
+
+@layer cda.layout {
+  .cda-l-stack {
+    --cda-l-space: var(--cda-space-m);
+
+    & > * + * {
+      margin-block-start: var(--cda-l-space);
+    }
   }
 }
 `;

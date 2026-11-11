@@ -23,7 +23,7 @@ Gemeinsame Design-Tokens, Grundstyles und Komponenten für die Frontends des Cra
 ## Technische Leitplanken
 
 - **CSS-first** (ADR 0002): Tokens als `--cda-*`, Komponenten als `.cda-*`-Klassen mit dokumentiertem HTML. Kein SCSS. Natives CSS Nesting ist erlaubt (Baseline „widely available“, ADR 0010).
-- **Layers** (ADR 0003): alles in `@layer cda.tokens, cda.reset, cda.base, cda.components, cda.utilities`. **Kein `!important`, kein `outline: none`**, Fokus über `:focus-visible`.
+- **Layers** (ADR 0003): alles in `@layer cda.tokens, cda.reset, cda.base, cda.layout, cda.components, cda.utilities`. **Kein `!important`, kein `outline: none`**, Fokus über `:focus-visible`.
 - **Werte nur über Tokens:** keine Hex-Farben, px-Abstände o. Ä. in `src/`; neue Werte zuerst in `tokens/*.json` anlegen. `dist/` wird generiert und nie von Hand bearbeitet (und nicht eingecheckt).
 - **Themes** (ADR 0007): helles Theme Standard; dunkel über `data-theme="dark"`, `.dark` oder `prefers-color-scheme`. Komponenten nutzen nur semantische Tokens (`--cda-color-text-default` usw.), damit beide Themes automatisch funktionieren.
 - **Barrierefreiheit:** `npm run check:contrast` muss bestehen; Gelb nur als Fläche mit dunkler Schrift (ADR 0008); Stories ohne axe-Fehler.
@@ -59,9 +59,9 @@ npm run catalog:photos   # Fotos für den Katalog der Projektkomponenten (nur lo
 | `tokens/semantic/{light,dark}.json` | Bedeutungen je Theme |
 | `build/` | Build-Skripte (Style Dictionary, Icons, CSS und Schriften, Kontrastprüfung mit Paarungen in `contrast.mjs`, Stylelint-Plugin und -Tests, Figma-Sync mit Vorlage und Tests, Release-Skript `release.mjs`, Fotos für den Katalog `catalog-photos.mjs`) |
 | `stylelint.config.mjs` | CSS-Regeln: Layer, Präfix, Werte nur über Tokens, kein `!important`/`outline: none` |
-| `src/` | CSS für Reset und Grundstyles (`reset.css`, `base.css`), Komponenten in `src/components/`, Hilfsklassen `cda-u-*` in `utilities.css`; Reihenfolge in `build/build-css.mjs` |
+| `src/` | CSS für Reset und Grundstyles (`reset.css`, `base.css`), Layout-Bausteine `cda-l-*` in `layout.css` (ADR 0021), Komponenten in `src/components/`, Hilfsklassen `cda-u-*` in `utilities.css`; Reihenfolge in `build/build-css.mjs` |
 | `icons/` | `icons.json` (Icon-Namen mit nutzenden Projekten), Lizenztext Material Symbols |
-| `stories/` | Storybook-Doku: MDX-Seiten (Deutsch) und Stories; Grundlagen in `stories/grundlagen/`, Komponenten in `stories/komponenten/`, Utilities in `stories/utilities.*`, Katalog der Projektkomponenten in `stories/projektkomponenten.*` mit Daten in `.json` und Fotos in `stories/assets/projektkomponenten/` (ADR 0020), Migrationsseiten je Projekt in `stories/migration/` |
+| `stories/` | Storybook-Doku: MDX-Seiten (Deutsch) und Stories; Grundlagen in `stories/grundlagen/`, Layout-Bausteine in `stories/layout/`, Komponenten in `stories/komponenten/`, Utilities in `stories/utilities.*`, Katalog der Projektkomponenten in `stories/projektkomponenten.*` mit Daten in `.json` und Fotos in `stories/assets/projektkomponenten/` (ADR 0020), Migrationsseiten je Projekt in `stories/migration/` |
 | `.storybook/` | Storybook-Konfiguration; `preview.css` mit Hilfsklassen `docs-*` nur für die Doku |
 | `docs/` | ADRs, Roadmap, Bestandsaufnahme, Hintergrund, Anleitungen (`figma-sync.md`, `release.md`), Archiv |
 | `.github/workflows/` | release-please (pflegt Release-PR und `CHANGELOG.md`, veröffentlicht nichts), PR-Titel (prüft Conventional Commits) |

@@ -1,0 +1,39 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Grid from './grid.stories.js';
+
+<Meta of={Grid} />
+
+# Grid
+
+Raster mit einer Mindestbreite je Spalte; es passen so viele Spalten hinein, wie Platz ist. Auf schmalen Bildschirmen wird eine Spalte nie breiter als der verfügbare Platz. Standard ist die Mindestbreite der [Werk-Karte](?path=/docs/komponenten-werk-karte--docs) – das Grid ersetzt das frühere `.cda-card-grid`. Zum Ausprobieren die Breite an der Ecke unten rechts ziehen.
+
+```html
+<ul class="cda-l-grid" role="list">
+  <li>…</li>
+  <li>…</li>
+</ul>
+```
+
+<Canvas of={Grid.Standard} />
+
+## Einstellen
+
+| Variable | Standard | Wirkung |
+|---|---|---|
+| `--cda-l-min` | `--cda-size-card-min` (256 px) | Mindestbreite einer Spalte |
+| `--cda-l-space` | `--cda-space-s` (12 px) | Abstand zwischen den Kacheln |
+
+## Klein
+
+Für die kleine Kachelansicht der Werk-Karte, nur mit Bildern:
+
+```html
+<ul class="cda-l-grid" role="list"
+    style="--cda-l-min: var(--cda-size-card-min-small); --cda-l-space: var(--cda-space-2xs)">
+  …
+</ul>
+```
+
+<Canvas of={Grid.Klein} />
+
+Statt im `style`-Attribut lassen sich die Werte auch in einer eigenen Regel des Projekts setzen, etwa `.ergebnisse--klein { --cda-l-min: var(--cda-size-card-min-small); }`.

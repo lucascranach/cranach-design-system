@@ -37,7 +37,8 @@ export function scopesFor(collection, name) {
   if (group === 'space') return ['GAP', 'WIDTH_HEIGHT'];
   if (group === 'radius') return ['CORNER_RADIUS'];
   if (group === 'border-width' || name === 'focus/ring-width' || name === 'focus/ring-offset') return ['STROKE_FLOAT'];
-  if (group === 'size') return ['WIDTH_HEIGHT'];
+  // size/measure ist in ch angegeben und kommt als Text nach Figma – ohne Feld, nur zur Information
+  if (group === 'size') return name === 'size/measure' ? [] : ['WIDTH_HEIGHT'];
   if (group === 'font' && sub === 'size') return ['FONT_SIZE'];
   if (group === 'font' && sub === 'weight') return ['FONT_WEIGHT'];
   if (group === 'font' && sub === 'family') return ['FONT_FAMILY'];

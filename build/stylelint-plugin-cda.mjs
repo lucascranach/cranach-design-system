@@ -2,7 +2,7 @@
  * Stylelint-Plugin des Cranach Design System.
  *
  * Regel cda/require-layer (ADR 0003): Jede Regel muss in einem der Layer
- * cda.tokens, cda.reset, cda.base, cda.components oder cda.utilities stehen.
+ * cda.tokens, cda.reset, cda.base, cda.layout, cda.components oder cda.utilities stehen.
  * CSS ohne Layer würde gegen alle Projekt-Styles mit Layer gewinnen und ließe sich
  * in Tailwind-Projekten nicht mehr mit Utility-Klassen überschreiben.
  *
@@ -17,12 +17,12 @@ const {
 } = stylelint;
 
 const ruleName = 'cda/require-layer';
-const LAYERS = ['cda.tokens', 'cda.reset', 'cda.base', 'cda.components', 'cda.utilities'];
+const LAYERS = ['cda.tokens', 'cda.reset', 'cda.base', 'cda.layout', 'cda.components', 'cda.utilities'];
 const OUTSIDE_OK = ['import', 'charset', 'font-face', 'custom-media'];
 
 const messages = ruleMessages(ruleName, {
-  outside: (what) => `${what} steht außerhalb eines Layers. In @layer ${LAYERS.join(', ')} einordnen (ADR 0003).`,
-  unknown: (name) => `Unbekannter Layer „${name}“. Erlaubt: ${LAYERS.join(', ')} (ADR 0003).`,
+  outside: (what) => `${what} steht außerhalb eines Layers. In @layer ${LAYERS.join(', ')} einordnen (ADR 0003, 0021).`,
+  unknown: (name) => `Unbekannter Layer „${name}“. Erlaubt: ${LAYERS.join(', ')} (ADR 0003, 0021).`,
 });
 
 const meta = { url: 'https://github.com/lucascranach/cranach-design-system/blob/main/docs/adr/0003-praefix-und-cascade-layers.md' };

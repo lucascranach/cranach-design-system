@@ -44,10 +44,12 @@
   "size": {
     "$type": "dimension",
     "card": {
-      "$description": "Mindestbreite einer Karte im Raster (.cda-card-grid). Aus cranach-search ($tile-s 16em, $tile-xxs 8em).",
+      "$description": "Mindestbreite einer Karte im Raster (.cda-l-grid). Aus cranach-search ($tile-s 16em, $tile-xxs 8em).",
       "min": { "$value": "256px" },
       "min-small": { "$value": "128px" }
-    }
+    },
+    "measure": { "$value": "65ch", "$description": "Zeilenlänge von Textspalten (typografisch „measure“), bei 16 px etwa 70–80 Zeichen; Standard für Text in .cda-l-center (ADR 0021). In Figma nur zur Information, ch gibt es dort nicht." },
+    "page": { "$value": "1536px", "$description": "Größte Breite des Seiteninhalts, gleich dem Breakpoint 2xl: oberhalb wächst das Layout nicht weiter. Standard von .cda-l-center (ADR 0021)." }
   },
   "focus": {
     "ring-width": { "$type": "dimension", "$value": "2px" },

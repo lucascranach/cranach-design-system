@@ -223,3 +223,28 @@
   font-size: var(--cda-font-size-s);
   text-align: center;
 }
+
+/* ---------- Layout-Bausteine (ADR 0021) ---------- */
+
+/* Platzhalter-Kachel für die Beispiele */
+.docs-tile {
+  padding: var(--cda-space-s) var(--cda-space-m);
+  background-color: var(--cda-color-background-subtle);
+  border: var(--cda-border-width-s) solid var(--cda-color-border-strong);
+}
+
+/* Rahmen, dessen Breite sich mit der Maus ziehen lässt (Ecke unten rechts) – zeigt, wie ein
+   Baustein ohne Media Query auf den Platz reagiert */
+.docs-resize {
+  min-inline-size: calc(var(--cda-space-4xl) * 2);
+  max-inline-size: 100%;
+  padding: var(--cda-space-s);
+  overflow: auto;
+  resize: horizontal;
+  border: var(--cda-border-width-s) dashed var(--cda-color-border-strong);
+}
+
+/* Zeigt die Fläche eines Center-Bausteins */
+.docs-outline {
+  outline: var(--cda-border-width-s) dashed var(--cda-color-accent-hover);
+}

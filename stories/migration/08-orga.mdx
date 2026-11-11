@@ -54,6 +54,18 @@ Die Grundgröße ist 1rem (16 px), deshalb rechnen die Größen anders.
 
 </div>
 
+## Layout
+
+Eigene Layout-Regeln des Projekts, die ein [Layout-Baustein](?path=/docs/layout-stack--docs) ersetzen kann (ADR 0021).
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Layout">
+
+| Alt | Neu | Hinweis |
+|---|---|---|
+| `.news-container`, `.post-container` mit `max-width` (`$column-xlarge` 1920 px, `$column-large * 2`) | `.cda-l-center` | größte Breite `size.page` (1536 px) statt 1920 px |
+
+</div>
+
 ## Beim Umstellen beachten
 
 - **Gelb als Textfarbe:** `h2 { color: $accent-dark }` in `base/body-and-typo.scss` → `--cda-color-text-accent`.

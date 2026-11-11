@@ -35,6 +35,7 @@ PHP, Jekyll und reines HTML binden die versionierte Kopie vom eigenen Server ein
 | Icon-Font „Cranach Symbols“ | – (`@font-face`) |
 | Reset | `cda.reset` |
 | Grundstyles: Fließtext, Überschriften, Links, Fokus | `cda.base` |
+| [Layout-Bausteine](?path=/docs/layout-stack--docs) `cda-l-…`: Stack, Cluster, Sidebar, Grid, Center | `cda.layout` |
 | Komponenten | `cda.components` |
 | Hilfsklassen | `cda.utilities` |
 
@@ -52,7 +53,7 @@ Weitere Dateien im Paket:
 Alle Styles des Designsystems liegen in Cascade Layers:
 
 ```css
-@layer cda.tokens, cda.reset, cda.base, cda.components, cda.utilities;
+@layer cda.tokens, cda.reset, cda.base, cda.layout, cda.components, cda.utilities;
 ```
 
 Styles **ohne** Layer gewinnen immer gegen Styles in einem Layer – unabhängig von der Spezifität. Ein Projekt kann das Designsystem also einbinden, ohne dass sich etwas ändert, und alte Regeln danach Schritt für Schritt entfernen (ADR 0003, ADR 0015).
@@ -96,3 +97,15 @@ Komponenten verwenden nur semantische Tokens wie `--cda-color-text-default`. Dad
 ```
 
 Primitive Tokens wie `--cda-color-yellow-500` beschreiben die Palette. In Komponenten und Projekten bitte die semantischen Tokens verwenden, sonst passt das dunkle Theme nicht.
+
+## Zustände und Varianten
+
+Komponenten zeigen Zustände über Attribute, nicht über Klassen wie `.is-active` (ADR 0021). CSS und JavaScript nutzen dasselbe Attribut.
+
+| Fall | Mittel | Beispiel |
+|---|---|---|
+| Zustand, der für Screenreader zählt | ARIA-Attribut | `aria-current="page"`, `aria-pressed="true"`, `aria-expanded="false"`, `aria-invalid="true"` |
+| Zustand ohne passendes ARIA-Attribut | `data-state` | `data-state="loading"` |
+| feste Variante, die sich zur Laufzeit nicht ändert | Modifier-Klasse | `.cda-button--primary`, `.cda-l-sidebar--end` |
+
+Ein Projekt schaltet also zum Beispiel `aria-expanded` am Menü-Button um; das Aussehen folgt im CSS des Designsystems.

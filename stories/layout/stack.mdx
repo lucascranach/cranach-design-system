@@ -1,0 +1,36 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Stack from './stack.stories.js';
+
+<Meta of={Stack} />
+
+# Stack
+
+Kinder untereinander mit gleichem Abstand. Der häufigste Layout-Baustein: für Abschnitte einer Seite, den Inhalt einer Karte, Formularfelder. In CUBE CSS heißt er „Flow“, in Every Layout „Stack“.
+
+```html
+<div class="cda-l-stack">
+  <h2>…</h2>
+  <p>…</p>
+  <button class="cda-button">…</button>
+</div>
+```
+
+<Canvas of={Stack.Standard} />
+
+## Einstellen
+
+| Variable | Standard | Wirkung |
+|---|---|---|
+| `--cda-l-space` | `--cda-space-m` (16 px) | Abstand zwischen den Kindern |
+
+```html
+<div class="cda-l-stack" style="--cda-l-space: var(--cda-space-xl)">…</div>
+```
+
+<Canvas of={Stack.GroesserAbstand} />
+
+## Hinweise
+
+- Der Abstand sitzt oben am zweiten und jedem weiteren Kind. Eigene Außenabstände der Kinder oben und unten entfallen; so addieren sich keine Abstände.
+- Verschachtelte Stacks setzen ihren Standard selbst – ein größerer Abstand außen wirkt nicht innen weiter.
+- Als Liste (`ul`, `ol`) verschwinden Aufzählungszeichen und Einzug; dann `role="list"` setzen, damit Safari die Liste weiter vorliest.

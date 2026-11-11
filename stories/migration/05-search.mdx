@@ -76,8 +76,8 @@ Die Sass-Größen dienen als Abstand **und** als Schriftgröße. Deshalb zwei Sp
 | `$l` | 30,24 px | `--cda-space-xl` (32) | `--cda-font-size-2xl` (32) | 38× | |
 | `$xl` | 48,96 px | `--cda-space-2xl` (48) | `--cda-font-size-4xl` (52) | 13× | |
 | `$xxl` | 79,2 px | `--cda-space-3xl` (64) | – | 6× | größte Abweichung, −15 px |
-| `$tile-xxs` | 8em (115 px) | `.cda-card-grid--small` (`--cda-size-card-min-small`, 128) | | 2× | über das Mixin `grid-auto-columns-small` |
-| `$tile-s` | 16em (230 px) | `.cda-card-grid` (`--cda-size-card-min`, 256) | | 1× | Kacheln werden breiter |
+| `$tile-xxs` | 8em (115 px) | `.cda-l-grid` mit `--cda-l-min: var(--cda-size-card-min-small)` (128) | | 2× | über das Mixin `grid-auto-columns-small` |
+| `$tile-s` | 16em (230 px) | `.cda-l-grid` (Standard `--cda-size-card-min`, 256) | | 1× | Kacheln werden breiter |
 | `$tile-xs` | 12em | – | | 0× | |
 | `$sidebar-width` | 25,2rem (403 px) | kein Gegenstück | | 9× | an `$bfs` gekoppelt – mit 16 px gegenprüfen |
 | `$slider-handles`, `--tile-fix` | | kein Gegenstück | | | `--tile-fix` liest das Skript `artefact-overview.tsx` |
@@ -133,7 +133,7 @@ Pfade unter `src/components/`.
 | `.artefact-overview-switcher` | `.cda-switcher` mit Buttons in `role="group"` | `<i data-icon onClick>` → `<button aria-pressed aria-label>`; die aktuelle Ansicht ist heute `is-disabled` → `aria-pressed="true"` |
 | `.cloak`, `.cloak__throbber` | `.cda-loader`, `__panel`, `.cda-spinner` ([Loader](?path=/docs/komponenten-loader--docs)) mit Text | `role="status"`, Text ist Pflicht |
 | `.artefact-card` (`__content`, `__title`, `__subtitle`, `__text`, `__favorite`, `.card-image`) | `.cda-card` ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)) mit `__image`, `__content`, `__title` › `__link`, `__subtitle`, `__text`, `__favorite` | `<article>`, ein Link im Titel statt zwei; Merken als `<button aria-pressed>` statt `<a>` ohne `href`; `--is-armed` entfällt |
-| `.artefact-overview--is-grid` | `.cda-card-grid` bzw. `--small` | |
+| `.artefact-overview--is-grid` | `.cda-l-grid` mit `role="list"`, klein mit `--cda-l-min: var(--cda-size-card-min-small)` | siehe [Grid](?path=/docs/layout-grid--docs) |
 | `.main-navigation`, `__hamburger`, `.menu`, `.menu__item`, `a.is-active` | `.cda-header` ([Header](?path=/docs/komponenten-header--docs)) mit `__brand`, `__toggle`, `__nav`, `__menu`, `__link`, `__actions` | Hamburger mit Icon statt leer und `aria-label="Menü"`; `is-active` → `aria-current`; Menüeinträge sind heute `<a>` ohne `href` |
 | `.logo`, `.cda-logo` (`base/visualizing/logo`) | `.cda-header__brand` mit SVG | **Präfix `cda-` ist reserviert** – umbenennen; auch in `pages/maintenance-notice` |
 | `.icon` (`data-icon`, `.i12`–`.i48`) | `.cda-icon` ([Icons](?path=/docs/grundlagen-icons--docs)) | Name als Text; Größenklassen ohne Gegenstück |
@@ -144,6 +144,20 @@ Pfade unter `src/components/`.
 **Gegenstück folgt** (bis dahin im Projekt): artefact-table → Tabelle (Roadmap-Schritt 27), artefact-line → Werk-Karte als Listenzeile (Schritt 28).
 
 **Ohne Gegenstück, bleiben im Projekt:** tree-list, dating-rangeslider (noUiSlider), search-result-navigation (Seitenblättern), my-cranach, secondary-navigation, scroll-to, size, image, maintenance-notice, Seitenraster `.page`/`.sidebar`.
+
+## Layout
+
+Eigene Layout-Regeln des Projekts, die ein [Layout-Baustein](?path=/docs/layout-stack--docs) ersetzen kann (ADR 0021).
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Layout">
+
+| Alt | Neu | Hinweis |
+|---|---|---|
+| Mixins `grid-auto-columns`, `grid-auto-columns-small` (`style/000-abstracts/mixins.scss`) | `.cda-l-grid` | klein mit `--cda-l-min: var(--cda-size-card-min-small)` |
+| Mixins `grid-even-2-columns`, `grid-even-3-columns`, `grid-even-columns` | `.cda-l-grid` mit passender `--cda-l-min` | Spalten ergeben sich aus der Breite statt aus Breakpoints |
+| Seitenraster `.page` mit Filterleiste rechts (`$sidebar-width`) | `.cda-l-sidebar--end` mit `--cda-l-side: 25.2rem` | stapelt sich bei wenig Platz von selbst |
+
+</div>
 
 ## Beim Umstellen beachten
 
