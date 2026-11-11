@@ -1,0 +1,159 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration/cranach-artefacts" />
+
+# cranach-artefacts
+
+Eleventy-Detailseiten zu Werken, Grafiken, Literatur und Archivalien. Schritt 4 der [Migration](?path=/docs/migration-übersicht--docs). Die meisten Komponenten des Designsystems haben hier ihre Vorlage.
+
+Sass unter `src/assets/styles/scss/`, Markup in `src/_layouts/components/*.11ty.js`. Alle Variablen stehen in `abstracts/variables.scss`. In Sass lassen sie sich zuerst umlenken, etwa `$accent: var(--cda-color-accent-default);`. Die Grundgröße `$bfs` ist 0.9rem (14,4 px).
+
+## Werte
+
+### Farben
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Farben">
+
+| Alt | Wert | Neu | Hinweis |
+|---|---|---|---|
+| `$darkest` | #000 | `--cda-color-text-default`, `-link-default` bzw. `-background-inverse` | gleich |
+| `$darker` | #222 | `--cda-color-text-default` | entfällt (ADR 0008); einmal als Icon-Farbe im Button |
+| `$dark` | #444 | Text: `--cda-color-text-muted`; Fläche des Footers: `.cda-footer` | Text #666 statt #444; Kartentext, Bildunterschrift, Gutachten |
+| `$medium` | #666 | `--cda-color-text-muted` | gleich; nicht verwendet |
+| `$light` | #b4b4b4 | Kartentitel: `--cda-color-text-default`; Linien: `--cda-color-border-hover` | Button-Hover entfällt mit `.cda-button` |
+| `$lighter` | #f2f2f2 | `--cda-color-background-medium` | gleich |
+| `$lightest` | #fff | `--cda-color-background-default` / `-text-inverse` | gleich |
+| `$accent` | **#fc0** | Fläche: `--cda-color-accent-default`; Unterstreichung: `--cda-color-link-underline`; Link-Hover: `--cda-color-link-hover-background` | #feb701 statt #fc0 |
+| `$accent-dark` | #e8a60c | Fläche/Hover: `--cda-color-accent-hover`; als Text- oder Icon-Farbe: `--cda-color-text-accent` | fast immer als Textfarbe genutzt (10×) – nicht zulässig (ADR 0008) |
+| `$accent-secondary` | #cc5800 | `--cda-color-text-decoration` | #b84f00; das „#“ vor Zählern |
+| `$error` | #c00 | `--cda-color-text-danger` | nicht verwendet |
+| `$darken` | rgba(0 0 0 / .06) | Fläche: `--cda-color-background-medium`; Linie: `--cda-color-border-default` | Linie wird etwas kräftiger |
+| `$darken-medium` | rgba(0 0 0 / .3) | `--cda-color-border-hover` | deckend, ≈ gleicher Ton |
+| `$darken-strong` | rgba(0 0 0 / .6) | Text: `--cda-color-text-muted`; Linie: `--cda-color-border-strong`; durchscheinend: `--cda-color-alpha-black-60` | auf Weiß genau #666 |
+| `$darken-strongest` | rgba(0 0 0 / .8) | Hintergrund von Dialogen: `--cda-color-background-overlay` | 40 % statt 80 % |
+| `$lighten` | rgba(255 255 255 / .06) | `--cda-color-alpha-white-10` | |
+| `$lighten-strong` | rgba(255 255 255 / .2) | kein Gegenstück | einmal (`final-words.scss`) |
+
+</div>
+
+Hartkodierte Farben außerhalb der Variablen müssen einzeln umgestellt werden: `components/meta-data-form.scss` (#feb701, #cb9201, #fff auf Gelb, #444, #ffd364, #ff6e6e, #71ff99), `components/metadata-editor.scss` (rgb(106 106 106)), `literature-page.scss` sowie inline `rgb(255 204 0)` in `navigation.11ty.js`.
+
+### Schrift
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Schrift">
+
+| Alt | Wert | Neu | Hinweis |
+|---|---|---|---|
+| `$bfs` | 0.9rem (14,4 px) | `--cda-font-size-m` (16 px) | gewollt (ADR 0009) |
+| `$font-sans-serif` | "IBMPlexSans" | `--cda-font-family-sans` | TTF → variable woff2; eigene `@font-face` danach löschen |
+| `$font-icons` | 'MaterialIcons' (Sharp) | `.cda-icon` | alle genutzten Icons sind im Subset |
+| `$font-code` | menlo, consolas … | `--cda-font-family-mono` | |
+| `$fw-light` | 200 (Datei Light) | `--cda-font-weight-light` | `body` wird Regular (ADR 0009) |
+| `$fw-regular` | 300 (Datei Regular) | `--cda-font-weight-regular` | |
+| `$fw-semibold` | 400 (Datei **Medium**) | `--cda-font-weight-medium` | so bleibt es gleich; hartkodiert `font-weight: 500` lädt ebenfalls Medium |
+| `$fw-bold` | 600 (Datei Bold) | `--cda-font-weight-bold` | |
+| `$lh-tight`, `$lh-headlines` / `$lh-normal` / `$lh-loose` | 120 % / 140 % / 160 % | `--cda-font-line-height-tight` / `-normal` / `-loose` | ohne Einheit (vererbt sich anders) |
+
+</div>
+
+### Größen
+
+Die Sass-Größen dienen als Abstand **und** als Schriftgröße. Deshalb zwei Spalten.
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Größen">
+
+| Alt | Wert | Neu als Abstand | Neu als Schriftgröße | Hinweis |
+|---|---|---|---|---|
+| `$xxs` | 2,88 px | `--cda-space-2xs` (4) | – | |
+| `$xs` | 5,76 px | `--cda-space-2xs` (4) | – | |
+| `$quad` | 3,6 px | `--cda-space-2xs` (4) | – | |
+| `$half` | 7,2 px | `--cda-space-xs` (8) | – | |
+| `$s` | 11,52 px | `--cda-space-s` (12) | `--cda-font-size-xs` (12) | |
+| `$m` | 14,4 px | `--cda-space-m` (16) | `--cda-font-size-m` (16) | |
+| `$l` | 17,28 px | `--cda-space-m` (16) | `--cda-font-size-l` (20) | als Schrift (h2, `.title`) eine Stufe größer, sonst so groß wie der Fließtext |
+| `$xl` | 20,16 px | `--cda-space-l` (24) | `--cda-font-size-l` (20) | |
+| `$xxl` | 25,92 px | `--cda-space-l` (24) | `--cda-font-size-xl` (24) | |
+| `$xxxl` | 37,44 px | `--cda-space-xl` (32) | `--cda-font-size-3xl` (40) | |
+| `$tile-xxs` in `minmax()` | 100,8 px | `.cda-card-grid--small` (`--cda-size-card-min-small`, 128) | | |
+| `$tile-xs` in `minmax()` | 201,6 px | `.cda-card-grid` (`--cda-size-card-min`, 256) | | Kacheln werden breiter |
+| `$column-*`, `$term-width*`, `$image-small`, `$tile-s` | | kein Gegenstück | | bleiben im Projekt |
+
+</div>
+
+### Fließende Abstände (`:root`)
+
+Die alten Werte springen bei 1440 und 1800 px, die neuen wachsen gleitend. Abweichung bei 375 / 1024 / 1440 / 1800 px Breite:
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Fließende Abstände (`:root`)">
+
+| Alt | Neu | Abweichung |
+|---|---|---|
+| `--responsive-padding-top`, `-right-left` | `--cda-space-fluid-s` | −2 / +4 / −4 / −13 px |
+| `--responsive-padding-top-inner` | `--cda-space-fluid-s` | +1 / +7 / +2 / −2 px |
+| `--responsive-padding-bottom` | `--cda-space-fluid-m` | −1 / +11 / −1 / +7 px |
+| `--responsive-padding-bottom-inner`, `--responsive-gap` | `--cda-space-fluid-s` | −2 / +4 / +2 / −2 px |
+| `--overlay-width`, `-height`, `-max-height` | kein Gegenstück | bleiben im Projekt |
+
+</div>
+
+`--cda-space-fluid-l` (24–96 px) hat keine Entsprechung. Die Zuordnung hält die mittlere Abweichung klein; ob sie optisch passt, auf echten Seiten prüfen.
+
+### Breakpoints, Bewegung, Ebenen, Weiteres
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Breakpoints, Bewegung, Ebenen, Weiteres">
+
+| Alt | Wert | Neu | Hinweis |
+|---|---|---|---|
+| `$vp-medium` | 768 px | `--cda-breakpoint-md` | gleich |
+| `$vp-large` | 1024 px | `--cda-breakpoint-lg` | gleich |
+| `$vp-xlarge` | 1440 px | `--cda-breakpoint-xl` (1280) | −160 px |
+| `$vp-xxlarge` | 1800 px | `--cda-breakpoint-2xl` (1536) | −264 px |
+| `$tr-fast` / `-medium` / `-slow` | 0,3 / 0,5 / 0,8 s | `--cda-duration-fast` / `-medium` / `-slow` | 200 / 400 / 800 ms |
+| `$level-background` / `-content` | 0 / 10 | `--cda-z-background` / `-content` | |
+| `$level-content-nav` / `-section-nav` | 20 / 30 | `--cda-z-content-top` / `-nav` | nicht verwendet |
+| `$level-overall-nav` | 40 | `.cda-header--sticky` bzw. `--cda-z-nav-fixed` | |
+| `$level-overlay` | 100 | `--cda-z-toast` | Benachrichtigung; `.overlay` ist ein `<dialog>` und braucht keinen |
+| z-index 41 (Drawer) | | `--cda-z-modal`, dahinter `-modal-bg` | ADR 0011 |
+| `$shadow` / `$shadow-xs` | Unschärfe 2,88 / 7,2 px | `--cda-shadow-s` | |
+| `$shadow-s` / `$shadow-m` | 11,52 / 14,4 px | `--cda-shadow-m` | |
+| `$shadow-top*`, `$inner-shadow` | | kein Gegenstück | nicht verwendet; `$inner-shadow` ist fehlerhaft (Alpha 10) |
+| `$op-medium` / `$op-low` | 0,5 / 0,2 | `--cda-opacity-medium` / `-low` | 0,6 / 0,3 |
+| `$border-stroke-weight` / `-s` | 2 / 1 px | `--cda-border-width-m` / `-s` | gleich |
+| `$radius-s` / `$radius-m` | 2 / 5 px | `--cda-radius-s` / `-m` | 4 statt 5 px |
+
+</div>
+
+## Klassen
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Klassen">
+
+| Alt | Neu | Hinweis zum Markup |
+|---|---|---|
+| `.button` | `.cda-button` ([Button](?path=/docs/komponenten-button--docs)) | Hover grau `background-strong`; das Icon dreht sich nicht mehr |
+| `.button--is-transparent` | `.cda-button--ghost` | bekommt beim Überfahren eine Fläche |
+| `.button__icon` (+ `--is-large`) | `<span class="cda-icon" aria-hidden="true">` im Button | einheitlich 24 px |
+| `button.options__trigger` (Icon per `::after`) | `.cda-button .cda-button--ghost .cda-button--icon` | braucht `aria-label`, `aria-expanded`, `aria-controls` |
+| `.input-group`, `.input`, `.label` | `.cda-field` ([Textfeld](?path=/docs/komponenten-textfeld--docs)), `.cda-input`, `.cda-field__label` | `<label>` steht heute hinter dem Feld und ohne `for` |
+| `.input-group--checkbox` | `.cda-checkbox` ([Checkbox](?path=/docs/komponenten-checkbox--docs)) mit `__input`, `__label` | |
+| `.switcher.lang-selector`, `.switcher-item`, `.lang-selector__item--is-active` | `<nav aria-label="Sprache"><ul class="cda-switcher">` ([Switcher](?path=/docs/komponenten-switcher--docs)) mit `a.cda-switcher__item` | aktive Klasse → `aria-current="page"`; `hreflang`, `lang`, `aria-label` ergänzen |
+| `details > summary` (`details-summary.scss`) | `.cda-accordion` ([Accordion](?path=/docs/komponenten-accordion--docs)) › `details.cda-accordion__item` › `summary.cda-accordion__summary` + `.cda-accordion__content` | passt fast direkt; Pfeil grau statt gelb |
+| `.foldable-block` mit `.is-expand-trigger` und `.expandable-content` | ebenso `.cda-accordion` | heute ein `<h2>` mit Klick-Handler (`js-expand-trigger`, 12×) – auf `details`/`summary` umbauen, dann ohne JavaScript |
+| `.download-link--resized.is-loading::after` | `<span class="cda-spinner" aria-hidden="true">` ([Loader](?path=/docs/komponenten-loader--docs)) im Link, dazu `aria-busy="true"` | das Skript fügt den Spinner ein statt der Klasse |
+| `.artefact-card` (`__image-holder`, `__content`, `__title`, `__subtitle`, `__text`, `__favorite`) | `article.cda-card` ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)) mit `__image`, `__content`, `__title` › `__link`, `__subtitle`, `__text`, `__favorite` | heute `<figure>` mit einem Link um alles; neu ein Link im Titel, Bild mit `alt=""` |
+| `.artefact-overview`, `.reprints-gallery` | `.cda-card-grid` bzw. `--small` | |
+| `.main-navigation` (+ `.is-sticky`), `.primary-navigation`, `.secondary-navigation` | `header.cda-header` ([Header](?path=/docs/komponenten-header--docs)) (+ `--sticky`) mit `__brand`, `__nav`, `__menu`, `__link`, `__actions`, `__toggle` | heute `<nav>` ohne `<header>`; die Links „zur Werksuche“ bleiben Buttons |
+| `.cda-logo-wrap`, `.cda-logo` | `.cda-header__brand` mit Logo als Inline-SVG | **Präfix `cda-` ist reserviert** – die alten Klassen umbenennen; `aria-label` am Link statt `alt="CDA Logo"` |
+| `.main-footer` | `footer.cda-footer` ([Footer](?path=/docs/komponenten-footer--docs)) mit `data-theme="dark"`, `__copyright`, optional `__nav`, `__links` | Fläche #444 → dunkles Theme |
+| `i.icon[data-icon]` | `.cda-icon` | Name als Text statt `content: attr(data-icon)`; Größenklassen `.i12`–`.i48` ohne Gegenstück |
+| – | `.cda-skip-link` ([Skip-Link](?path=/docs/komponenten-skip-link--docs)) | neu, gibt es noch nicht |
+| `.is-hidden`, `.hidden` | Attribut `hidden` bzw. `.cda-u-visually-hidden` | |
+
+</div>
+
+**Ohne Gegenstück, bleiben im Projekt:** `.overlay` (Dialog), `.drawer`, `.notification`, Formularmeldungen, Tabellen (`.table`, `.info-table`, `.literature-table`), `.definition-list`, `.related-item`, `.image-caption`, `.survey`, `.additional-content`, Bildviewer und Bildleisten (OpenSeadragon), SVG-Sprite für Dateitypen, die Trennstriche `.has-separator` u. ä. Links wie `a.link` folgen bereits dem Linkmuster der Grundstyles.
+
+## Beim Umstellen beachten
+
+- **Gelb als Textfarbe:** `color: $accent` 3× und `color: $accent-dark` 10×, dazu inline in `navigation.11ty.js`. Alle auf `--cda-color-text-accent` oder `-text-muted` umstellen.
+- **Globale Regeln:** `* { box-sizing: content-box; transition: all $tr-fast }` in `base/body-and-typo.scss` widerspricht dem Reset und ignoriert reduzierte Bewegung. `outline: none` in `meta-data-form.scss` löschen.
+- **Überschriften:** Mit 16 px Fließtext würde `$l` (h2, `.title`) genauso groß wie der Text. Als Schriftgröße deshalb `--cda-font-size-l`.

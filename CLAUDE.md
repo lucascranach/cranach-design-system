@@ -60,7 +60,7 @@ npm run release          # Probelauf des Releases (nichts wird veröffentlicht; 
 | `stylelint.config.mjs` | CSS-Regeln: Layer, Präfix, Werte nur über Tokens, kein `!important`/`outline: none` |
 | `src/` | CSS für Reset und Grundstyles (`reset.css`, `base.css`), Komponenten in `src/components/`, Hilfsklassen `cda-u-*` in `utilities.css`; Reihenfolge in `build/build-css.mjs` |
 | `icons/` | `icons.json` (Icon-Namen mit nutzenden Projekten), Lizenztext Material Symbols |
-| `stories/` | Storybook-Doku: MDX-Seiten (Deutsch) und Stories; Grundlagen in `stories/grundlagen/`, Komponenten in `stories/komponenten/`, Utilities in `stories/utilities.*` |
+| `stories/` | Storybook-Doku: MDX-Seiten (Deutsch) und Stories; Grundlagen in `stories/grundlagen/`, Komponenten in `stories/komponenten/`, Utilities in `stories/utilities.*`, Migrationsseiten je Projekt in `stories/migration/` |
 | `.storybook/` | Storybook-Konfiguration; `preview.css` mit Hilfsklassen `docs-*` nur für die Doku |
 | `docs/` | ADRs, Roadmap, Bestandsaufnahme, Hintergrund, Anleitungen (`figma-sync.md`, `release.md`), Archiv |
 | `.github/workflows/` | release-please (pflegt Release-PR und `CHANGELOG.md`, veröffentlicht nichts), PR-Titel (prüft Conventional Commits) |

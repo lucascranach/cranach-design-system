@@ -1,0 +1,65 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration/cranach-map" />
+
+# cranach-map
+
+Karte mit Standorten (React 18, Mapbox, three.js, styled-components). Schritt 6 der [Migration](?path=/docs/migration-übersicht--docs).
+
+Die Werte stehen als JS-Objekte in `src/base/variables.jsx`, einem Abbild der Sass-Variablen von [cranach-search](?path=/docs/migration-cranach-search--docs). In styled-components lassen sich CSS-Variablen direkt schreiben (`color: var(--cda-color-text-default)`). Für Mapbox und three.js, wo CSS-Variablen nicht greifen, liefert `@lucascranach/design-system/tokens` dieselben Werte als JS-Objekt.
+
+Von der Datei nutzt map nur wenige Werte: `colors.accent`, `dark`, `darkest`, `decoration`, `light`, `lighter`, `lightest`, `sizes.s`, `m`, `l`, `xxl` und `transitions.fast`. Alles andere ist ungenutzt und kann mit der Datei entfallen. Die Zuordnung der ungenutzten Werte steht bei search.
+
+## Werte
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Werte">
+
+| Alt | Wert | Neu | Hinweis |
+|---|---|---|---|
+| `colors.darkest` | #000 | `--cda-color-text-default` | Nav-Text, Theme-Button, Titel der Karte |
+| `colors.dark` | #444 | Nav-Fläche im Dunkelmodus: `--cda-color-background-default` mit `data-theme="dark"`; Text: `--cda-color-text-muted` | dunkle Fläche #18181a statt #444 |
+| `colors.light` | #b4b4b4 | „#“ vor der Trefferzahl: `--cda-color-text-muted`; Hover der Karte: `--cda-color-background-strong` | als Text nur 2,07 : 1 |
+| `colors.lighter` | #f2f2f2 | `--cda-color-background-medium` | Fläche der Karte |
+| `colors.lightest` | #fff | Fläche: `--cda-color-background-default`; Text: `--cda-color-text-inverse` | |
+| `colors.accent` | #FEB701 | Linie: `--cda-color-accent-default`; Pfeil-Icon: `--cda-color-text-muted` | gelbes Icon hat nur 1,75 : 1 |
+| `colors.decoration` | #cc5800 | `--cda-color-text-decoration` | Trefferzahl; #b84f00 |
+| `sizes.s` | 11,52 px | `--cda-space-s` (12) | |
+| `sizes.m` | 18,72 px | `--cda-space-m` (16) | |
+| `sizes.l` | 30,24 px | `--cda-space-xl` (32) | |
+| `sizes.xxl` | 79,2 px | `--cda-space-3xl` (64) | −15 px |
+| `transitions.fast`, hartkodiert 0.2 s | 0,2 s | `--cda-duration-fast` | gleich |
+| `fontWeights.*` und hartkodiert `font-weight: 400` / `200` | verschoben wie search | 400 → `--cda-font-weight-medium`, 200 → `-light` | nach der Datei, die `styles/fonts.css` lädt |
+| `font-family: IBMPlexSans` (direkt in `Card.jsx`, `Nav.jsx`), `body { font-family: Helvetica }` | | `--cda-font-family-sans` | die Helvetica-Regel in `styles/App.css` löschen |
+| `0.9rem` als Schriftgröße (4×) | 14,4 px | `--cda-font-size-m` | 16 px |
+| `0.5rem` / `1rem` | 8 / 16 px | `--cda-space-xs` / `-m` | gleich |
+| `line-height: 120%` | | `--cda-font-line-height-tight` | |
+| `opacity: 0.7` / `0.3` | | `--cda-opacity-medium` (0,6) / `-low` | |
+| `1px` | | `--cda-border-width-s` | |
+| `z-index: 1` (Ergebnisleiste), `3` (mitlaufende Ortszeile) | | bleiben im Projekt oder `--cda-z-content` / `-content-top` | |
+| Mapbox-Farben `#fc0`, `#e8a60c`, `#b5830f`, Rand `#fff` (`components/map/Layers.jsx`) | | Vorschlag: `color.yellow.500` / `600` / `700`, `neutral.0` aus `tokens.js` | Werte ändern sich leicht |
+| Ergebnisbreite `28rem` | | kein Gegenstück | bleibt im Projekt |
+
+</div>
+
+## Komponenten
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Komponenten">
+
+| Alt | Neu | Hinweis zum Markup |
+|---|---|---|
+| `StyledNav` mit `.cda-logo-wrap`, `.cda-logo`, `.apps-icon-wrap` (`components/layout/Nav.jsx`) | `.cda-header` ([Header](?path=/docs/komponenten-header--docs)) mit `__brand`, `__nav`, `__link`, `__actions` | Logo als SVG in `currentColor` statt `<img>` mit `invert(1)`. **Präfix `cda-` ist reserviert** – die alten Klassen umbenennen. Eine Sprachwahl gibt es in `Nav.jsx` nicht; die Sprache kommt aus der URL |
+| `.theme-toggle` (Icon light_mode/dark_mode) | `.cda-toggle` ([Toggle](?path=/docs/komponenten-toggle--docs)) mit `input.cda-toggle__input[role="switch"]` und `__label` | Vorlage des Toggles. Heute erkennt ein Screenreader den Zustand nicht. Das Theme über `data-theme` am `<html>` statt über ein Prop in styled-components |
+| `.material-icons` (`styles/App.css`) | `.cda-icon` ([Icons](?path=/docs/grundlagen-icons--docs)) | Google-Fonts-Link in `index.html` entfällt (ADR 0012) |
+| react-icons `FaChevronDown` / `FaChevronUp` | `.cda-icon` `expand_more` / `expand_less` oder der Pfeil des Accordions | `react-icons` kann dann entfallen |
+| `LocationItem` (`<li onClick>`) und `StyledLocationGroup` (`ResultsGroup.jsx`) | `.cda-accordion` ([Accordion](?path=/docs/komponenten-accordion--docs)) mit `__item`, `__summary`, `__content` | heute per Tastatur nicht erreichbar; `details`/`summary` mit Ereignis `toggle` statt `useState` |
+| `Card` (`components/layout/Card.jsx`) | `.cda-card` ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)) mit `__image`, `__content`, `__title` › `__link`, `__subtitle`, `__text` | ein Link im Titel statt zwei; `<img>` mit `alt=""`; `h3` → `p`. Die Karte ist heute waagerecht (Bild links); `.cda-card` ist eine Kachel – eine Listenform gibt es noch nicht |
+| `List` (`components/styled/List.jsx`) | teilweise `.cda-card-grid` | Mindestbreite 256 statt 320 px |
+| Karte (`Map.jsx`, `Layers.jsx`), Ergebnisleiste `Aside`, `Results` | bleiben im Projekt | |
+
+</div>
+
+## Beim Umstellen beachten
+
+- **Reset ohne Layer:** `src/styles/reset.css` (Meyer-Reset) setzt Abstände, Rahmen und Schrift vieler Elemente zurück und gewinnt gegen alle Komponenten. Löschen; der Reset des Designsystems ersetzt ihn.
+- **Theme:** `darkModeAtom` startet schon mit der Systemeinstellung. Der Schalter muss künftig `data-theme` am `<html>` setzen, dann wechseln alle Tokens mit.
+- **Waagerechte Karte:** Für die Ergebnisliste fehlt eine Listenform der Werk-Karte. Kandidat für eine spätere Variante `.cda-card--horizontal`.

@@ -1,0 +1,88 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration/cranach-kirby" />
+
+# cranach-kirby
+
+Prototyp einer neuen Website mit Kirby, Vite und Pico CSS. Schritt 8 der [Migration](?path=/docs/migration-übersicht--docs). Laut ADR 0015 entsteht kirby **von Anfang an auf dem Designsystem**. Das Projekt ist ein Fork einer Band-Website; seine Farben (`--km-blau`, `--km-pink` …) sind kein Cranach-Design.
+
+Deshalb ist diese Seite keine Umstellungs-, sondern eine **Aufräumliste**: was ersetzt wird, was ersatzlos entfällt und welche Snippets auf welche Komponente gehen. Die Variablen stehen in `assets/styles/global/variables.css`.
+
+## Werte
+
+### Ersetzen
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Ersetzen">
+
+| Alt | Wert | Neu | Hinweis |
+|---|---|---|---|
+| `--step-0`, `--s`, `--base-font-size` | clamp(16 … 20 px) | Schrift `--cda-font-size-m`; Abstand `--cda-space-m` | fließend wird fest 16 px (ADR 0009) |
+| `--step--2`, `--xxs` | ≈ 11–13 px | `--cda-font-size-xs` / `--cda-space-2xs` | |
+| `--step--1`, `--xs` | ≈ 13–16 px | `--cda-font-size-s` / `--cda-space-s` | |
+| `--step-1`, `--m` | ≈ 19–25 px | `--cda-font-size-l` / `--cda-space-l` | |
+| `--step-2`, `--l` | ≈ 23–31 px | `--cda-font-size-xl` / `--cda-space-l` oder `-xl` | |
+| `--step-3`, `--xl` | ≈ 28–39 px | `--cda-font-size-2xl` / `--cda-space-xl` | |
+| `--step-4`, `--xxl` | ≈ 33–49 px | `--cda-font-size-3xl` | |
+| `--half`, `--quarter` | 8–10 / 4–5 px | `--cda-space-xs` / `--cda-space-2xs` | |
+| `--fluid-space-xs` | clamp(0.5rem, 1vw, 1rem) | `--cda-space-fluid-s` | Werte ändern sich |
+| `--fluid-space-s` | clamp(1rem, 2vw, 2rem) | `--cda-space-fluid-m` | |
+| `--fluid-space-m`, `-l` | clamp(1.5rem, 4vw, 4rem), clamp(2rem, 8vw, 6rem) | `--cda-space-fluid-l` | |
+| `--font-family-sans` | ibmplex, "Atkinson" | `--cda-font-family-sans` | |
+| `--font-icons` | Material Icons Outlined | `.cda-icon` | Outlined → Sharp (ADR 0012) |
+| `--fw-light` (am `body`) | 300 | `--cda-font-weight-regular` | Fließtext in Regular (ADR 0009) |
+| `--fw-normal`, `--fw-medium` | 400, 500 | `--cda-font-weight-regular`, `-medium` | gleich; kirby nutzt schon das Standard-Mapping |
+| `--fw-bold` | 600 | `--cda-font-weight-semibold` | 600 ist hier echtes SemiBold |
+| `--lh-tight`, `--lh-default` | 110 %, 140 % | `--cda-font-line-height-tight` (1.2), `-normal` | |
+| `--lh-normal` | **nicht definiert** | `--cda-font-line-height-normal` | heute ein Fehler |
+| `--darkest`, `--headline-color` | #000 | `--cda-color-text-default` | |
+| `--darker`, `--text-color` | #333 | `--cda-color-text-default` | #000 statt #333 |
+| `--dark` | #666 | `--cda-color-text-muted` | gleich |
+| `--light` | #ccc | `--cda-color-text-muted` (dunkles Theme, #b4b4b4) | Text auf dunklen Flächen |
+| `--lighter` | #e6e6e6 | `--cda-color-background-strong` | #e0e0e0 |
+| `--lightest` | #fff | `--cda-color-background-default` / `-text-inverse` | |
+| `--background-color` | #f7f7f7 | `--cda-color-background-subtle` | gleich |
+| `--lighten`, `--darken` | Weiß / Schwarz 20 % | `--cda-color-alpha-white-10` / `-black-10` | 10 % statt 20 % |
+| `--km-pink`, `--decoration-color` | #fc8e77 | Unterstreichung `--cda-color-link-underline`, Hover `--cda-color-link-hover-background` | Linkmuster aus den Grundstyles; aktiver Menüpunkt über `.cda-header__link[aria-current]` |
+| `--tr-fast` / `-medium` / `-slow` | 0,2 / 0,6 / 1 s | `--cda-duration-fast` / `-medium` / `-slow` | |
+| `--border-width-s` / `--border-width` / `-l` | 1 / 2 / 4 px | `--cda-border-width-s` / `-m` / `-l` | `-l` 3 statt 4 px |
+| `border-radius: 50%` | | `--cda-radius-full` | |
+| Breakpoint 40em | 640 px | `--cda-breakpoint-sm` | gleich |
+| Breakpoint 60em | 960 px | `--cda-breakpoint-md` oder `-lg` | kein gleicher Wert; `.cda-header` schaltet selbst bei 48rem |
+| `--pswp-root-z-index` (PhotoSwipe) | 100000 | `--cda-z-modal` | |
+| z-index 100 / 1000 / 1001 im Header | | entfällt mit `.cda-header` | |
+
+</div>
+
+### Ersatzlos entfernen
+
+- `--km-blau` (#5d8dfd, Weiß darauf 3,14 : 1) samt `.is-blue`.
+- Nirgends genutzt: `--km-orange`, `--km-marker`, `--interaction-color`, `--step-5`, `--fluid-space-xl`, `--font-family-serif`, `--lh-semi-tight`, `--lh-loose`, `--lighten-light`, `--darken-light`, `--headline-color-light`, `--border-color`, `--seperator-color`, `--border-color-device`, alle `--op-*`, `--border-radius*`, `--box-shadow-*`, `--text-shadow`.
+- `--color-hero` (genutzt, aber nie definiert) und `--text-underline-offset` (setzen die Grundstyles).
+- Pico CSS classless – die Grundstyles übernehmen. Pico setzt außerdem dreimal `outline: none`.
+- Die Breiten `--max-width-*`, `--max-col-width*`, `--min-col-width`, `--large-content` bleiben im Projekt, bis das Layout steht.
+
+## Snippets und Klassen
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Snippets und Klassen">
+
+| Alt | Neu | Hinweis |
+|---|---|---|
+| `site/snippets/header.php` (`.main-header`, `.menu-button`, `.menu`, `.main-navigation`, `li.funky-link`) | `.cda-header` ([Header](?path=/docs/komponenten-header--docs)) mit `__brand`, `__toggle`, `__nav`, `__menu`, `__link`, `__actions` | Logo fehlt im Snippet; die auskommentierte Sprachwahl als `.cda-switcher` ([Switcher](?path=/docs/komponenten-switcher--docs)) in `__actions` |
+| `site/snippets/footer.php` (`.main-footer`, `.footer-links`) | `.cda-footer` ([Footer](?path=/docs/komponenten-footer--docs)) mit `__links`, `__copyright` | Impressum-Link ist fest `/de/impressum` |
+| `blocks/header.css`, `blocks/footer.css` | löschen | stylen Klassen, die in den Snippets gar nicht vorkommen |
+| `site/snippets/breadcrumb.php` | kein Gegenstück | Links über die Grundstyles; `aria-label` auf Deutsch |
+| `site/snippets/back.php` (`a.bottom-back-button`) | `.cda-button .cda-button--ghost` mit `.cda-icon` `arrow_back` | |
+| `site/snippets/social.php` | kein Gegenstück | wird nirgends eingebunden |
+| `.icon`, `.icon--s/m/l/xl`, `.md-dark`, `.md-light`, `.icon-inline` | `.cda-icon` (`--filled`), Größe über `--cda-font-size-*` | |
+| `.is-dark`, `.is-light`, `.is-grey` | `data-theme="dark"` bzw. Flächen-Tokens | |
+| `.is-hidden` (mit `!important`) | Attribut `hidden` bzw. `.cda-u-visually-hidden` | |
+| `.container`, `.grid*`, `.vertical-stack`, `[data-grid]` | bleiben im Projekt | Kachelraster über `.cda-card-grid` |
+| Animationen (`.scale-in`, `.slide-in-*`, `.zoom-in` …) | bleiben | `prefers-reduced-motion` fehlt und muss ergänzt werden (ADR 0010) |
+
+</div>
+
+## Beim Umstellen beachten
+
+- **Menü funktioniert heute nicht:** `main.js` sucht `[data-js-mobile-menu-toggle]`, `header.php` hat `data-js-menu`. Mit `.cda-header` schaltet das Projekt nur `aria-expanded` am Button.
+- **Fehler aus der Bestandsaufnahme:** `font-weight: 100 - 900` in `fonts.css` (richtig `100 900`) – entfällt, weil die Schrift aus `cranach.css` kommt.
+- **Barrierefreiheit:** Menü-Button mit `aria-label="Menü Button"`, ohne `aria-expanded`; Link-Hover #e6e6e6 auf #fc8e77 nur 1,81 : 1. Beides lösen die Komponenten.

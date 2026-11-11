@@ -1,0 +1,115 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration/cranach-image-tools" />
+
+# cranach-image-tools
+
+Interner Bild-Browser in PHP mit Plain CSS. Schritt 7 der [Migration](?path=/docs/migration-übersicht--docs), zusammen mit cda-orga, im Umfang „light“: Tokens und Grundstyles. Die Variablen stammen von cranach-grafiken-gatsby ab; die Grundgröße ist 1rem (16 px).
+
+Die Seite ist **dunkel**. Einbinden mit festem dunklen Theme:
+
+```html
+<html lang="de" data-theme="dark">
+…
+<link rel="stylesheet" href="/design-system/X.Y.Z/cranach.css">
+```
+
+Die Werte unten sind deshalb die des dunklen Themes. Alle Variablen stehen in `styles/variables.css`. „Nicht verwendet“ heißt: in keiner CSS-Datei, `index.html` oder `main.js` gefunden – diese Variablen können einfach entfallen.
+
+## Werte
+
+### Farben
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Farben">
+
+| Alt | Wert | Neu (dunkles Theme) | Hinweis |
+|---|---|---|---|
+| `--darkest` | #000 | `--cda-color-background-default` | #18181a statt #000 |
+| `--darker` | #222 | `--cda-color-background-subtle` | #242426; Spalte `.dir-list-column` |
+| `--dark` | #444 | aktiver Eintrag: `--cda-color-background-strong`; Linie im JSON-Viewer: `--cda-color-border-default` | Fläche gleich, Linie #333336 |
+| `--medium` | #666 | – | nicht verwendet |
+| `--light` | #b4b4b4 | `--cda-color-text-muted` | gleich |
+| `--lighter` | #f2f2f2 | `--cda-color-text-default` | gleich |
+| `--lightest` | #fff | `--cda-color-text-default` | #f2f2f2 statt #fff |
+| `--lighten` | rgba(255 255 255 / .04) | `--cda-color-border-default` | deckend #333336; Linie über `.important` |
+| `--accent` | **#FFCC00** | als Text (Icons, Logo, JSON): `--cda-color-text-accent`; Linie des Suchfelds: entfällt mit `.cda-input` | #feb701 statt #fc0; die Linie wird grau (`border-strong`) |
+| `--error` | #cc0000 | `--cda-color-text-danger` | nicht verwendet |
+| `--lighten-strong`, `--darken`, `--darken-medium`, `--darken-strong` | Alpha-Werte | – | nicht verwendet |
+| hartkodiert rgba(0 0 0 / .7) | `components.css` | `--cda-color-background-overlay` | 60 % statt 70 % |
+| hartkodiert #aaa | `json-viewer.css` | `--cda-color-text-muted` | #b4b4b4 |
+
+</div>
+
+### Schrift
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Schrift">
+
+| Alt | Wert | Neu | Hinweis |
+|---|---|---|---|
+| `--bfs` | 1rem | `--cda-font-size-m` | gleich |
+| `--font-sans-serif` | "IBMPlexSans" | `--cda-font-family-sans` | Im Projekt gibt es **kein** `@font-face` dafür; die Schrift erscheint erst mit `cranach.css` zuverlässig |
+| `--font-icons` | 'Material Icons' | `.cda-icon` | auch dafür gibt es kein `@font-face` |
+| `--font-code` | Menlo, Consolas … | `--cda-font-family-mono` | IBM Plex Mono zuerst |
+| `--fw-light` | 200 | `--cda-font-weight-light` | `body` wird Regular (ADR 0009) |
+| `--fw-regular` | 300 | `--cda-font-weight-regular` | |
+| `--fw-semibold` | 400 | `--cda-font-weight-medium` | ohne eigenes `@font-face` ist die Datei unklar; nach dem Schema der anderen Projekte Medium. Nur `.headline`, ungenutzt |
+| `--fw-bold` | 600 | `--cda-font-weight-bold` | nur `.title`, ungenutzt |
+| `--lh-tight` / `--lh-normal` / `--lh-loose` | 120 % / 140 % / 160 % | `--cda-font-line-height-tight` / `-normal` / `-loose` | gleiche Werte, aber ohne Einheit (vererbt sich anders) |
+| `--lh-headlines` | `--lh-tight` **ohne `var()`** | `--cda-font-line-height-tight` | heute ungültig |
+| `--s` als Schriftgröße (JSON-Viewer) | 12,8 px | `--cda-font-size-xs` | |
+| `--m` als Schriftgröße | 20,8 px | `--cda-font-size-l` | |
+| `--l` als Schriftgröße (`.logo`) | 33,6 px | `--cda-font-size-2xl` | |
+
+</div>
+
+### Abstände, Größen, Ebenen
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Abstände, Größen, Ebenen">
+
+| Alt | Wert | Neu | Hinweis |
+|---|---|---|---|
+| `--xxs` | 4,8 px | `--cda-space-2xs` (4 px) | |
+| `--xs` | 8 px | `--cda-space-xs` | gleich |
+| `--s` | 12,8 px | `--cda-space-s` (12 px) | |
+| `--m` | 20,8 px | `--cda-space-l` (24 px) | |
+| `--l` | 33,6 px | `--cda-space-xl` (32 px) | |
+| `--xl` | 54,4 px | `--cda-space-2xl` (48 px) | |
+| `--xxxs`, `--xxl` | 3,2 / 88 px | – | nicht verwendet |
+| `--radius-s` | **4 px** | `--cda-radius-m` | Namensfalle: `--cda-radius-s` ist 2 px |
+| `--border-stroke-weight` / `-s` | 2 / 1 px | `--cda-border-width-m` / `-s` | gleich |
+| `--vp-*` | 720 … 2300 px | – | nicht verwendet; Breakpoints sm 640 … 2xl 1536 |
+| `--tr-fast` / `-medium` / `-slow` | 0,3 / 0,5 / 0,8 s | `--cda-duration-fast` / `-medium` / `-slow` | nicht verwendet; hartkodiert 0,3 s → `--cda-duration-fast` |
+| `--tile-xxs` / `-xs` / `-s` | 128 / 208 / 336 px | `--cda-size-card-min-small` / `-min` | nicht verwendet |
+| `--level-*` | 0 / 10 / 20 / 30 / 40 | `--cda-z-background` / `-content` / `-content-top` / `-nav` / `-nav-fixed` | nicht verwendet |
+| hartkodiert `z-index: 100` (`.image-info`) | | `--cda-z-content-top` | Vorschlag |
+| `--op-medium` / `--op-low` | 0,5 / 0,2 | `--cda-opacity-medium` / `-low` | nicht verwendet |
+| `--shadow`, `--shadow-xs/-s/-m`, `--shadow-top*`, `--inner-shadow` | | `--cda-shadow-s` / `-m` / `-l` | alle ungültig (Abstände ohne `var()`), nicht verwendet |
+| `--ligher` (Tippfehler) | – | `--cda-color-text-default` | in `components.css` genutzt, aber nie definiert |
+
+</div>
+
+## Klassen
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Klassen">
+
+| Alt | Neu | Hinweis zum Markup |
+|---|---|---|
+| `.material-icons` | `.cda-icon` ([Icons](?path=/docs/grundlagen-icons--docs)) mit `aria-hidden="true"` | alle Icons aus `typemap` in `main.js` sind im Subset |
+| `.search`, `.search-field` | `.cda-search` ([Suchfeld](?path=/docs/komponenten-suchfeld--docs)) (`<form role="search">`), `.cda-input .cda-search__input` | `type="search"` statt `text`; Label ergänzen (`.cda-u-visually-hidden`); `outline: none` entfällt |
+| `.search--is-hidden` | Attribut `hidden` | |
+| `.dir-list__item`, `--is-active` | `<button class="cda-button cda-button--ghost">` im `li` | heute ein `li` mit Klick-Handler, per Tastatur nicht erreichbar |
+| `.has-hover-hand` | entfällt | `.cda-button` setzt den Zeiger selbst |
+| `a` (Element) | Grundstyles | heute schwarz auf schwarzem Grund; die eigene Regel löschen |
+| `.logo` | bleibt im Projekt | sitzt doppelt (`a.logo > span.logo`), `a` ohne `href`; Gelb als Text → `text-accent` |
+| `.search-info`, `.image-info`, `.important`, `.main-navigation`, `.content`, `.dir-list`, `#stage` … | bleiben im Projekt | Tokens zuordnen; `<li>` steht direkt in `<div>` (ungültiges HTML) |
+| `.json-viewer` und Unterklassen | bleiben | gehören zur Bibliothek JSONViewer; der Ordner `lib/` fehlt im Repo |
+| `.title`, `.subtitle`, `.chapter`, `.headline`, `.template`, `.image` | – | nirgends genutzt, löschbar |
+
+</div>
+
+## Beim Umstellen beachten
+
+- **Resets entfernen:** `* { margin: 0; padding: 0 }` und `header, footer, section { float: left }` in `reset.css` sowie `* { box-sizing: content-box }` in `main.css` gewinnen gegen die Komponenten und nehmen Button und Eingabefeld die Innenabstände. `reset.css` nutzt außerdem `//`-Kommentare, die es in CSS nicht gibt.
+- **`outline: none`** am Suchfeld (`components.css`) löschen.
+- **Kaputte Stellen:** `@import './fonts'` zeigt auf eine fehlende Datei; `-var(--l + $xs)` und `var(--border-stroke-weight $accent)` in `main.css` sind Sass-Reste und ungültig. Alle `@import` stehen ohne `.css`-Endung.
+- **Sichtbare Änderung:** Weil Schrift und Icons heute ohne `@font-face` geladen werden, sehen sie mit `cranach.css` erstmals überall gleich aus.

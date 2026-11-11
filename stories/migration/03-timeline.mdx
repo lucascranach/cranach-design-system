@@ -1,0 +1,125 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration/cranach-timeline" />
+
+# cranach-timeline
+
+3D-Zeitleiste mit React 19, Tailwind 4, shadcn/ui und styled-components. Schritt 3 der [Migration](?path=/docs/migration-übersicht--docs). Das Projekt stellt über den **Tailwind-Adapter** um (`@lucascranach/design-system/tailwind.css`, siehe [Einbinden](?path=/docs/einbinden--docs)). Er setzt die shadcn-Variablen auf Cranach-Tokens und stellt die Farben als Utilities bereit, etwa `bg-cda-accent-default`. Für three.js liefert `@lucascranach/design-system/tokens` dieselben Werte als JS-Objekt.
+
+Durchgesehen: Commit `846e3a2` vom 05.05.2026. Pfade relativ zu `src/`.
+
+In der Spalte „Neu“ heißt **Adapter**: Die Zuordnung setzt `tailwind.css` selbst. **Vorschlag**: Das Designsystem legt sie nicht fest, sie ist die nächstliegende.
+
+## Werte
+
+### shadcn-Variablen (`styles/index.css`)
+
+Diese Blöcke stehen ohne Layer in `:root` und `.dark`. Sie müssen **entfernt** werden, sonst überschreiben sie den Adapter je nach Importreihenfolge.
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: shadcn-Variablen (`styles/index.css`)">
+
+| Alt | Wert hell / dunkel | Neu | Hinweis |
+|---|---|---|---|
+| `--radius` | 10 px | Adapter: `--cda-radius-m` (4 px) | Wert ändert sich. Abgeleitet: `rounded-sm` 0, `-md` 2 px, `-lg` 4 px, `-xl` 8 px |
+| `--background` | #fff / #0a0a0a | Adapter: `background-default` (#fff / #18181a) | dunkel heller |
+| `--foreground` | #0a0a0a / #fafafa | Adapter: `text-default` (#000 / #f2f2f2) | |
+| `--card`, `--popover` (+ `-foreground`) | #fff / #171717 | Adapter: `background-subtle` bzw. `-default`, `text-default` | im Projekt nicht genutzt |
+| `--primary` | #171717 / #e5e5e5 | Adapter: `accent-default` (#feb701) | **wird gelb** – betrifft `bg-primary` (ImagePrefetchIndicator) und `text-primary` (Links in YearColumn, siehe unten) |
+| `--primary-foreground` | #fafafa / #171717 | Adapter: `text-on-accent` (#000) | |
+| `--secondary`, `--muted`, `--accent` | #f5f5f5 / #262626 | Adapter: `background-medium` (#f2f2f2 / #333336) | shadcn-`accent` bleibt grau, das Gelb liegt auf `--primary` |
+| `--secondary-foreground`, `--accent-foreground` | #171717 / #fafafa | Adapter: `text-default` | |
+| `--muted-foreground` | #737373 / #a1a1a1 | Adapter: `text-muted` (#666 / #b4b4b4) | |
+| `--destructive` | #e7000b / #ff6467 | Adapter: `text-danger` (#c00 / #ff7a7a) | |
+| `--border` | **#000** / Weiß 10 % | Adapter: `border-default` (#e0e0e0 / #333336) | behebt den schwarzen Rahmen im hellen Theme |
+| `--input` | #e5e5e5 / Weiß 15 % | Adapter: `border-strong` (#666 / #8a8a8a) | Rahmen von Bedienelementen mit 3 : 1 |
+| `--ring` | #a1a1a1 / #737373 | Adapter: `focus-ring` (#946800 / #feb701) | `outline-ring/50` in der Basisregel halbiert die Deckkraft – auf volle Deckkraft stellen |
+| `--chart-1` … `-5` | oklch | kein Gegenstück | nirgends genutzt, entfällt |
+| `body` `font-family` | "IBMPlexSans" | `--cda-font-family-sans`, Tailwind `font-sans` | ADR 0017 |
+
+</div>
+
+### Canvas und Sidebar (`styles/globals.css`)
+
+Der Adapter setzt weder `--canvas-*` noch `--sidebar-*`. Sie müssen von Hand auf Cranach-Tokens zeigen.
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Canvas und Sidebar (`styles/globals.css`)">
+
+| Alt | Wert dunkel / hell | Neu | Hinweis |
+|---|---|---|---|
+| `--canvas-bg` | #18181a / #f5f5f5 | `--cda-color-background-default` | dunkel gleich; hell #f5f5f5 → #fff |
+| `--canvas-text`, `--canvas-axis` | #fff / #000 | Vorschlag: `--cda-color-text-default` | dunkel #fff → #f2f2f2 |
+| `--canvas-tick-major` | #bbb / #444 | Vorschlag: `--cda-color-text-muted` | hell #444 → #666 |
+| `--canvas-tick-minor` | #666 / #999 | Vorschlag: `--cda-color-border-strong` | hell #999 auf #f5f5f5 erreicht nur 2,61 : 1, neu 3 : 1 und mehr |
+| `--canvas-line-primary` | rgb(64 64 77) / rgb(200 200 210) | kein Gegenstück | blaustichig; nächstliegend `neutral-600` / `neutral-300` |
+| `--canvas-line-secondary` | rgb(51 51 64) / rgb(220 220 230) | Vorschlag: `--cda-color-border-default` | Blaustich entfällt |
+| `--sidebar` | #18181a, `.dark` #171717, `.light` #f8f8f8 | Vorschlag: `--cda-color-background-default` | |
+| `--sidebar-foreground` | `:root` #18181a (wie der Grund, also unsichtbar) | Vorschlag: `--cda-color-text-default` | behebt einen Fehler |
+| `--sidebar-primary` (+ `-foreground`) | #1447e6 | kein Gegenstück | blau, nirgends genutzt – entfällt |
+| `--sidebar-accent` (+ `-foreground`) | #262626 / #eee | Vorschlag: `--cda-color-background-medium`, `-text-default` | |
+| `--sidebar-border` | Weiß bzw. Schwarz 10 % | Vorschlag: `--cda-color-border-default` | |
+| `--sidebar-ring` | #525252 / #bebebe | Vorschlag: `--cda-color-focus-ring` | |
+| `body` `background-color` (`styles/App.css`) | #18181a | entfernen | ohne Layer, gewinnt sonst immer, auch im hellen Theme |
+
+</div>
+
+### Hartkodierte Werte
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Hartkodierte Werte">
+
+| Alt | Wo | Neu | Hinweis |
+|---|---|---|---|
+| #FEB701, rgb(254 183 1) | 13 Stellen, u. a. `constants/eventConfigs.ts`, `utils/eventsUtils.ts`, `events/GroupOutline.tsx`, `layout/YearColumn.tsx` | `--cda-color-accent-default`, `bg-cda-accent-default`; in three.js aus `tokens.js` | Wert gleich |
+| rgb(250 204 21) als Textfarbe | `layout/YearColumn.tsx` | `text-cda-text-accent` | Gelb als Text nur im dunklen Theme zulässig (ADR 0008) |
+| #ffcc33 (Hover) | `timeline/ZoomToggle.tsx` | `--cda-color-accent-hover` | entfällt mit `.cda-toggle` |
+| #3a3a3a (inaktive Ereignisse) | `utils/eventsUtils.ts`, `events/GroupOutline.tsx` | kein Gegenstück, nächstliegend `neutral-700` | vor #18181a nur 1,56 : 1 – Ereignisgruppen zusätzlich anders als über Farbe unterscheiden |
+| rgba(0 0 0 / .4), / .6 | `ThemeToggle.tsx`, `ZoomToggle.tsx` | `--cda-color-alpha-black-40` / `-60` | |
+| rgba(255 255 255 / .1), #0000001a | dieselben, `YearColumn.tsx`, `ImageCard.tsx` | `--cda-color-alpha-white-10`, `-black-10` | andere Stufen (5, 8, 15, 20, 25 %) ohne Gegenstück |
+| `bg-black/50` | `ui/sheet.tsx` | `--cda-color-background-overlay` | 40 % hell / 60 % dunkel |
+| z-index 99999 | `App.tsx` (Titel), `ThemeToggle.tsx`, `ZoomToggle.tsx` | Vorschlag: `--cda-z-nav-fixed` bzw. `--cda-z-fab` | siehe „Beim Umstellen beachten“ |
+| z-index 999999 | `layout/MobileBlocker.tsx` | Vorschlag: `--cda-z-modal` | |
+| `z-10000` | `ui/sidebar.tsx` | Vorschlag: `--cda-z-nav-fixed` | |
+| `z-50` | Tooltip, Sheet, Sidebar, ImagePrefetchIndicator | `--cda-z-tooltip`, `-modal-bg`/`-modal`, `-toast` je nach Zweck | ADR 0011 |
+| z-index 9999 | `ZoomToggle.tsx` (inneres Element) | entfällt | ohne Wirkung |
+| Radius 0.5rem, 2 px, `rounded-full` | Toggles, Tooltip, Indikator | `--cda-radius-m`, `-s`, `-full` | 8 px → 4 px |
+| "IBMPlexSans" | `App.tsx`, `MobileBlocker.tsx`, `ZoomToggle.tsx`, `GroupLabel.tsx`, `YearLabels.tsx` | `--cda-font-family-sans` | |
+| 3.25rem / 2rem / 0.875rem | Titel / MobileBlocker / ZoomToggle | `--cda-font-size-4xl` / `-2xl` / `-s` | 1.125rem ohne Gegenstück |
+| font-weight 300 / 500 | Titel, Labels | `--cda-font-weight-light` / `-medium` | Heute ist 300 nicht geladen und erscheint als 400; mit der variablen Schrift wird es echtes Light |
+| line-height 1.6 | `MobileBlocker.tsx` | `--cda-font-line-height-loose` | |
+| transition 0.2 s | Toggles | `--cda-duration-fast` | 0,3 / 0,5 s ohne exaktes Gegenstück |
+| box-shadow `0 1px 3px rgba(0 0 0 / .3)` | `ZoomToggle.tsx` | `--cda-shadow-s` | entfällt mit `.cda-toggle` |
+
+</div>
+
+## Komponenten
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Komponenten">
+
+| Alt | Datei | Neu | Hinweis |
+|---|---|---|---|
+| ZoomToggle (`<div onClick>`) | `timeline/ZoomToggle.tsx` | `.cda-toggle` ([Toggle](?path=/docs/komponenten-toggle--docs)) mit `__input` (`role="switch"`) und `__label` | Vorlage des Toggles; ein echtes Eingabefeld statt `div`. Die Glas-Fläche (Unschärfe) hat kein Gegenstück |
+| ThemeToggle (lucide Sun/Moon) | `timeline/ThemeToggle.tsx` | `.cda-button--icon` ([Button](?path=/docs/komponenten-button--docs)) mit `.cda-icon` `light_mode` / `dark_mode` | `aria-label` ist schon gesetzt |
+| Skeleton (`animate-pulse bg-white/5`) | `layout/YearColumn.tsx` | `.cda-skeleton` ([Loader](?path=/docs/komponenten-loader--docs)) | Größe gibt das Projekt vor |
+| `ui/skeleton` | `components/ui/skeleton.tsx` | `.cda-skeleton` | nur in ungenutztem SidebarMenuSkeleton |
+| `ui/input` | `components/ui/input.tsx` | `.cda-input` ([Textfeld](?path=/docs/komponenten-textfeld--docs)) | nur in ungenutztem SidebarInput |
+| `ui/button` | `components/ui/button.tsx` | `.cda-button` oder bleibt shadcn | nur über SidebarTrigger, der nicht gerendert wird |
+| SidebarTrigger (lucide PanelLeft) | `components/ui/sidebar.tsx` | `.cda-icon` `left_panel_open` | |
+| `ui/sheet` (lucide X) | `components/ui/sheet.tsx` | bleibt shadcn; Icon `close`, Ebenen `modal-bg`/`modal` | wird praktisch nie angezeigt (siehe MobileBlocker) |
+| `ui/sidebar`, `ui/separator`, `ui/tooltip` | `components/ui/` | bleiben shadcn | Farben kommen über den Adapter |
+| AppSidebar, YearColumn | `layout/` | bleiben, Farben auf `cda`-Utilities | gelbe Linie → `bg-cda-accent-default`; Links `[&_a]:text-primary` → `text-cda-link-default` |
+| ImagePrefetchIndicator | `timeline/ImagePrefetchIndicator.tsx` | kein Gegenstück (Fortschrittsbalken) | Text mit `role="status"`, Ebene `--cda-z-toast` |
+| MobileBlocker | `layout/MobileBlocker.tsx` | kein Gegenstück | Texte auf Tokens umstellen |
+| Titel (`h1`, styled-components) | `App.tsx` | Grundstyles, nur Tokens | `opacity: 0.8f;` ist ungültig |
+| ImageCard | `layout/ImageCard.tsx` | kein Gegenstück | nirgends importiert |
+| 3D-Teile (EventPill, GroupLabel, YearLabels, TimelineAxis, DecadeBackgrounds, FallbackUI …) | `events/`, `timeline/` | kein Gegenstück | Farben aus `tokens.js` oder über `--canvas-*`; `color="orange"` (FallbackUI) und Shader-Farben ohne Token |
+
+</div>
+
+`react-icons` steht in `package.json`, wird aber nirgends importiert und kann entfallen. lucide nutzen nur ThemeToggle, Sheet und Sidebar.
+
+## Beim Umstellen beachten
+
+- **Layer-Reihenfolge:** `@layer theme, base, cda, components, utilities;` muss vor `@import "tailwindcss"` stehen (ADR 0003). Wird zusätzlich `cranach.css` eingebunden, gewinnen dessen Grundstyles (`cda.base`) gegen `@layer base` des Projekts.
+- **Links werden gelb:** Weil `--primary` gelb wird, erreichen die Links in YearColumn im hellen Theme nur 1,61 : 1. Vor dem Umstellen auf `text-cda-link-default` setzen.
+- **Theme:** `tokens.css` versteht `.dark` und `.light`, der ThemeProvider (`hooks/useThemeContext.tsx`) kann bleiben. Bei einem Wechsel auf `data-theme` hören fünf MutationObserver nicht mehr mit, weil sie nur `class` beobachten: `Scene.tsx`, `DecadeBackgrounds.tsx`, `GroupLabel.tsx`, `YearLabels.tsx`, `TimelineAxis.tsx`. Ohne gespeicherte Wahl startet die App dunkel und folgt nicht der Systemeinstellung.
+- **z-Ebenen hängen zusammen:** Heute liegt die Sidebar (10000) unter Titel und Schaltern (99999), diese unter dem MobileBlocker (999999). Die 3D-Beschriftungen (`<Html zIndexRange={[1000, 0]}>` in `GroupLabel.tsx`, `YearLabels.tsx`) liegen bis 1000. Mit den neuen Ebenen (bis 240) lägen sie darüber – `zIndexRange` deshalb mit umstellen, etwa auf die Ebenen `content-top` und `content-bottom` aus `tokens.js` (80 und 40).
+- **MobileBlocker:** sperrt unter 768 px (`--cda-breakpoint-md`) und rendert dann nichts anderes. Dadurch ist das mobile Sheet der Sidebar toter Code. Für die Sperre gibt es kein Gegenstück; ob sie bleibt, ist eine eigene Entscheidung.

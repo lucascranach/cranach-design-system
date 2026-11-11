@@ -1,0 +1,87 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration/Übersicht" />
+
+# Migration
+
+Diese Seiten zeigen für jedes Bestandsprojekt, welcher alte Wert durch welches Token und welche alte Klasse durch welche Komponente ersetzt wird. Sie sind die Arbeitsvorlage für die Umstellung. **Die Projekte selbst werden derzeit nicht verändert** (ADR 0015).
+
+Grundlage ist die Bestandsaufnahme vom 15.10.2026 (`docs/bestandsaufnahme.md`), ergänzt um eine Durchsicht der Projekte am 11.11.2026. Ändert sich ein Projekt bis zur Umstellung, die Tabellen vorher abgleichen.
+
+## Reihenfolge
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Reihenfolge">
+
+| Nr. | Projekt | Rolle | Umfang |
+|---|---|---|---|
+| 1 | [cranach-image-metadata](?path=/docs/migration-cranach-image-metadata--docs) | Pilot: intern, klein, ohne Build | Tokens und Grundstyles |
+| 2 | [cranach-compare](?path=/docs/migration-cranach-compare--docs) | danach `lucascranach/styleguide` archivieren | Tokens, Grundstyles, Icons |
+| 3 | [cranach-timeline](?path=/docs/migration-cranach-timeline--docs) | Tailwind-Adapter und dunkles Theme | Tokens über den Adapter |
+| 4 | [cranach-artefacts](?path=/docs/migration-cranach-artefacts--docs) | Quelle der Komponenten | Tokens und Komponenten |
+| 5 | [cranach-search](?path=/docs/migration-cranach-search--docs) | Quelle der Werte | Tokens und Komponenten |
+| 6 | [cranach-map](?path=/docs/migration-cranach-map--docs) | styled-components mit JS-Tokens | Tokens über `tokens.js` |
+| 7 | [cranach-image-tools](?path=/docs/migration-cranach-image-tools--docs) und [cda-orga](?path=/docs/migration-cda-orga--docs) | nur Ziel, „light“ | Tokens und Grundstyles |
+| 8 | [cranach-kirby](?path=/docs/migration-cranach-kirby--docs) | von Anfang an auf dem Designsystem | Neuaufbau |
+
+</div>
+
+Ausgeschlossen sind cranach-grafiken-gatsby (Archiv) und cranach-api-documentation (erzeugt).
+
+## Ablauf je Projekt
+
+1. **Einbinden.** `cranach.css` einbinden, wie unter [Einbinden](?path=/docs/einbinden--docs) beschrieben. Alle Styles des Designsystems liegen in Cascade Layers. Die Styles des Projekts haben ohne Layer immer Vorrang, deshalb ändert sich zunächst nichts am Aussehen.
+2. **Tokens zuordnen.** Die alten Variablen auf die neuen Tokens zeigen lassen, etwa `$accent: var(--cda-color-accent-default);` in Sass oder `--accent: var(--cda-color-accent-default);` in CSS. So stellt ein Projekt in einem Schritt um, ohne jede Stelle anzufassen. Danach die alten Namen nach und nach durch die neuen ersetzen und zuletzt entfernen.
+3. **Komponenten umstellen.** Eine Komponente nach der anderen: Markup auf die `cda-`-Klassen umstellen, die alten Styles dazu löschen, prüfen. Komponenten ohne Gegenstück bleiben im Projekt und nutzen die Tokens.
+
+## Was sich sichtbar ändert
+
+Die Tokens übernehmen die Werte aus den Projekten, nicht alles bleibt aber gleich. Folgendes ändert sich in allen Projekten:
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Was sich sichtbar ändert">
+
+| Bereich | Bisher | Neu | Grund |
+|---|---|---|---|
+| Fließtext | 14,4 px (`0.9rem`) in search, artefacts, map, image-metadata | 16 px (`--cda-font-size-m`) | Lesbarkeit (ADR 0009) |
+| Schriftgewichte | verschoben: Datei „Light“ als 200, „Regular“ als 300, „Medium“ als 400, „SemiBold“ als 500, „Bold“ als 600 | Standard: 300 Light, 400 Regular, 500 Medium, 600 SemiBold, 700 Bold | Die Zahl entspricht wieder dem Schnitt (ADR 0009). Zuordnen **nach der Datei, die geladen wird**, nicht nach Zahl oder Name – siehe unten |
+| Gelb als Text | `color: $accent` | `--cda-color-text-accent` (Ocker) | Gelb erreicht auf Weiß nur 1,75 : 1 (ADR 0008) |
+| Schrift auf Gelb | Weiß | Schwarz (`--cda-color-text-on-accent`) | 1,75 : 1 → 11,99 : 1 (ADR 0008) |
+| Akzent-Gelb | #FEB701, #fc0, #e8a60c, #ffbb1c u. a. | #FEB701 (`--cda-color-accent-default`), Hover #da9c01 | eine Markenfarbe statt sieben |
+| Dekorationsfarbe | #cc5800 | #b84f00 (`--cda-color-text-decoration`) | #cc5800 reicht nur für Großtext (ADR 0008) |
+| Fokus | oft `outline: none` | sichtbarer Ring über `:focus-visible` | Tastaturbedienung (ADR 0010) |
+| Breakpoints | 720 / 1024 / 1400 … oder 768 / 1440 / 1800 | 640 / 768 / 1024 / 1280 / 1536 | Tailwind-Standard (ADR 0010) |
+| Übergänge | 0,2 s oder 0,3 s | 200 / 400 / 800 ms, bei reduzierter Bewegung keine | ADR 0010 |
+| z-Index | 0–40, 100/101, 99999 … | 15 benannte Ebenen `--cda-z-*` | ADR 0011 |
+| Icons | Material Icons (verschiedene Stile), lucide, react-icons | Material Symbols Sharp als `.cda-icon` | ADR 0012 |
+
+</div>
+
+### Schriftgewichte zuordnen
+
+In search, artefacts, map, image-metadata, image-tools und cda-orga passen Name, Zahl und Datei nicht zusammen. Maßgeblich ist der Schnitt, der heute tatsächlich zu sehen ist – dann bleibt das Aussehen gleich:
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Schriftgewichte zuordnen">
+
+| Alte Variable | Zahl | lädt die Datei | Neu |
+|---|---|---|---|
+| `$fw-light` | 200 | Light | `--cda-font-weight-light` (300) |
+| `$fw-regular` | 300 | Regular | `--cda-font-weight-regular` (400) |
+| `$fw-semibold` | 400 | **Medium** | `--cda-font-weight-medium` (500) |
+| `$fw-bold` | 600 | Bold | `--cda-font-weight-bold` (700) |
+
+</div>
+
+Der Fließtext steht in diesen Projekten auf Light. Laut ADR 0009 wird er Regular, das ist eine gewollte Änderung.
+
+## Typische Fallen
+
+- **Projekt-Styles gewinnen immer.** Regeln ohne Layer schlagen das Designsystem unabhängig von der Spezifität. Das ist gewollt, hat aber Folgen: `outline: none` im Projekt schaltet den Fokusring ab, ein Reset wie `* { margin: 0; padding: 0 }` oder `button, input { font: inherit }` nimmt den Komponenten ihre Abstände und Schrift. Solche Regeln beim Umstellen löschen; der Reset des Designsystems übernimmt `box-sizing` und Schrift selbst.
+- **Theme festlegen.** Ohne `data-theme` folgt `cranach.css` der Systemeinstellung (ADR 0007). Ein Projekt, das nur hell oder nur dunkel aussieht, setzt deshalb `<html data-theme="light">` bzw. `"dark"`, sonst wird es im dunklen Systemmodus teilweise dunkel.
+- **Präfix `cda-` ist reserviert.** Klassen und Variablen mit `cda-` gehören dem Designsystem (ADR 0003). Eigene Klassen mit diesem Präfix vorher umbenennen.
+- **Media Queries:** `var()` funktioniert dort nicht. Mit Build `@custom-media` aus `custom-media.css` nutzen, ohne Build den Wert direkt schreiben, z. B. `@media (width < 1024px)`.
+
+## Wie die Tabellen zu lesen sind
+
+- **Werte:** alter Name, alter Wert und Datei im Projekt, daneben das neue Token. Semantische Tokens (`--cda-color-text-default`) gehen vor Paletten-Tokens (`--cda-color-neutral-500`): Nur sie wechseln mit dem Theme.
+- **Hinweis „Wert ändert sich“:** Das Token liegt nahe am alten Wert, aber nicht genau darauf. Die Abweichung steht dabei.
+- **„Kein Gegenstück“:** Der Wert bleibt vorerst im Projekt. Wird er in mehreren Projekten gebraucht, ist er ein Kandidat für ein neues Token.
+- **Klassen:** alte Klasse oder Komponente, daneben die `cda-`-Klasse und was sich am Markup ändert. Das vollständige Markup steht auf der Seite der Komponente.

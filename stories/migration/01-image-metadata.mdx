@@ -1,0 +1,119 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration/cranach-image-metadata" />
+
+# cranach-image-metadata
+
+Interne Tabelle der EXIF/IPTC-Daten mit Qualitätskontrolle (Plain CSS, Tabulator, ohne Build). **Pilot** der [Migration](?path=/docs/migration-übersicht--docs): klein, intern, mit Werten aus cranach-search.
+
+Einbinden vor `style.css`, Theme fest auf hell:
+
+```html
+<html lang="de" data-theme="light">
+…
+<link rel="stylesheet" href="/design-system/X.Y.Z/cranach.css">
+<link rel="stylesheet" href="style.css">
+```
+
+Alle Variablen stehen in `style.css` im `:root`-Block. Die Grundgröße `--bfs` ist 0.9rem (14,4 px); die Abstände sind darauf umgerechnet.
+
+## Werte
+
+### Farben
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Farben">
+
+| Alt | Wert | Neu | Hinweis |
+|---|---|---|---|
+| `--darkest` | #000 | `--cda-color-text-default` | Titel, Summary, Tabellenkopf |
+| `--dark` | #444 | Text: `--cda-color-text-default`; Linie unter Eingabefeldern: `--cda-color-border-strong` | Fließtext wird #000 statt #444, die Linie #666 |
+| `--medium` | #666 | `--cda-color-text-muted` | gleich |
+| `--darker` | #222 | entfällt (ADR 0008) | genutzt im Button-Hover und Checkbox-Rahmen, beides entfällt mit den Komponenten |
+| `--light` | #b4b4b4 | Text (`.count`, `.muted`): `--cda-color-text-muted`; Filterlinie: `--cda-color-border-strong` | als Text nur 2,07 : 1, neu 5,74 : 1 |
+| `--lighter` | #f2f2f2 | `--cda-color-background-medium` | gleich; Zebra-Zeilen, Detail-Tabelle, Pfadfeld |
+| `--lightest` | #fff | Fläche: `--cda-color-background-default`; Schrift auf `.btn`: `--cda-color-text-on-accent` | Schrift auf Gelb wird schwarz |
+| `--accent` | #FEB701 | Fläche: `--cda-color-accent-default`; als Text (Icon im Ghost-Button, Accordion-Pfeil, Sortier-Icon): `--cda-color-text-accent` | Gelb als Text ist nicht zulässig (ADR 0008) |
+| `--decoration` | #cc5800 | `--cda-color-text-decoration` | #b84f00; in `style.css` nicht verwendet |
+| `--error` | #c00 | `--cda-color-text-danger` | gleich; `.issue`, Markierung der Problemzeile, Problemliste |
+| `--darken` | rgba(0 0 0 / .04) | `--cda-color-background-subtle` | deckend #f7f7f7 statt transparent |
+| `--darken-medium` | rgba(0 0 0 / .1) | `--cda-color-alpha-black-10` | nicht verwendet |
+| `--darken-strong` | rgba(0 0 0 / .2) | Trennlinien: `--cda-color-border-default`; Hintergrund der Detailansicht: `--cda-color-background-overlay` | Linie ≈ #ccc → #e0e0e0; Abdunkelung 20 % → 40 % |
+| `--hover` | #dadada | `--cda-color-background-strong` | #e0e0e0, deckend wie bisher (eingefrorene Spalten) |
+| `--shadow` | rgba(0 0 0 / .4) | mit `box-shadow: 0 0 var(--l) …` → `--cda-shadow-l` | Versatz 1 px, Unschärfe 20 statt 30 px |
+
+</div>
+
+### Schrift
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Schrift">
+
+| Alt | Wert | Neu | Hinweis |
+|---|---|---|---|
+| `--bfs` | 0.9rem (14,4 px) | `--cda-font-size-m` (16 px) | gewollt (ADR 0009) |
+| `--font-sans-serif` | "IBMPlexSans" | `--cda-font-family-sans` | danach die eigenen `@font-face` für IBM Plex löschen |
+| `--font-code` | "IBMPlexMono" | `--cda-font-family-mono` | Plex Mono 400 statt Medium |
+| `--fw-light` | 200 (Datei Light) | `--cda-font-weight-light` | Fließtext (`body`) wird Regular (ADR 0009) |
+| `--fw-regular` | 300 (Datei Regular) | `--cda-font-weight-regular` | |
+| `--fw-semibold` | 400 (Datei **Medium**) | `--cda-font-weight-medium` | so bleibt es gleich, siehe [Übersicht](?path=/docs/migration-übersicht--docs) |
+| `--fw-bold` | 600 (Datei Bold) | `--cda-font-weight-bold` | nur `.sort-icon` |
+| `font-size` bfs × 0,9 bzw. × 0,85 | 12,96 bzw. 12,24 px | `--cda-font-size-xs` (12 px) | |
+| `--m` als Schriftgröße (`.title`, `.detail__title`) | 18,72 px | `--cda-font-size-l` (20 px) | |
+| `line-height` 140 % / 120 % / 150 % | | `--cda-font-line-height-normal` / `-tight` / – | 150 % (`.issue`) ohne Gegenstück |
+
+</div>
+
+### Abstände und Weiteres
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Abstände und Weiteres">
+
+| Alt | Wert | Neu | Hinweis |
+|---|---|---|---|
+| `--xxxs` | 2,88 px | `--cda-space-2xs` (4 px) | |
+| `--xxs` | 4,32 px | `--cda-space-2xs` (4 px) | |
+| `--xs` | 7,2 px | `--cda-space-xs` (8 px) | |
+| `--s` | 11,52 px | `--cda-space-s` (12 px) | |
+| `--m` | 18,72 px | `--cda-space-m` (16 px) | Logo-Höhe bleibt im Projekt |
+| `--l` | 30,24 px | `--cda-space-xl` (32 px) | |
+| `--xl` | 48,96 px | `--cda-space-2xl` (48 px) | nicht verwendet |
+| `--radius` | 2 px | `--cda-radius-s` | gleich |
+| `--tr-fast` | 0.2 s | `--cda-duration-fast` | gleich |
+| `--sidebar-width` | 403 px | kein Gegenstück | bleibt im Projekt |
+| Rahmen 1 / 2 / 3 px | | `--cda-border-width-s` / `-m` / `-l` | |
+| `opacity: 0.3` | | `--cda-opacity-low` | |
+| `z-index: 20` (`.detail`) | | `--cda-z-modal` | Vorschlag nach ADR 0011; ein natives `<dialog>` bräuchte keinen |
+| `z-index: 10` (`.sidebar` unter 1024 px) | | `--cda-z-modal-bg` | Vorschlag; bleibt unter der Detailansicht |
+| `@media (max-width: 1023px)` | | `(width < 1024px)` = unter `--cda-breakpoint-lg` | Wert direkt schreiben, ohne Build kein `@custom-media` |
+
+</div>
+
+## Klassen
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Klassen">
+
+| Alt | Neu | Hinweis zum Markup |
+|---|---|---|
+| `.btn` | `.cda-button .cda-button--primary` ([Button](?path=/docs/komponenten-button--docs)) | Schrift auf Gelb wird schwarz; der eigene `:focus-visible` entfällt |
+| `.btn--is-reduced` | `.cda-button .cda-button--ghost` | Schließen-Button zusätzlich `.cda-button--icon`, `aria-label` ist schon gesetzt. Das Icon ist nicht mehr gelb |
+| `.icon` (`<i>`) | `.cda-icon` ([Icons](?path=/docs/grundlagen-icons--docs)) als `<span aria-hidden="true">` | alle Icons sind im Subset; Stil Sharp statt Regular. Danach `@font-face` Material Icons löschen |
+| `.search`, `.search__input` | `.cda-search` ([Suchfeld](?path=/docs/komponenten-suchfeld--docs)), `.cda-input .cda-search__input` | `div` wird `<form role="search">`. Das Feld hat nur einen Platzhalter: Label ergänzen, etwa mit `.cda-u-visually-hidden` |
+| `.search__count` | bleibt im Projekt | Farbe `--cda-color-text-muted` |
+| `.checkbox` | `.cda-checkbox` ([Checkbox](?path=/docs/komponenten-checkbox--docs)) mit `__input`, `__label`, `__count` | Markup entsteht in `app.js`; Box wird 20 px groß, ausgewählt mit Häkchen statt rundem Punkt |
+| `.checkbox--strong` | bleibt im Projekt | |
+| `.filter-list` | bleibt im Projekt | `.cda-checkbox-group` erwartet `fieldset` und `legend`; hier ist die Überschrift die `summary` des Accordions |
+| `.accordion` (`details`) | `.cda-accordion` ([Accordion](?path=/docs/komponenten-accordion--docs)) › `details.cda-accordion__item` › `summary.cda-accordion__summary` + `div.cda-accordion__content` | Inhalt in den Container `__content` legen; Pfeil grau statt gelb |
+| `.path-copy input` | `.cda-input` ([Textfeld](?path=/docs/komponenten-textfeld--docs)) | nur lesbar: gestrichelte Linie kommt von selbst; `aria-label` ergänzen |
+| `.hint`, `.muted` | bleiben im Projekt | Farbe `--cda-color-text-muted` |
+| `.issue` (Hinweis-Etikett) | bleibt im Projekt | kein Badge im Designsystem; Tokens `text-danger`, `radius-s`, `font-size-xs` |
+| `.cda-logo` | **umbenennen**, z. B. `.page-header__logo` | Präfix `cda-` ist reserviert (ADR 0003) |
+| `.page-header`, `.title`, `.sidebar`, `.layout`, `.message` | bleiben im Projekt | `.cda-header` ist eine Seitennavigation und passt hier nicht |
+| `.detail`, `.detail-table`, `.detail-issues`, `.detail-ok` | bleiben im Projekt | ADR 0011 empfiehlt `<dialog>`; der Fokus wird schon gesetzt |
+| Tabulator (`.tabulator*`, `.sort-icon`, `.has-issues`) | bleiben im Projekt | Tokens zuordnen; Sortier-Icon als `.cda-icon` |
+| Status „Lade Metadaten …“ | optional `.cda-spinner` ([Loader](?path=/docs/komponenten-loader--docs)) | `role="status"` ergänzen, damit Screenreader es ansagen |
+
+</div>
+
+## Beim Umstellen beachten
+
+- **`outline: none` löschen:** in `style.css` am Suchfeld (schaltet auch den Tastaturfokus ab) und am Filterfeld der Tabelle, dazu die eigenen gelben Fokus-Outlines. Die mitgelieferte `tabulator.min.css` enthält sechsmal `outline: none` und braucht eine eigene Regel, die den Fokus wieder zeigt.
+- **`button, input, select { font: inherit }`** in `style.css` nimmt Button und Eingabefeld Schriftgröße und Gewicht. Die Regel löschen; der Reset des Designsystems erledigt das.
+- **Theme:** Tabulator ist fest hell eingefärbt. Deshalb `data-theme="light"` setzen, sonst wird die Seite im dunklen Systemmodus teilweise dunkel.

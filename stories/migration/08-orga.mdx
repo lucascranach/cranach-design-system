@@ -1,0 +1,61 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration/cda-orga" />
+
+# cda-orga
+
+Jekyll-Blog „CDA Intern“ mit Decap CMS. Schritt 7 der [Migration](?path=/docs/migration-übersicht--docs), zusammen mit cranach-image-tools, im Umfang „light“: Tokens und Grundstyles.
+
+Die Sass-Dateien unter `assets/_scss/` sind eine Kopie von cranach-artefacts. Für alle gleichen Variablen gilt die Tabelle auf der Seite [cranach-artefacts](?path=/docs/migration-cranach-artefacts--docs): Farben, Breakpoints, Schriften und Gewichte, Zeilenhöhen, Bewegung, Opazität, Rahmen, Radius und `--responsive-*`. Das Gewichts-Mapping ist ebenso verschoben, also `$fw-semibold` → `--cda-font-weight-medium`. Hier stehen nur die Unterschiede.
+
+## Werte, die von cranach-artefacts abweichen
+
+Die Grundgröße ist 1rem (16 px), deshalb rechnen die Größen anders.
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Werte, die von cranach-artefacts abweichen">
+
+| Alt | Wert | Neu als Abstand | Neu als Schriftgröße | Hinweis |
+|---|---|---|---|---|
+| `$bfs` | 1rem | – | `--cda-font-size-m` | gleich |
+| `$quad` / `$half` | 4 / 8 px | `--cda-space-2xs` / `-xs` | | gleich |
+| `$xxs` | 3,2 px | `--cda-space-2xs` (4) | | |
+| `$xs` | 6,4 px | `--cda-space-xs` (8) | | |
+| `$s` | 12,8 px | `--cda-space-s` (12) | `--cda-font-size-xs` (12) | |
+| `$m` | 16 px | `--cda-space-m` | `--cda-font-size-m` | gleich |
+| `$l` | 19,2 px | `--cda-space-m` (16) | `--cda-font-size-l` (20) | |
+| `$xl` | 22,4 px | `--cda-space-l` (24) | `--cda-font-size-xl` (24) | |
+| `$xxl` | 28,8 px | `--cda-space-xl` (32) | `--cda-font-size-2xl` (32) | |
+| `$xxxl` | 41,6 px | `--cda-space-2xl` (48) | `--cda-font-size-3xl` (40) | |
+| `$darken-medium` | rgba(0 0 0 / **.1**) | `--cda-color-alpha-black-10` | | in artefacts .3; als Button-Fläche entfällt es mit `.cda-button` |
+| `$accent-secondary`, `$image-small`, `--overlay-*` | – | – | | gibt es in orga nicht |
+| `$column-large` / `-medium` / `-small` / `-xlarge` | 800 / 640 / 480 / 1920 px | kein Gegenstück | | bleiben im Projekt |
+| `$term-width*`, `$tile-*` | | – | | nicht verwendet |
+| `--responsive-*` | 16 / 28,8 / 41,6 px usw. | wie artefacts: `--cda-space-fluid-s`, `bottom` → `-fluid-m` | | orga verdoppelt `top` und `right-left` oft per `calc(… * 2)` (`composition/main.scss`, `components/sidebar.scss`); dort ab 1800 px bis −18 px |
+| `font-weight: 400` / `300` (hartkodiert) | Datei Medium / Regular | `--cda-font-weight-medium` / `-regular` | | `components/teaser.scss` |
+
+</div>
+
+`$level-*` und `$shadow*` stehen in der Datei, werden in orga aber nicht verwendet.
+
+## Klassen
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Klassen">
+
+| Alt | Neu | Hinweis zum Markup |
+|---|---|---|
+| `.button` | `.cda-button` ([Button](?path=/docs/komponenten-button--docs)) | Hover heute #e8a60c mit weißer Schrift (2,12 : 1), neu grau. `<a href="javascript:void(0)">` in `_includes/pattern_block.html` → `<button type="button">`; Icon-Buttons nur mit `title` → `.cda-button--icon` mit `aria-label` |
+| `i.icon[data-icon]` | `.cda-icon` ([Icons](?path=/docs/grundlagen-icons--docs)) | Name als Text; `link`, `code`, `screen_share` sind im Subset |
+| `#sidebar`, `.logo`, `.link-list` | teilweise `.cda-header` ([Header](?path=/docs/komponenten-header--docs)) (`__brand`, `__nav`, `__menu`, `__link`) | passt nur bedingt: senkrechte, mitlaufende Seitenleiste statt Kopfzeile. Logo-`<img>` ohne `alt`; der Hover verschiebt den Text (Padding) |
+| `_includes/footer.html` | `.cda-footer` ([Footer](?path=/docs/komponenten-footer--docs)) | die Datei ist heute **leer**, wird aber eingebunden |
+| `.news-container a`, `.post-container a` | Linkmuster der Grundstyles | Hover-Fläche heute #222 |
+| `code`, `pre.highlight` | `--cda-font-family-mono` | heute 'Courier New' |
+| `.teaser` | bleibt im Projekt | `.cda-card` braucht ein Bild |
+| `.markdown`, `.sg_*` (Pattern-Library) | bleiben im Projekt | |
+
+</div>
+
+## Beim Umstellen beachten
+
+- **Gelb als Textfarbe:** `h2 { color: $accent-dark }` in `base/body-and-typo.scss` → `--cda-color-text-accent`.
+- **Globale Regel:** `* { box-sizing: content-box; transition: all $tr-fast }` wie in artefacts – löschen.
+- In orga gibt es kein Textfeld, keine Checkbox, keinen Toggle, keine Sprachwahl, kein Accordion und keinen Loader.

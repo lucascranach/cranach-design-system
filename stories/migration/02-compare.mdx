@@ -1,0 +1,74 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration/cranach-compare" />
+
+# cranach-compare
+
+Bildvergleich und Sammlung mit Vanilla JS, Reef und OpenSeadragon. Schritt 2 der [Migration](?path=/docs/migration-übersicht--docs). Danach braucht kein Projekt mehr den alten Styleguide, und `lucascranach/styleguide` kann archiviert werden (ADR 0001).
+
+compare lädt heute drei Dinge von außen (`public/index.html`):
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: cranach-compare">
+
+| Heute | Ersatz |
+|---|---|
+| `https://lucascranach.github.io/styleguide/shared/styles/main.css` – Variablen, Grundstyles, Klasse `.icon` | `cranach.css` vom eigenen Server |
+| `https://fonts.googleapis.com/icon?family=Material+Icons` | Icon-Font aus `cranach.css`; alle sechs Icons (collections, fullscreen, multiple_stop, lock, lock_open, playlist_remove) sind im Subset |
+| `https://lucascranach.github.io/styleguide/shared/favicon.svg` | **eigene Kopie** im Projekt – das Designsystem liefert kein Favicon. search, artefacts, map und timeline haben dieselbe `favicon.svg` |
+
+</div>
+
+Eigene Styles hat compare nur in `public/styles/components.css`; die Templates stehen in `public/scripts/cranach-compare.js`. Die Definitionen der Variablen liegen im Styleguide, von dem es keine lokale Kopie gibt. Die alten Werte unten stammen deshalb aus den nächsten Verwandten (cranach-image-tools, cranach-grafiken-gatsby) und sind **nicht bestätigt**. Vor der Umstellung die Live-Seite vergleichen.
+
+## Werte
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Werte">
+
+| Alt | Wert (vermutlich) | Neu | Hinweis |
+|---|---|---|---|
+| `--darker` | #222 | `--cda-color-background-subtle` (dunkel #242426) | Flächen der Bedienelemente |
+| `--dark` | #444 | `--cda-color-border-default` (dunkel #333336) | Trennlinie der Vergleichsfläche |
+| `--accent` | #FFCC00 | Icon-Farbe: `--cda-color-text-accent`; Markierung der aktiven Fläche: `--cda-color-accent-default` | #feb701 |
+| `--darken-strongest` | nicht gefunden | `--cda-color-background-overlay` | nach dem Namen zugeordnet |
+| `--shadow-top-m` | 0 0 20,8 px rgba(0 0 0 / .4) | `--cda-shadow-l` | Versatz 1 px statt 0 |
+| `--xxs` | 4,8 px | `--cda-space-2xs` (4 px) | |
+| `--xs` | 8 px | `--cda-space-xs` | gleich |
+| `--s` | 12,8 px | `--cda-space-s` (12 px) | |
+| `--m` als Schriftgröße (Icon) | 20,8 px | `--cda-font-size-l` (20 px) | entfällt mit `.cda-icon` |
+| `--radius-s` | 4 px | `--cda-radius-m` | Namensfalle: `--cda-radius-s` ist 2 px |
+| `--radius-xs` | nicht gefunden | `--cda-radius-s` | nach dem Namen zugeordnet |
+| `--tile-xxs` | 8em (128 px) | `--cda-size-card-min-small` | gleich |
+| `--tr-fast` | 0,3 s | `--cda-duration-fast` | 200 ms |
+| `--border-stroke-weight-s` | 1 px | `--cda-border-width-s` | gleich |
+| `--font-icons` | 'Material Icons' | `.cda-icon` | |
+| `--level-content` | 10 | `--cda-z-content` | Viewer |
+| `--level-content-nav` | 20 | `--cda-z-content-top` | `.area-navigation` |
+| `--level-section-nav` | 30 | `--cda-z-nav` | `.main-navigation`, im Markup nicht verwendet |
+| `--level-overall-nav` | 40 | `--cda-z-nav-fixed` | fixierte Bildauswahl |
+| hartkodiert 4 px | | `--cda-space-2xs`; Markierungslinie `--cda-border-width-l` | |
+
+</div>
+
+## Klassen
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Klassen">
+
+| Alt | Neu | Hinweis zum Markup |
+|---|---|---|
+| `.icon` (`<i>`) | `.cda-icon` ([Icons](?path=/docs/grundlagen-icons--docs)) mit `aria-hidden="true"` | |
+| `.main-navigation__item` (`<div>` mit Klick) | `<button class="cda-button cda-button--icon">` ([Button](?path=/docs/komponenten-button--docs)) mit `aria-label` | heute nicht per Tastatur bedienbar und ohne Namen |
+| `.image-selector__navigation-toggle` | `.cda-button .cda-button--icon` | der Klick liegt heute auf dem Icon |
+| `.main-navigation__item--is-hidden` | Attribut `hidden` | |
+| `.image-stripe-grid` | `.cda-card-grid .cda-card-grid--small` ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)) | `--is-active` bedeutet hier „zugeklappt“ |
+| `.small-card`, `.small-card__image(-holder)` | `.cda-card`, `.cda-card__image` | der Klick liegt heute auf dem `<img>`; ein Link oder Button um das Bild |
+| `.compare-collection-remove` (`<span>` mit Icon per `::after`) | `.cda-button .cda-button--icon` (oder `.cda-card__favorite`) mit `aria-label` | heute nicht fokussierbar |
+| `.comparism-stage`, `.stage-area`, `.viewer`, `.area-navigation`, `.active-stage-indicator` | bleiben im Projekt | Layout der Anwendung, Tokens zuordnen |
+| OpenSeadragon-Schaltflächen (PNG) | bleiben | kein Gegenstück |
+
+</div>
+
+## Beim Umstellen beachten
+
+- **Bedienbarkeit:** Alle Bedienelemente sind heute `<div>`, `<i>` oder `<span>` mit Klick-Handlern, ohne Fokus-Styles und ohne Namen. Mit echten Buttons kommen Tastaturbedienung und Fokusring aus den Grundstyles.
+- **Theme:** Die Bedienelemente sind dunkel. Ob auch die Seite dunkel ist, steht nur im Styleguide – vor der Umstellung auf der Live-Seite prüfen und dann `data-theme="dark"` setzen.
+- **z-Ebenen:** Die Werte springen von 10–40 auf 60–160. Mögliche Konflikte mit den z-Indizes von OpenSeadragon sind nicht geprüft.

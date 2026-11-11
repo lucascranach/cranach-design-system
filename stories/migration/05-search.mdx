@@ -1,0 +1,150 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Migration/cranach-search" />
+
+# cranach-search
+
+Werk-, Literatur- und Archivaliensuche (React 17, TypeScript, Vite, Sass, MobX). Schritt 5 der [Migration](?path=/docs/migration-übersicht--docs). Die meisten Werte des Designsystems stammen von hier (ADR 0015).
+
+Alle Variablen stehen in `src/style/000-abstracts/variables.scss`, die Komponenten unter `src/components/`. In Sass lassen sich die Variablen zuerst umlenken, etwa `$accent: var(--cda-color-accent-default);`. Das geht nicht, wo Sass mit dem Wert rechnet (`$s + $s`, `math.div(…)`, `darken($accent, 10%)`) – dort `calc()` bzw. das passende Token einsetzen. Die Grundgröße `$bfs` ist 0.9rem (14,4 px). Die Spalte „Nutzung“ zählt die Stellen außerhalb der Variablendatei.
+
+Da search kein dunkles Theme hat, `<html data-theme="light">` setzen.
+
+## Werte
+
+### Farben
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Farben">
+
+| Alt | Wert | Neu | Nutzung | Hinweis |
+|---|---|---|---|---|
+| `$darkest` | #000 | Text: `--cda-color-text-default`; Fläche: `--cda-color-background-inverse` | 10× | gleich |
+| `$darker` | #222 | `--cda-color-text-default` | 9× | entfällt (ADR 0008) |
+| `$dark` | #444 | Text: `--cda-color-text-default` (Titel) bzw. `-text-muted` (Angaben) | 15× | kein Token mit #444; Fläche notfalls `--cda-color-neutral-600` |
+| `$medium` | #666 | `--cda-color-text-muted`; als Rahmen `--cda-color-border-strong` | 1× | gleich |
+| `$light` | #b4b4b4 | Rahmen: `--cda-color-border-hover`; Text: `--cda-color-text-muted` | 6× | als Text nur 2,07 : 1, z. B. die Trefferzahlen der Checkbox |
+| `$lighter` | #f2f2f2 | `--cda-color-background-medium` | 5× | gleich |
+| `$lightest` | #fff | Fläche: `--cda-color-background-default`; Text: `--cda-color-text-inverse` | 25× | dazu global `a { color: $lightest }` – löschen, dann gilt die Linkfarbe der Grundstyles |
+| `$accent` | #FEB701 | Fläche, Linie: `--cda-color-accent-default`; als Text: `--cda-color-text-accent`; Strich der aktiven Seite: `--cda-color-link-underline` | 29× | `color: $accent` 9× – nicht zulässig (ADR 0008), siehe unten |
+| `darken($accent, 10%)` | | `--cda-color-accent-hover` | 2× | `btn.scss`, `scroll-to.scss` |
+| `$decoration` | #cc5800 | `--cda-color-text-decoration` | 1× | Trefferzahl in `size.scss`; #b84f00 (4,23 → 5,05 : 1) |
+| `$error` | #c00 | `--cda-color-text-danger` | 0× | gleich |
+| `$lighten` | rgba(255 255 255 / .1) | `--cda-color-alpha-white-10` | 1× | gleich |
+| `$lighten-strong` / `-strongest` | Weiß 20 % / 80 % | kein Gegenstück | 2× / 4× | 80 % ist die Fläche des Merken-Buttons, entfällt mit `.cda-card__favorite` |
+| `$darken` / `$darken-strongest` | Schwarz 4 % / 80 % | – | 0× | entfallen |
+| `$darken-medium` | rgba(0 0 0 / .1) | `--cda-color-alpha-black-10` | 1× | |
+| `$darken-strong` | rgba(0 0 0 / .2) | als Trennlinie `--cda-color-border-default` | 4× | |
+| `$shadow-color` | rgba(0 0 0 / .4) | `--cda-color-alpha-black-40` | – | steckt in den Schatten-Tokens |
+| `$shadow-color-lighter` | rgba(0 0 0 / .2) | – | 1× | Schleier im `cloak`, entfällt mit `.cda-loader` |
+
+</div>
+
+`color: $accent` steht in `secondary-navigation.scss`, `artefact-table.scss`, `navigation.scss` (2×), `tree-list.scss`, `logo.scss` (2×), `btn.scss` und `toggle.scss`.
+
+### Schrift
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Schrift">
+
+| Alt | Wert | Neu | Nutzung | Hinweis |
+|---|---|---|---|---|
+| `$bfs` | 0.9rem (14,4 px) | `--cda-font-size-m` (16 px) | 10× | gewollt (ADR 0009) |
+| `$font-sans-serif` | "IBMPlexSans" | `--cda-font-family-sans` | 1× | eigene `@font-face` in `fonts.scss` danach löschen |
+| `$font-icons` | 'Material Icons' | `.cda-icon` | 4× | Sharp statt Regular; alle genutzten Icons sind im Subset |
+| `$font-code` | menlo, consolas … | `--cda-font-family-mono` | 0× | |
+| `$fw-light` | 200 (Datei Light) | `--cda-font-weight-light` | 7× | `body` wird Regular (ADR 0009) |
+| `$fw-regular` | 300 (Datei Regular) | `--cda-font-weight-regular` | 3× | |
+| `$fw-semibold` | 400 (Datei **Medium**) | `--cda-font-weight-medium` | 14× | so bleibt es gleich |
+| `$fw-bold` | 600 (Datei Bold) | `--cda-font-weight-bold` | 3× | |
+| `$lh-tight`, `$lh-headlines` / `$lh-normal` / `$lh-loose` | 120 % / 140 % / 160 % | `--cda-font-line-height-tight` / `-normal` / `-loose` | 8× / 1× / 2× | ohne Einheit (vererbt sich anders) |
+
+</div>
+
+### Größen
+
+Die Sass-Größen dienen als Abstand **und** als Schriftgröße. Deshalb zwei Spalten.
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Größen">
+
+| Alt | Wert | Neu als Abstand | Neu als Schriftgröße | Nutzung | Hinweis |
+|---|---|---|---|---|---|
+| `$xxxs` | 2,88 px | `--cda-space-2xs` (4) | – | 4× | |
+| `$xxs` | 4,32 px | `--cda-space-2xs` (4) | – | 19× | |
+| `$quad` | 3,6 px | `--cda-space-2xs` (4) | – | 2× | |
+| `$xs`, `$half` | 7,2 px | `--cda-space-xs` (8) | – | 33× | |
+| `$s` | 11,52 px | `--cda-space-s` (12) | `--cda-font-size-xs` (12) | 63× | |
+| `$m` | 18,72 px | `--cda-space-m` (16) | `--cda-font-size-l` (20) | 78× | Abstände werden 2,7 px kleiner |
+| `$l` | 30,24 px | `--cda-space-xl` (32) | `--cda-font-size-2xl` (32) | 38× | |
+| `$xl` | 48,96 px | `--cda-space-2xl` (48) | `--cda-font-size-4xl` (52) | 13× | |
+| `$xxl` | 79,2 px | `--cda-space-3xl` (64) | – | 6× | größte Abweichung, −15 px |
+| `$tile-xxs` | 8em (115 px) | `.cda-card-grid--small` (`--cda-size-card-min-small`, 128) | | 2× | über das Mixin `grid-auto-columns-small` |
+| `$tile-s` | 16em (230 px) | `.cda-card-grid` (`--cda-size-card-min`, 256) | | 1× | Kacheln werden breiter |
+| `$tile-xs` | 12em | – | | 0× | |
+| `$sidebar-width` | 25,2rem (403 px) | kein Gegenstück | | 9× | an `$bfs` gekoppelt – mit 16 px gegenprüfen |
+| `$slider-handles`, `--tile-fix` | | kein Gegenstück | | | `--tile-fix` liest das Skript `artefact-overview.tsx` |
+
+</div>
+
+### Breakpoints, Bewegung, Ebenen, Weiteres
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Breakpoints, Bewegung, Ebenen, Weiteres">
+
+| Alt | Wert | Neu | Nutzung | Hinweis |
+|---|---|---|---|---|
+| `$vp-medium` | 720 px | `--cda-breakpoint-md` (768) | 9× | +48 px |
+| `$vp-large` | 1024 px | `--cda-breakpoint-lg` | 0× | gleich |
+| `$vp-nav` | 1200 px | entfällt mit `.cda-header` | 4× | der Header bricht nach seiner eigenen Breite um (48rem) |
+| `$vp-xlarge` / `$vp-xxlarge` | 1400 / 1700 px | `--cda-breakpoint-xl` (1280) / `-2xl` (1536) | 1× / 1× | Raster besser fließend (ADR 0010) |
+| `$vp-3xlarge` / `$vp-4xlarge` | 2000 / 2300 px | kein Gegenstück | 0× / 1× | fließende Raster statt Breakpoints |
+| `$tr-fast` / `-medium` / `-slow` | 0,2 / 0,5 / 0,8 s | `--cda-duration-fast` / `-medium` / `-slow` | 30× / 15× / 1× | medium 400 statt 500 ms |
+| `$tr-faster` | 0,1 s | – | 0× | |
+| `$level-background` / `-content` / `-content-nav` / `-section-nav` / `-overall-nav` | 0 / 10 / 20 / 30 / 40 | `--cda-z-background` / `-content` / `-content-top` / `-nav` / `-nav-fixed` | 0× / 3× / 3× / 0× / 4× | Vorschlag nach ADR 0011 |
+| z-index 100 / 101 (Vollbild-Menü) | | `--cda-z-modal-bg` / `-modal` | | entfällt weitgehend mit `.cda-header` |
+| `$shadow`, `$shadow-xs` | Unschärfe 4,32 / 2,88 px | `--cda-shadow-s` | 0× / 1× | |
+| `$shadow-s` / `$shadow-m` | 11,52 / 18,72 px | `--cda-shadow-m` / `-l` | 0× | |
+| `$shadow-top*`, `$inner-shadow` | | kein Gegenstück | 0× | `$inner-shadow` ist fehlerhaft (Alpha 10) |
+| `$border-stroke-weight-s` / `$border-stroke-weight` / `-m` | 1 / 2 / 3 px | `--cda-border-width-s` / `-m` / **`-l`** | 8× / 4× / 1× | Namensfalle: altes `-m` ist neues `-l` |
+| hartkodiert `1px` | | `--cda-border-width-s` | 21× | |
+| `$border-radius` | 2 px | `--cda-radius-s` | 6× | gleich |
+| `$op-medium` / `$op-low` | 0,6 / 0,3 | `--cda-opacity-medium` / `-low` | 8× / 1× | gleich |
+| `$op-full` | 1 | – | 3× | einfach `1` |
+
+</div>
+
+## Komponenten
+
+Pfade unter `src/components/`.
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Komponenten">
+
+| Alt | Neu | Hinweis zum Markup |
+|---|---|---|
+| `.btn` (`base/interacting/btn`) | `.cda-button .cda-button--primary` ([Button](?path=/docs/komponenten-button--docs)) für die Hauptaktion, sonst `.cda-button` | Schrift auf Gelb wird schwarz; `type="button"` ergänzen; der Sprung beim Überfahren entfällt |
+| `.btn--with-icon` | entfällt | Icon als `<span class="cda-icon" aria-hidden="true">` im Button |
+| `.btn--is-reduced` | `.cda-button--ghost` | das gelbe Icon entfällt |
+| `.btn--is-disabled` / `--is-hidden` | Attribut `disabled` / `hidden` | |
+| `.reset-button` (Suchmasken) | `.cda-button` | |
+| `.text-input`, `.input-field`, `.label-text` (`base/interacting/text-input`) | `.cda-field`, `.cda-input`, `.cda-field__label` ([Textfeld](?path=/docs/komponenten-textfeld--docs)) | `<label for>` mit `id` vor dem Feld statt umschließend; `outline: none` und der Sprung beim Fokus entfallen |
+| Freitextsuche (`fieldset.keyword-search`, `.reset-icon`, `.search-button` in `search-works` u. a.) | `.cda-search` ([Suchfeld](?path=/docs/komponenten-suchfeld--docs)) mit `__input`, `__reset`; Suchen-Button `.cda-button--primary .cda-button--icon` | `<form role="search">`, `type="search"`, Label ergänzen; `<span onClick>backspace</span>` → `<button type="button" aria-label="Eingabe löschen">` |
+| `.checkbox`, `.checkbox__control` | `.cda-checkbox` ([Checkbox](?path=/docs/komponenten-checkbox--docs)) mit `__input`, `__label`, `__count`; Gruppe `.cda-checkbox-group` mit `__legend` | das Span `__control` entfällt; Trefferzahl in `__count` |
+| `.toggle` (`base/interacting/toggle`) | **`.cda-accordion` ([Accordion](?path=/docs/komponenten-accordion--docs))**, nicht `.cda-toggle` | Namensfalle: der alte Toggle klappt auf. Klick-`<span>` → `details`/`summary`, `isOpen` → Attribut `open` |
+| `.accordion`, `.accordion-entry`, `.advanced-search-toggle` | `.cda-accordion` mit `__item`, `__summary`, `__content` | |
+| `.switcher`, `.switcher-item` | `.cda-switcher`, `.cda-switcher__item` ([Switcher](?path=/docs/komponenten-switcher--docs)) | die Item-Klasse wandert vom `<li>` auf `<a>` bzw. `<button>`; `scale(1.2)` entfällt |
+| `.lang-selector` (`secondary-navigation.tsx`) | `<nav aria-label="Sprache"><ul class="cda-switcher">` mit Links | `<span onClick>` → `<a href hreflang lang>`, aktiv per `aria-current="page"` |
+| `.artefact-overview-switcher` | `.cda-switcher` mit Buttons in `role="group"` | `<i data-icon onClick>` → `<button aria-pressed aria-label>`; die aktuelle Ansicht ist heute `is-disabled` → `aria-pressed="true"` |
+| `.cloak`, `.cloak__throbber` | `.cda-loader`, `__panel`, `.cda-spinner` ([Loader](?path=/docs/komponenten-loader--docs)) mit Text | `role="status"`, Text ist Pflicht |
+| `.artefact-card` (`__content`, `__title`, `__subtitle`, `__text`, `__favorite`, `.card-image`) | `.cda-card` ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)) mit `__image`, `__content`, `__title` › `__link`, `__subtitle`, `__text`, `__favorite` | `<article>`, ein Link im Titel statt zwei; Merken als `<button aria-pressed>` statt `<a>` ohne `href`; `--is-armed` entfällt |
+| `.artefact-overview--is-grid` | `.cda-card-grid` bzw. `--small` | |
+| `.main-navigation`, `__hamburger`, `.menu`, `.menu__item`, `a.is-active` | `.cda-header` ([Header](?path=/docs/komponenten-header--docs)) mit `__brand`, `__toggle`, `__nav`, `__menu`, `__link`, `__actions` | Hamburger mit Icon statt leer und `aria-label="Menü"`; `is-active` → `aria-current`; Menüeinträge sind heute `<a>` ohne `href` |
+| `.logo`, `.cda-logo` (`base/visualizing/logo`) | `.cda-header__brand` mit SVG | **Präfix `cda-` ist reserviert** – umbenennen; auch in `pages/maintenance-notice` |
+| `.icon` (`data-icon`, `.i12`–`.i48`) | `.cda-icon` ([Icons](?path=/docs/grundlagen-icons--docs)) | Name als Text; Größenklassen ohne Gegenstück |
+| – | `.cda-skip-link` ([Skip-Link](?path=/docs/komponenten-skip-link--docs)), `.cda-u-visually-hidden` | neu, gibt es noch nicht |
+
+</div>
+
+**Ohne Gegenstück, bleiben im Projekt:** tree-list, dating-rangeslider (noUiSlider), search-result-navigation (Seitenblättern), artefact-line, artefact-table, my-cranach, secondary-navigation, scroll-to, size, image, maintenance-notice, Seitenraster `.page`/`.sidebar`.
+
+## Beim Umstellen beachten
+
+- **Reset ohne Layer:** `style/vendor/reset/_reset.scss` (Meyer-Reset) und `* { box-sizing: content-box }` in `010-base/body-and-typo.scss` gewinnen gegen alle Komponenten. Löschen oder in einen Layer vor `cda` legen.
+- **Gelb als Textfarbe** an neun Stellen, siehe oben.
+- **Abstände werden kleiner:** `$m` ist mit 78 Stellen die häufigste Größe und wird 16 statt 18,72 px. Zusammen mit dem größeren Fließtext wirkt das Layout dichter – auf echten Seiten prüfen.
