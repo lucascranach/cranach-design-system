@@ -243,8 +243,7 @@
       "code": "https://github.com/lucascranach/cranach-artefacts/blob/main/src/assets/styles/scss/components/meta-data-form.scss",
       "live": "",
       "image": "metadaten-formular.webp",
-      "noPhoto": "intern – Foto folgt",
-      "shot": ""
+      "shot": "2026-11-11"
     },
     {
       "name": "Etikett",
@@ -254,8 +253,7 @@
       "code": "https://github.com/lucascranach/cranach-image-metadata/blob/main/style.css",
       "live": "",
       "image": "etikett.webp",
-      "noPhoto": "intern – Foto folgt",
-      "shot": ""
+      "shot": "2026-11-11"
     },
     {
       "name": "Verzeichnisliste",
@@ -264,8 +262,8 @@
       "path": "styles/components.css",
       "code": "https://github.com/lucascranach/cranach-image-tools/blob/main/styles/components.css",
       "live": "",
-      "image": "verzeichnisliste.webp",
-      "noPhoto": "intern – Foto folgt",
+      "image": "",
+      "noPhoto": "Oberfläche läuft nur lokal",
       "shot": ""
     },
     {
@@ -333,8 +331,7 @@
       "code": "https://github.com/lucascranach/cda-orga/blob/main/assets/_scss/components/teaser.scss",
       "live": "",
       "image": "teaser.webp",
-      "noPhoto": "intern – Foto folgt",
-      "shot": ""
+      "shot": "2026-11-11"
     },
     {
       "name": "Brotkrumen",
