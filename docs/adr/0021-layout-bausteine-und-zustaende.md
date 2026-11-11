@@ -51,11 +51,10 @@ Zustände werden nie über Klassen wie `.is-active` gesetzt. CSS und JavaScript 
 ## Konsequenzen
 - ADR 0003 wird ergänzt (neuer Layer, Präfix `cda-l-`); Stylelint muss `cda-l-` und die Variablen `--cda-l-…` zulassen.
 - Zwei neue Tokens für `.cda-l-center`:
-  - **`size.measure` = `65ch`** – Zeilenlänge von Textspalten („measure“ ist der typografische Fachbegriff). Bei 16 px rund 620 px, wegen der schmaleren Buchstaben etwa 70–80 Zeichen; empfohlen sind 45–75, WCAG 1.4.8 nennt höchstens 80. Heute: artefacts 720 px, cda-orga 800 px, kirby `60em` – die Textspalte in artefacts wird damit etwa 100 px schmaler; beim Umsetzen auf einer Werkseite prüfen.
+  - **`size.measure` = `65ch`** – Zeilenlänge von Textspalten („measure“ ist der typografische Fachbegriff, so auch in Every Layout und CUBE; Name von Volker gewählt, verworfen: `size.line-length`, `size.prose`). Bei 16 px rund 620 px, wegen der schmaleren Buchstaben etwa 70–80 Zeichen; empfohlen sind 45–75, WCAG 1.4.8 nennt höchstens 80. Heute: artefacts 720 px, cda-orga 800 px, kirby `60em` – die Textspalte in artefacts wird damit etwa 100 px schmaler; beim Umsetzen auf einer Werkseite prüfen.
   - **`size.page` = 1536 px** – größte Breite des Seiteninhalts, gleich dem größten Breakpoint `2xl`: Oberhalb des letzten Breakpoints wächst das Layout nicht weiter. Heute begrenzen cda-orga und kirby bei 1920 px, artefacts und search gar nicht. Kachelansichten wie in search dürfen weiter die volle Breite nutzen oder `--cda-l-max` selbst setzen.
 - Die Bausteine sollten vor den Roadmap-Schritten 23–27 entstehen, damit Meldung, Dialog, Seitenleiste, Tabelle und Listenzeile sie gleich nutzen. Vorschlag: neuer Schritt vor 23, die folgenden rücken eine Nummer weiter.
 - Die Migrationsseiten bekommen je Projekt eine Zuordnung der eigenen Layout-Klassen (`.container`, `.grid`, `composition/` …) zu den Bausteinen.
 
 ## Offene Fragen
-1. Name des Tokens für die Zeilenlänge: `size.measure` (Fachbegriff, wie in Every Layout und CUBE), `size.line-length` (selbsterklärend) oder `size.prose` (wie bei Tailwind)?
-2. Name des Layers: `cda.compositions` (Begriff aus CUBE) oder `cda.layout` (passend zum Präfix `cda-l-`)?
+1. Name des Layers: `cda.compositions` (Begriff aus CUBE) oder `cda.layout` (passend zum Präfix `cda-l-`)?
