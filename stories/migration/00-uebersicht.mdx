@@ -31,7 +31,7 @@ Ausgeschlossen sind cranach-grafiken-gatsby (Archiv) und cranach-api-documentati
 
 1. **Einbinden.** `cranach.css` einbinden, wie unter [Einbinden](?path=/docs/einbinden--docs) beschrieben. Alle Styles des Designsystems liegen in Cascade Layers. Die Styles des Projekts haben ohne Layer immer Vorrang, deshalb ändert sich zunächst nichts am Aussehen.
 2. **Tokens zuordnen.** Die alten Variablen auf die neuen Tokens zeigen lassen, etwa `$accent: var(--cda-color-accent-default);` in Sass oder `--accent: var(--cda-color-accent-default);` in CSS. So stellt ein Projekt in einem Schritt um, ohne jede Stelle anzufassen. Danach die alten Namen nach und nach durch die neuen ersetzen und zuletzt entfernen.
-3. **Komponenten umstellen.** Eine Komponente nach der anderen: Markup auf die `cda-`-Klassen umstellen, die alten Styles dazu löschen, prüfen. Komponenten ohne Gegenstück bleiben im Projekt und nutzen die Tokens.
+3. **Komponenten umstellen.** Eine Komponente nach der anderen: Markup auf die `cda-`-Klassen umstellen, die alten Styles dazu löschen, prüfen. Komponenten, die es im Designsystem nicht gibt, bleiben zunächst im Projekt und nutzen dort die Tokens. Kommen sie in mehreren Projekten vor, gehören sie ins Designsystem – siehe [Fehlende Komponenten](#fehlende-komponenten).
 
 ## Was sich sichtbar ändert
 
@@ -57,7 +57,7 @@ Die Tokens übernehmen die Werte aus den Projekten, nicht alles bleibt aber glei
 
 ### Schriftgewichte zuordnen
 
-In search, artefacts, map, image-metadata, image-tools und cda-orga passen Name, Zahl und Datei nicht zusammen. Maßgeblich ist der Schnitt, der heute tatsächlich zu sehen ist – dann bleibt das Aussehen gleich:
+In search, artefacts, map, image-metadata, image-tools und cda-orga passen Name, Zahl und Datei nicht zusammen: `$fw-semibold` heißt „Halbfett“, hat die Zahl 400 und lädt die Datei „Medium“. Zugeordnet wird **nach der Datei**, die das Projekt für die Variable lädt – nicht nach dem Namen und nicht nach der Zahl. Dann sieht die Schrift nach der Umstellung genauso aus wie vorher.
 
 <div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Schriftgewichte zuordnen">
 
@@ -74,14 +74,78 @@ Der Fließtext steht in diesen Projekten auf Light. Laut ADR 0009 wird er Regula
 
 ## Typische Fallen
 
-- **Projekt-Styles gewinnen immer.** Regeln ohne Layer schlagen das Designsystem unabhängig von der Spezifität. Das ist gewollt, hat aber Folgen: `outline: none` im Projekt schaltet den Fokusring ab, ein Reset wie `* { margin: 0; padding: 0 }` oder `button, input { font: inherit }` nimmt den Komponenten ihre Abstände und Schrift. Solche Regeln beim Umstellen löschen; der Reset des Designsystems übernimmt `box-sizing` und Schrift selbst.
+- **Projekt-Styles gewinnen immer.** Regeln ohne Layer schlagen das Designsystem, egal wie spezifisch sie sind. Das ist gewollt, hat aber Folgen:
+  - `outline: none` im Projekt schaltet den Fokusring des Designsystems ab.
+  - Ein eigener Reset wie `* { margin: 0; padding: 0 }` oder `button, input { font: inherit }` nimmt den Komponenten ihre Abstände und ihre Schrift.
+
+  Solche Regeln beim Umstellen löschen. Sie werden nicht gebraucht, weil `cranach.css` einen eigenen Reset mitbringt: Er setzt `box-sizing: border-box` für alle Elemente und lässt Formularelemente die Schrift der Seite übernehmen.
 - **Theme festlegen.** Ohne `data-theme` folgt `cranach.css` der Systemeinstellung (ADR 0007). Ein Projekt, das nur hell oder nur dunkel aussieht, setzt deshalb `<html data-theme="light">` bzw. `"dark"`, sonst wird es im dunklen Systemmodus teilweise dunkel.
 - **Präfix `cda-` ist reserviert.** Klassen und Variablen mit `cda-` gehören dem Designsystem (ADR 0003). Eigene Klassen mit diesem Präfix vorher umbenennen.
-- **Media Queries:** `var()` funktioniert dort nicht. Mit Build `@custom-media` aus `custom-media.css` nutzen, ohne Build den Wert direkt schreiben, z. B. `@media (width < 1024px)`.
+- **Media Queries:** Tokens lassen sich dort nicht einsetzen, `@media (width < var(--cda-breakpoint-lg))` funktioniert nicht. Zwei Wege:
+  - Projekte, deren CSS ein Werkzeug wie PostCSS oder Lightning CSS verarbeitet (etwa über Vite), können die Breakpoints mit Namen schreiben: `@media (--cda-below-lg)`. Die Namen stehen in `custom-media.css`; das Werkzeug ersetzt sie durch die Werte, denn Browser verstehen diese Schreibweise noch nicht.
+  - Alle anderen schreiben den Wert direkt: `@media (width < 1024px)`. Die Werte stehen unter [Abstände](?path=/docs/grundlagen-abstaende--docs).
 
 ## Wie die Tabellen zu lesen sind
 
-- **Werte:** alter Name, alter Wert und Datei im Projekt, daneben das neue Token. Semantische Tokens (`--cda-color-text-default`) gehen vor Paletten-Tokens (`--cda-color-neutral-500`): Nur sie wechseln mit dem Theme.
-- **Hinweis „Wert ändert sich“:** Das Token liegt nahe am alten Wert, aber nicht genau darauf. Die Abweichung steht dabei.
-- **„Kein Gegenstück“:** Der Wert bleibt vorerst im Projekt. Wird er in mehreren Projekten gebraucht, ist er ein Kandidat für ein neues Token.
-- **Klassen:** alte Klasse oder Komponente, daneben die `cda-`-Klasse und was sich am Markup ändert. Das vollständige Markup steht auf der Seite der Komponente.
+Jede Projektseite hat Tabellen zu **Werten** und zu **Klassen**, am Ende stehen Hinweise zum Umstellen.
+
+**Werte-Tabellen**
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Werte-Tabellen">
+
+| Spalte | Inhalt |
+|---|---|
+| Alt | Name der Variable im Projekt, etwa `$accent` oder `--dark`; bei hartkodierten Werten der Wert und wo er steht |
+| Wert | ihr heutiger Wert |
+| Neu | das Token, das sie ersetzt. Ein semantisches Token (`--cda-color-text-default`) geht vor einem Paletten-Token (`--cda-color-neutral-500`), weil nur es mit dem Theme wechselt. Hat eine Variable mehrere Aufgaben, etwa als Text- und als Linienfarbe, steht für jede das passende Token |
+| Hinweis | was beim Wechsel passiert (Begriffe siehe unten) |
+| Nutzung | nur bei search: wie oft die Variable vorkommt – hilft beim Abschätzen |
+| Neu als Abstand / Neu als Schriftgröße | nur bei artefacts, search und cda-orga: Dort dient dieselbe Sass-Größe mal als Abstand, mal als Schriftgröße, mit verschiedenen Tokens |
+
+</div>
+
+**Klassen-Tabellen**
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Klassen-Tabellen">
+
+| Spalte | Inhalt |
+|---|---|
+| Alt | Klasse oder Komponente im Projekt, oft mit Datei |
+| Neu | die `cda-`-Klassen, die sie ersetzen, mit Link zur Komponente; oder „bleibt im Projekt“ |
+| Hinweis zum Markup | was sich am HTML ändert, etwa `<button>` statt `<div>` oder ein fehlendes Label. Das vollständige Markup steht auf der Seite der Komponente |
+
+</div>
+
+**Begriffe in der Spalte „Hinweis“**
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Begriffe in der Spalte „Hinweis“">
+
+| Begriff | Bedeutung |
+|---|---|
+| gleich | Das Token hat genau den alten Wert. |
+| „#b84f00 statt #cc5800“, „−15 px“ | Das Token liegt nahe am alten Wert, aber nicht darauf. Angegeben ist der neue Wert oder die Abweichung. |
+| Vorschlag | Weder ADR noch Token legen die Zuordnung fest; sie ist die naheliegende. Beim Umstellen prüfen. |
+| kein Gegenstück | Es gibt kein passendes Token. Der Wert bleibt vorerst im Projekt. |
+| nicht verwendet | Die Variable ist definiert, wird aber nirgends genutzt und kann einfach entfallen. |
+
+</div>
+
+## Fehlende Komponenten
+
+Das Designsystem enthält bisher die Komponenten, die die Roadmap vorsah. Bei der Durchsicht sind weitere aufgefallen. Was nur ein Projekt braucht, bleibt dort. Was in mehreren Projekten vorkommt, ist ein Kandidat für das Designsystem – mit eigener Seite hier im Storybook:
+
+<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Fehlende Komponenten">
+
+| Komponente | heute in |
+|---|---|
+| Dialog (Fenster über der Seite mit abgedunkeltem Hintergrund) | artefacts `.overlay`, image-metadata `.detail`, timeline `ui/sheet` |
+| Seitenleiste, die sich über den Inhalt schiebt | artefacts `.drawer`, image-metadata `.sidebar` (unter 1024 px), timeline `ui/sidebar` |
+| Meldung (Hinweis, Fehler, Erfolg) | artefacts `.notification` und Formularmeldungen, image-metadata `.message` |
+| Tabelle | artefacts `.table`, `.info-table`, `.literature-table`, search `artefact-table`, image-metadata Tabulator und `.detail-table` |
+| Werk-Karte als Listenzeile (Bild links) | search `artefact-line`, map `Card` |
+
+</div>
+
+Nur in einem Projekt und deshalb vorerst dort: Seitenblättern (search), Zeitraum-Schieber (search), Baumliste (search), Etikett (image-metadata `.issue`), Teaser (cda-orga), Brotkrumen (kirby), Fortschrittsanzeige (timeline). Der Bildviewer (OpenSeadragon in artefacts und compare) ist eine Bibliothek und bekommt höchstens Tokens.
+
+Welche Kandidaten ins Designsystem kommen, entscheidet Volker Schaefer; sie werden dann als eigene Schritte in die Roadmap aufgenommen.
