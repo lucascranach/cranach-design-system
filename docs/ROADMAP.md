@@ -38,7 +38,14 @@ Die Bestandsprojekte (`../cranach-*`, `../cda-orga`) werden in dieser Phase **ni
 
 ## Offen
 
-Alle Schritte der Roadmap sind erledigt.
+Weitere Komponenten aus der Durchsicht der Projekte in Schritt 22 (Entscheidung Volker, 11.11.2026: alle fünf Kandidaten aufnehmen). Sie kommen in mehreren Projekten vor; Vorlagen und Fundstellen stehen in Storybook unter „Migration“.
+
+- [ ] **23 · Komponente Meldung** – Hinweis, Fehler, Erfolg (und Warnung?) als Fläche mit Text und Icon, die Art nicht nur über Farbe erkennbar; `role="status"` bzw. `role="alert"`. Vorlagen: `.notification` und Formularmeldungen aus cranach-artefacts, `.message` aus cranach-image-metadata. Klären: ob dafür neue Farb-Tokens nötig sind (heute #ffd364 / #ff6e6e / #71ff99) und ob es eine schwebende Variante (Toast, z-Ebene `toast`) gibt.
+- [ ] **24 · Komponente Dialog** – Fenster über der Seite auf Basis von `<dialog>` mit `showModal()` (Fokus, Escape und Top-Layer vom Browser), abgedunkelter Hintergrund `background.overlay`, Kopf mit Titel und Schließen-Button, Inhalt scrollt. Vorlagen: `.overlay` aus cranach-artefacts, `.detail` aus cranach-image-metadata, `ui/sheet` aus cranach-timeline.
+- [ ] **25 · Komponente Seitenleiste** – Leiste, die sich vom Rand über den Inhalt schiebt (Drawer), ebenfalls auf Basis von `<dialog>`; links oder rechts, bei reduzierter Bewegung ohne Animation (ADR 0010). Vorlagen: `.drawer` aus cranach-artefacts, `.sidebar` unter 1024 px aus cranach-image-metadata, `ui/sidebar` aus cranach-timeline.
+- [ ] **26 · Komponente Tabelle** – Grundstil für Datentabellen mit Kopf, Zeilen, optional Zebra und kompakter Dichte, breite Tabellen in einem scrollbaren Bereich (per Tastatur erreichbar), Sortier-Kopf mit `aria-sort`. Vorlagen: `.table`, `.info-table`, `.literature-table` aus cranach-artefacts, `artefact-table` aus cranach-search, `.detail-table` und Tabulator aus cranach-image-metadata. Tabulator selbst bleibt eine Bibliothek; geprüft wird, wie weit sich sein Aussehen über Tokens angleichen lässt.
+- [ ] **27 · Werk-Karte als Listenzeile** – Variante `.cda-card--row` (Name klären) der Werk-Karte mit Bild links und Text rechts, gleiche Struktur und Link-Muster wie die Kachel, für Ergebnislisten. Vorlagen: `artefact-line` aus cranach-search, `Card` aus cranach-map.
+  - ⏸ **Haltepunkt:** die fünf neuen Komponenten von Volker prüfen lassen.
 
 Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.components`, Story mit allen Varianten und Zuständen in beiden Themes, deutsche Doku mit Markup-Beispiel, axe ohne Fehler. Vorlagen aus den Bestandsprojekten stehen in `docs/bestandsaufnahme.md` Abschnitt 4.
 
@@ -58,7 +65,6 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 
 - **Header inhaltlich überarbeiten** (Anmerkung Volker, 29.10.2026, nach Schritt 16): Aufbau und Inhalte des Headers stehen vorerst, sollen aber noch einmal überarbeitet werden. Details klärt Volker.
 - **Favicon im Paket?** (aus Schritt 22) cranach-compare lädt das Favicon heute aus dem alten Styleguide; search, artefacts, map und timeline haben dieselbe `favicon.svg`. Ins Paket aufnehmen, damit der Styleguide archiviert werden kann? Entscheidung Volker.
-- **Waagerechte Werk-Karte** (aus Schritt 22): Die Ergebnisliste in cranach-map zeigt Karten mit Bild links. `.cda-card` ist nur eine Kachel; Kandidat für eine Variante `--horizontal`.
 - **Logo im Paket?** Das CDA-Logo liegt bisher nur für die Doku in `stories/logo.js` (SVG mit `fill="currentColor"`, ersetzt die Farbvarianten `cda-logo-bw/-gw/-ws/-ys`). Soll es als Datei bzw. Snippet ins Paket, damit die Projekte es von dort beziehen? Entscheidung Volker.
 - **Vor dem ersten Release – Sichtbarkeit des GitHub-Repos:** Das Repo ist derzeit privat. npm erzeugt Provenance-Angaben beim Veröffentlichen nur aus öffentlichen Repos; Trusted Publishing selbst funktioniert auch privat.
 - Ist ein SSH-Deploy aus GitHub Actions auf den Hochschul-Server zulässig? (erst für die automatische Release-Action relevant)
