@@ -23,17 +23,21 @@ Raster mit einer Mindestbreite je Spalte; es passen so viele Spalten hinein, wie
 | `--cda-l-min` | `--cda-size-card-min` (256 px) | Mindestbreite einer Spalte |
 | `--cda-l-space` | `--cda-space-s` (12 px) | Abstand zwischen den Kacheln |
 
+So lassen sich die Werte setzen, in dieser Reihenfolge (ADR 0021):
+
+1. **Abstand über eine Utility** – eine Klasse je Abstands-Token, siehe [Utilities](?path=/docs/utilities--docs): `class="cda-l-stack cda-u-space-xl"`.
+2. **Breiten und Sonderfälle in einer Regel im Projekt-CSS:** `.ergebnisse { --cda-l-space: var(--cda-space-xl); }`.
+3. **`style`-Attribut nur als Notlösung** – Projekte mit strenger Content-Security-Policy verbieten es, und Tippfehler fallen nicht auf.
+
 ## Klein
 
-Für die kleine Kachelansicht der Werk-Karte, nur mit Bildern:
+Für die kleine Kachelansicht der Werk-Karte, nur mit Bildern: Mindestbreite `size.card.min-small` (128 px), Abstand `2xs` (4 px).
 
 ```html
-<ul class="cda-l-grid" role="list"
-    style="--cda-l-min: var(--cda-size-card-min-small); --cda-l-space: var(--cda-space-2xs)">
+<ul class="cda-l-grid cda-l-grid--small" role="list">
   …
 </ul>
 ```
 
 <Canvas of={Grid.Klein} />
 
-Statt im `style`-Attribut lassen sich die Werte auch in einer eigenen Regel des Projekts setzen, etwa `.ergebnisse--klein { --cda-l-min: var(--cda-size-card-min-small); }`.

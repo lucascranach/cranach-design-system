@@ -100,4 +100,59 @@
   .cda-u-z-skip-link {
     z-index: var(--cda-z-skip-link);
   }
+
+  /* ---------- Abstände der Layout-Bausteine (ADR 0021) ----------
+   * Eine Klasse je Abstands-Token. Sie setzt nur --cda-l-space und damit den Abstand des
+   * Layout-Bausteins am selben Element – keinen Abstand direkt. build-css.mjs prüft, dass zu
+   * jedem Token eine Klasse da ist.
+   *
+   *   <div class="cda-l-stack cda-u-space-xl">…</div> */
+
+  .cda-u-space-2xs {
+    --cda-l-space: var(--cda-space-2xs);
+  }
+
+  .cda-u-space-xs {
+    --cda-l-space: var(--cda-space-xs);
+  }
+
+  .cda-u-space-s {
+    --cda-l-space: var(--cda-space-s);
+  }
+
+  .cda-u-space-m {
+    --cda-l-space: var(--cda-space-m);
+  }
+
+  .cda-u-space-l {
+    --cda-l-space: var(--cda-space-l);
+  }
+
+  .cda-u-space-xl {
+    --cda-l-space: var(--cda-space-xl);
+  }
+
+  .cda-u-space-2xl {
+    --cda-l-space: var(--cda-space-2xl);
+  }
+
+  .cda-u-space-3xl {
+    --cda-l-space: var(--cda-space-3xl);
+  }
+
+  .cda-u-space-4xl {
+    --cda-l-space: var(--cda-space-4xl);
+  }
+
+  .cda-u-space-fluid-s {
+    --cda-l-space: var(--cda-space-fluid-s);
+  }
+
+  .cda-u-space-fluid-m {
+    --cda-l-space: var(--cda-space-fluid-m);
+  }
+
+  .cda-u-space-fluid-l {
+    --cda-l-space: var(--cda-space-fluid-l);
+  }
 }

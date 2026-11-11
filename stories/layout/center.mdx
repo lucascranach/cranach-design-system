@@ -36,6 +36,12 @@ Ohne Modifier ist die größte Breite die des Seiteninhalts, 1536 px (Token `siz
 | `--cda-l-max` | `--cda-size-page` (1536 px), mit `--measure` `--cda-size-measure` (65ch) | größte Breite des Inhalts |
 | `--cda-l-space` | `--cda-space-fluid-m` (16–48 px), mit `--measure` 0 | Abstand zum Rand links und rechts |
 
+So lassen sich die Werte setzen, in dieser Reihenfolge (ADR 0021):
+
+1. **Abstand über eine Utility** – eine Klasse je Abstands-Token, siehe [Utilities](?path=/docs/utilities--docs): `class="cda-l-stack cda-u-space-xl"`.
+2. **Breiten und Sonderfälle in einer Regel im Projekt-CSS:** `.ergebnisse { --cda-l-space: var(--cda-space-xl); }`.
+3. **`style`-Attribut nur als Notlösung** – Projekte mit strenger Content-Security-Policy verbieten es, und Tippfehler fallen nicht auf.
+
 ## Hinweise
 
 - Die größte Breite gilt für den Inhalt; der Randabstand kommt dazu.

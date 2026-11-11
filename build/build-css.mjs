@@ -162,10 +162,23 @@ async function checkZUtilities(utilitiesCss) {
   }
 }
 
+/** Bricht ab, wenn zu einem Abstands-Token die Utility-Klasse .cda-u-space-* fehlt (ADR 0021) */
+async function checkSpaceUtilities(utilitiesCss) {
+  const { space } = JSON.parse(await readFile('tokens/primitive/dimension.json', 'utf8'));
+  const keys = Object.entries(space)
+    .filter(([key]) => !key.startsWith('$'))
+    .flatMap(([key, node]) => ('$value' in node ? [key] : Object.keys(node).filter((k) => !k.startsWith('$')).map((k) => `${key}-${k}`)));
+  const missing = keys.filter((key) => !utilitiesCss.includes(`.cda-u-space-${key} {\n    --cda-l-space: var(--cda-space-${key});`));
+  if (missing.length) {
+    throw new Error(`src/utilities.css: Klasse fehlt für ${missing.map((k) => `--cda-space-${k}`).join(', ')}`);
+  }
+}
+
 async function main() {
   const { rules, files } = await buildFonts();
   const sources = await Promise.all(SOURCES.map((f) => readFile(f, 'utf8')));
   await checkZUtilities(sources[SOURCES.indexOf('src/utilities.css')]);
+  await checkSpaceUtilities(sources[SOURCES.indexOf('src/utilities.css')]);
 
   const css = [
     '/* Cranach Design System – generiert aus src/ und tokens/, nicht von Hand bearbeiten. */',

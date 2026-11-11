@@ -14,7 +14,7 @@ export const Klein = {
     sample(
       resizable(
         'Grid klein',
-        `<ul class="cda-l-grid" role="list" style="--cda-l-min: var(--cda-size-card-min-small); --cda-l-space: var(--cda-space-2xs)">${items(12)}</ul>`,
+        `<ul class="cda-l-grid cda-l-grid--small" role="list">${items(12)}</ul>`,
       ),
     ),
 };

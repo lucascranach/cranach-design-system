@@ -49,11 +49,10 @@ Wie die Abzüge einer Grafik in cranach-artefacts: nur Bild und Angaben.
 
 ## Klein
 
-Nur Bilder, für die kleine Kachelansicht. Ohne Text steht der Link um das Bild, und das Bild trägt den Titel als `alt`. Das Raster bekommt eine kleinere Mindestbreite (Token `size.card.min-small`) und einen kleineren Abstand – über die Variablen des Layout-Bausteins, am Element oder in einer eigenen Regel im Projekt.
+Nur Bilder, für die kleine Kachelansicht. Ohne Text steht der Link um das Bild, und das Bild trägt den Titel als `alt`. Das Raster bekommt mit `cda-l-grid--small` eine kleinere Mindestbreite (Token `size.card.min-small`) und einen kleineren Abstand.
 
 ```html
-<ul class="cda-l-grid" role="list"
-    style="--cda-l-min: var(--cda-size-card-min-small); --cda-l-space: var(--cda-space-2xs)">
+<ul class="cda-l-grid cda-l-grid--small" role="list">
   <li>
     <article class="cda-card">
       <a class="cda-card__link cda-card__image" href="…"><img src="…" alt="Adam und Eva, 1526" loading="lazy"></a>

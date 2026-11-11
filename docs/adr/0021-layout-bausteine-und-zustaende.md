@@ -55,3 +55,12 @@ Zustände werden nie über Klassen wie `.is-active` gesetzt. CSS und JavaScript 
   - **`size.page` = 1536 px** – größte Breite des Seiteninhalts, gleich dem größten Breakpoint `2xl`: Oberhalb des letzten Breakpoints wächst das Layout nicht weiter. Heute begrenzen cda-orga und kirby bei 1920 px, artefacts und search gar nicht. Kachelansichten wie in search dürfen weiter die volle Breite nutzen oder `--cda-l-max` selbst setzen.
 - Die Bausteine entstehen in Roadmap-Schritt 23, vor Meldung, Dialog, Seitenleiste, Tabelle und Listenzeile (jetzt Schritte 24–28), damit diese sie gleich nutzen.
 - Die Migrationsseiten bekommen je Projekt eine Zuordnung der eigenen Layout-Klassen (`.container`, `.grid`, `composition/` …) zu den Bausteinen.
+
+## Ergänzung (11.11.2026, Entscheidung Volker): Werte setzen ohne `style`-Attribut
+In den ersten Beispielen wurden Abstände und Breiten der Bausteine per `style`-Attribut gesetzt, etwa `style="--cda-l-space: var(--cda-space-xl)"`. Das funktioniert nicht in Projekten mit strenger Content-Security-Policy (sie verbietet `style`-Attribute), Tippfehler fallen nicht auf (der Wert entfällt still), und Editoren schlagen nichts vor. Die Vorbilder vermeiden es ebenfalls: Every Layout setzt die Variablen über Attribute seiner Web Components, CUBE über Regeln im Projekt-CSS.
+
+- **Die Variablen bleiben die Schnittstelle** der Bausteine.
+- **Abstands-Utilities `cda-u-space-*`**, eine je Abstands-Token (`2xs` bis `4xl`, `fluid-s` bis `fluid-l`). Sie setzen nur `--cda-l-space` und damit den Abstand jedes Bausteins, an dem sie stehen – keinen Abstand direkt. Das ist kein Widerspruch zu ADR 0002 (keine Abstands-Utilities wie in Tailwind), weil sie ausschließlich die Bausteine einstellen. Der Build prüft, dass es zu jedem Abstands-Token eine Klasse gibt.
+- **Keine Utilities für Breiten** (`--cda-l-side`, `--cda-l-min`, `--cda-l-max`): Deren Werte sind fast immer projektspezifisch und gehören in eine Regel im Projekt-CSS.
+- **`.cda-l-grid--small`** für die kleine Kachelansicht (Mindestbreite `size.card.min-small`, Abstand `2xs`): eine feste Variante mit eigener Bedeutung, nach der Regel oben also ein Modifier.
+- **Reihenfolge in der Doku:** Utility oder Modifier, dann Regel im Projekt-CSS, das `style`-Attribut nur als Notlösung für Einzelfälle.

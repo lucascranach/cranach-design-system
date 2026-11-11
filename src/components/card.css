@@ -25,7 +25,7 @@
  *
  * Das Raster kommt vom Layout-Baustein .cda-l-grid (ADR 0021), Standard ist die Mindestbreite
  * einer Karte. Für kleine Karten:
- *   <ul class="cda-l-grid" role="list" style="--cda-l-min: var(--cda-size-card-min-small); --cda-l-space: var(--cda-space-2xs)">
+ *   <ul class="cda-l-grid cda-l-grid--small" role="list">
  *
  * Vorlage: artefact-card aus cranach-search und cranach-artefacts. Anders als dort: ein Link
  * statt zwei, Merken als Button mit aria-pressed statt <a> ohne href, Merken-Button auch per

@@ -8,14 +8,17 @@
  * Der Layer liegt zwischen cda.base und cda.components: Komponenten können einen Baustein
  * anpassen, Utilities gewinnen gegen beide, Projekt-Styles ohne Layer gegen alles.
  *
- * Einstellbar über Custom Properties am Element. Jeder Baustein setzt seinen Standard selbst, damit
- * ein Wert nicht in verschachtelte Bausteine durchsickert:
+ * Einstellbar über Custom Properties. Jeder Baustein setzt seinen Standard selbst, damit ein Wert
+ * nicht in verschachtelte Bausteine durchsickert:
  *   --cda-l-space  Abstand zwischen den Kindern (bei .cda-l-center: Abstand zum Rand)
  *   --cda-l-side   Breite der schmalen Spalte (.cda-l-sidebar)
  *   --cda-l-min    Mindestbreite einer Spalte (.cda-l-grid)
  *   --cda-l-max    größte Breite (.cda-l-center)
  *
- *   <div class="cda-l-stack" style="--cda-l-space: var(--cda-space-l)">…</div>
+ * Setzen, in dieser Reihenfolge (ADR 0021):
+ *   1. Abstand über eine Utility:   <div class="cda-l-stack cda-u-space-l">…</div>
+ *   2. Breiten in einer Regel im Projekt:   .ergebnisse { --cda-l-side: 25rem; }
+ *   3. style-Attribut nur als Notlösung – strenge Content-Security-Policies verbieten es.
  *
  * Als Liste (ul, ol) verlieren stack, cluster und grid Aufzählungszeichen und Einzug. Safari liest
  * eine Liste ohne Aufzählungszeichen dann nicht mehr als Liste vor – deshalb role="list" setzen.
@@ -104,6 +107,12 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cda-l-min)), 1fr));
     gap: var(--cda-l-space);
+  }
+
+  /* Kleine Kacheln, etwa die kleine Ansicht der Werk-Karte nur mit Bildern */
+  .cda-l-grid--small {
+    --cda-l-space: var(--cda-space-2xs);
+    --cda-l-min: var(--cda-size-card-min-small);
   }
 
   /* ---------- Center ----------

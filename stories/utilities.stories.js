@@ -1,5 +1,6 @@
 import { code, esc } from './helpers.js';
 import z from '../tokens/primitive/z-index.json';
+import dimension from '../tokens/primitive/dimension.json';
 
 export default {
   title: 'Utilities',
@@ -61,6 +62,32 @@ export const ZEbenen = {
         ([key, { $value }]) =>
           `<tr><td>${code(`.cda-u-z-${key}`)}</td><td>${code(`--cda-z-${key}`)}</td><td>${esc($value)}</td></tr>`,
       )
+      .join('')}</tbody>
+  </table>
+</div>`,
+};
+
+/** Abstands-Utilities für die Layout-Bausteine, aus den Tokens erzeugt (ADR 0021) */
+const spaceKeys = Object.entries(dimension.space)
+  .filter(([key]) => !key.startsWith('$'))
+  .flatMap(([key, node]) =>
+    '$value' in node
+      ? [[key, node.$value]]
+      : Object.entries(node)
+          .filter(([k]) => !k.startsWith('$'))
+          .map(([k, n]) => [`${key}-${k}`, n.$value]),
+  );
+
+export const Abstaende = {
+  name: 'Abstände der Layout-Bausteine',
+  parameters: { docs: { source: { code: '<div class="cda-l-stack cda-u-space-xl">…</div>' } } },
+  render: () =>
+    `<div class="docs-scroll" role="region" tabindex="0" aria-label="Abstands-Utilities">
+  <table class="docs-table">
+    <caption>Klassen für Abstände der Layout-Bausteine</caption>
+    <thead><tr><th scope="col">Klasse</th><th scope="col">setzt --cda-l-space auf</th><th scope="col">Wert</th></tr></thead>
+    <tbody>${spaceKeys
+      .map(([key, value]) => `<tr><td>${code(`.cda-u-space-${key}`)}</td><td>${code(`--cda-space-${key}`)}</td><td>${esc(value)}</td></tr>`)
       .join('')}</tbody>
   </table>
 </div>`,

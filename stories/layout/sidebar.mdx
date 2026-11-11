@@ -38,6 +38,12 @@ Mit `cda-l-sidebar--end` ist das letzte Kind die schmale Spalte. Die Reihenfolge
 | `--cda-l-side` | `--cda-size-card-min` (256 px) | Breite der schmalen Spalte |
 | `--cda-l-space` | `--cda-space-l` (24 px) | Abstand zwischen den Spalten |
 
+So lassen sich die Werte setzen, in dieser Reihenfolge (ADR 0021):
+
+1. **Abstand über eine Utility** – eine Klasse je Abstands-Token, siehe [Utilities](?path=/docs/utilities--docs): `class="cda-l-stack cda-u-space-xl"`.
+2. **Breiten und Sonderfälle in einer Regel im Projekt-CSS:** `.ergebnisse { --cda-l-space: var(--cda-space-xl); }`.
+3. **`style`-Attribut nur als Notlösung** – Projekte mit strenger Content-Security-Policy verbieten es, und Tippfehler fallen nicht auf.
+
 ## Hinweise
 
 - Genau zwei Kinder.

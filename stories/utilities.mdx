@@ -12,6 +12,7 @@ Kleine Hilfsklassen mit genau einer Aufgabe, Präfix `cda-u-`. Sie liegen im Lay
 | `.cda-u-visually-hidden` | unsichtbar, aber von Screenreadern gelesen |
 | `.cda-u-visually-hidden-focusable` | ebenso, wird aber sichtbar, sobald es den Fokus bekommt |
 | `.cda-u-z-*` | z-Ebene aus den Tokens (ADR 0011) |
+| `.cda-u-space-*` | Abstand eines [Layout-Bausteins](?path=/docs/layout-stack--docs) aus den Tokens (ADR 0021) |
 | `[hidden]` | blendet auch Komponenten mit eigenem `display` aus |
 
 ## Nur für Screenreader
@@ -56,6 +57,16 @@ Eine Klasse je Token. Wirkt nur an positionierten Elementen (`position` nicht `s
 
 <Canvas of={Utilities.ZEbenen} />
 
+## Abstände der Layout-Bausteine
+
+```html
+<div class="cda-l-stack cda-u-space-xl">…</div>
+```
+
+Eine Klasse je Abstands-Token. Sie setzt nur die Variable `--cda-l-space` und damit den Abstand des Layout-Bausteins am selben Element – Stack, Cluster, Sidebar, Grid oder den Randabstand von Center. An einem Element ohne Baustein bewirkt sie nichts. So braucht es kein `style`-Attribut, das strenge Content-Security-Policies verbieten. Der Build prüft, dass es zu jedem Token eine Klasse gibt.
+
+<Canvas of={Utilities.Abstaende} />
+
 ## Bewusst nicht dabei
 
-Die Projekte haben weitere Hilfsklassen wie `.is-hidden` (mit `!important`), `.has-interaction` (Zeiger beim Überfahren) oder `.is-remark` (graue Schrift). Dafür gibt es jetzt das Attribut `hidden`, die Komponenten mit eigenem Zeiger und die Tokens (`color.text.muted`). Abstands- oder Layout-Utilities wie in Tailwind sind nicht geplant – Projekte mit Tailwind nutzen dessen Klassen (ADR 0003).
+Die Projekte haben weitere Hilfsklassen wie `.is-hidden` (mit `!important`), `.has-interaction` (Zeiger beim Überfahren) oder `.is-remark` (graue Schrift). Dafür gibt es jetzt das Attribut `hidden`, die Komponenten mit eigenem Zeiger und die Tokens (`color.text.muted`). Abstands- oder Layout-Utilities wie in Tailwind (`mt-4`, `p-2`) sind nicht geplant – Projekte mit Tailwind nutzen dessen Klassen (ADR 0003). Die Klassen `cda-u-space-*` sind keine solchen: Sie stellen nur die Layout-Bausteine ein.

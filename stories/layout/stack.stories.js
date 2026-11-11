@@ -11,5 +11,5 @@ export const Standard = {
 
 export const GroesserAbstand = {
   name: 'Größerer Abstand',
-  render: () => sample(`<div class="cda-l-stack" style="--cda-l-space: var(--cda-space-xl)">${kids}</div>`),
+  render: () => sample(`<div class="cda-l-stack cda-u-space-xl">${kids}</div>`),
 };

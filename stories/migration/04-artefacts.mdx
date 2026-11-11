@@ -74,7 +74,7 @@ Die Sass-Größen dienen als Abstand **und** als Schriftgröße. Deshalb zwei Sp
 | `$xl` | 20,16 px | `--cda-space-l` (24) | `--cda-font-size-l` (20) | |
 | `$xxl` | 25,92 px | `--cda-space-l` (24) | `--cda-font-size-xl` (24) | |
 | `$xxxl` | 37,44 px | `--cda-space-xl` (32) | `--cda-font-size-3xl` (40) | |
-| `$tile-xxs` in `minmax()` | 100,8 px | `.cda-l-grid` mit `--cda-l-min: var(--cda-size-card-min-small)` (128) | | |
+| `$tile-xxs` in `minmax()` | 100,8 px | `.cda-l-grid--small` (128) | | |
 | `$tile-xs` in `minmax()` | 201,6 px | `.cda-l-grid` (Standard `--cda-size-card-min`, 256) | | Kacheln werden breiter |
 | `$column-*`, `$term-width*`, `$image-small`, `$tile-s` | | kein Gegenstück | | bleiben im Projekt |
 
@@ -140,7 +140,7 @@ Die alten Werte springen bei 1440 und 1800 px, die neuen wachsen gleitend. Abwei
 | `.foldable-block` mit `.is-expand-trigger` und `.expandable-content` | ebenso `.cda-accordion` | heute ein `<h2>` mit Klick-Handler (`js-expand-trigger`, 12×) – auf `details`/`summary` umbauen, dann ohne JavaScript |
 | `.download-link--resized.is-loading::after` | `<span class="cda-spinner" aria-hidden="true">` ([Loader](?path=/docs/komponenten-loader--docs)) im Link, dazu `aria-busy="true"` | das Skript fügt den Spinner ein statt der Klasse |
 | `.artefact-card` (`__image-holder`, `__content`, `__title`, `__subtitle`, `__text`, `__favorite`) | `article.cda-card` ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)) mit `__image`, `__content`, `__title` › `__link`, `__subtitle`, `__text`, `__favorite` | heute `<figure>` mit einem Link um alles; neu ein Link im Titel, Bild mit `alt=""` |
-| `.artefact-overview`, `.reprints-gallery` | `.cda-l-grid` mit `role="list"`, klein mit `--cda-l-min: var(--cda-size-card-min-small)` | siehe [Grid](?path=/docs/layout-grid--docs) |
+| `.artefact-overview`, `.reprints-gallery` | `.cda-l-grid` mit `role="list"`, klein mit `.cda-l-grid--small` | siehe [Grid](?path=/docs/layout-grid--docs) |
 | `.main-navigation` (+ `.is-sticky`), `.primary-navigation`, `.secondary-navigation` | `header.cda-header` ([Header](?path=/docs/komponenten-header--docs)) (+ `--sticky`) mit `__brand`, `__nav`, `__menu`, `__link`, `__actions`, `__toggle` | heute `<nav>` ohne `<header>`; die Links „zur Werksuche“ bleiben Buttons |
 | `.cda-logo-wrap`, `.cda-logo` | `.cda-header__brand` mit Logo als Inline-SVG | **Präfix `cda-` ist reserviert** – die alten Klassen umbenennen; `aria-label` am Link statt `alt="CDA Logo"` |
 | `.main-footer` | `footer.cda-footer` ([Footer](?path=/docs/komponenten-footer--docs)) mit `data-theme="dark"`, `__copyright`, optional `__nav`, `__links` | Fläche #444 → dunkles Theme |
