@@ -23,6 +23,14 @@ Bleibt eine Komponente dagegen nur im Projekt, gerät sie leicht in Vergessenhei
 - **Bibliotheken** wie OpenSeadragon, Tabulator, noUiSlider oder PhotoSwipe bleiben Bibliotheken, auch wenn mehrere Projekte sie nutzen. Das Designsystem passt höchstens ihr Aussehen über Tokens an. Sie stehen im Katalog, damit die Projekte dieselbe Bibliothek wählen.
 
 ## Konsequenzen
-- Der Katalog lebt im Repo des Designsystems (`stories/projektkomponenten.mdx`). Eine neue Projektkomponente bedeutet deshalb auch eine kleine Änderung hier.
+- Der Katalog lebt im Repo des Designsystems (`stories/projektkomponenten.*`). Eine neue Projektkomponente bedeutet deshalb auch eine kleine Änderung hier.
 - Die Liste ist nur so gut wie ihre Pflege. Der Eintrag gehört zur Fertigstellung einer Projektkomponente, wie ein Test zur Funktion.
 - Die fünf Kandidaten aus Schritt 22, die schon in mehreren Projekten vorkommen (Meldung, Dialog, Seitenleiste, Tabelle, Werk-Karte als Listenzeile), sind als Roadmap-Schritte 23–27 eingeplant.
+
+## Ergänzung (11.11.2026, Entscheidung Volker): Form des Katalogs
+Eine reine Tabelle mit Pfaden half wenig: Man sah nicht, wie eine Komponente aussieht, und fand sie im Projekt schwer wieder. Verglichen wurden Kacheln mit Bildschirmfoto und eine Tabelle nur mit Links; gewählt sind die Kacheln.
+
+- Jeder Eintrag zeigt, wo möglich, ein **Bildschirmfoto** (mit Datum), einen Link **„Ansehen“** auf eine öffentliche Seite mit der Komponente und einen Link **„Code“** auf die Datei bei GitHub. Gibt es kein Foto, steht der Grund in der Kachel.
+- Die Daten stehen in `stories/projektkomponenten.json`, die Fotos als WebP in `stories/assets/projektkomponenten/`.
+- Fotos öffentlicher Seiten nimmt `npm run catalog:photos` auf (`build/catalog-photos.mjs`): Es öffnet die Seite in einem unsichtbaren Chrome und fotografiert das Element. Fotos interner Seiten werden von Hand ergänzt. Das Skript läuft nur lokal und gehört nicht zu `npm run build`.
+- Ändert sich eine Komponente im Projekt, wird ihr Foto neu aufgenommen.

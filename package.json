@@ -42,7 +42,8 @@
     "prepublishOnly": "npm run build",
     "release": "node build/release.mjs",
     "storybook": "npm run build && storybook dev -p 6006 --no-open",
-    "build:storybook": "npm run build && storybook build -o storybook-static"
+    "build:storybook": "npm run build && storybook build -o storybook-static",
+    "catalog:photos": "node build/catalog-photos.mjs"
   },
   "devDependencies": {
     "@fontsource-variable/ibm-plex-sans": "5.3.0",

@@ -158,3 +158,68 @@
 .docs-skip-link-visible a {
   translate: 0 0;
 }
+
+/* ---------- Katalog der Projektkomponenten (ADR 0020) ---------- */
+
+.docs-catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--cda-size-card-min), 1fr));
+  gap: var(--cda-space-l);
+  padding: 0;
+  list-style: none;
+}
+
+.docs-catalog__item {
+  display: flex;
+  flex-direction: column;
+  border: var(--cda-border-width-s) solid var(--cda-color-border-default);
+  border-radius: var(--cda-radius-m);
+  overflow: hidden;
+}
+
+/* Vorschau: Bild vollständig zeigen, egal ob breit oder hoch */
+.docs-catalog__shot {
+  display: block;
+  aspect-ratio: 16 / 10;
+  padding: var(--cda-space-s);
+  background-color: var(--cda-color-background-subtle);
+  border-block-end: var(--cda-border-width-s) solid var(--cda-color-border-default);
+
+  & img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+  }
+}
+
+.docs-catalog__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--cda-space-2xs);
+  padding: var(--cda-space-s) var(--cda-space-m) var(--cda-space-m);
+}
+
+.docs-catalog__title {
+  margin: 0;
+  font-size: var(--cda-font-size-l);
+  font-weight: var(--cda-font-weight-semibold);
+}
+
+.docs-catalog__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cda-space-m);
+  margin-block-start: auto;
+  padding-block-start: var(--cda-space-xs);
+}
+
+/* Ohne Foto: Grund statt Bild */
+.docs-catalog__shot--empty {
+  display: grid;
+  place-items: center;
+  color: var(--cda-color-text-muted);
+  font-size: var(--cda-font-size-s);
+  text-align: center;
+}

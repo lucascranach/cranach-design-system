@@ -1,6 +1,7 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+import * as Projektkomponenten from './projektkomponenten.stories.js';
 
-<Meta title="Projektkomponenten" />
+<Meta of={Projektkomponenten} />
 
 # Projektkomponenten
 
@@ -10,7 +11,7 @@ Komponenten, die es nur in einem Projekt gibt. Sie gehören **nicht** zum Design
 
 1. **Vor dem Bauen nachsehen:** Gibt es die Komponente unter [Komponenten](?path=/docs/komponenten-button--docs) im Designsystem? Steht sie hier im Katalog?
 2. **Steht sie hier,** ist das neue Projekt das zweite. Die Komponente kommt ins Designsystem – als eigener Roadmap-Schritt, mit der vorhandenen Umsetzung als Vorlage – statt ein zweites Mal gebaut zu werden.
-3. **Gibt es sie nirgends,** wird sie im Projekt gebaut, mit den Tokens des Designsystems und ohne Präfix `cda-`. Im selben Zug kommt hier ein Eintrag dazu.
+3. **Gibt es sie nirgends,** wird sie im Projekt gebaut, mit den Tokens des Designsystems und ohne Präfix `cda-`. Im selben Zug kommt hier ein Eintrag dazu – siehe [Eintrag ergänzen](#eintrag-ergänzen).
 
 Stand: Durchsicht der Projekte am 11.11.2026. Pfade relativ zum jeweiligen Projekt.
 
@@ -32,41 +33,9 @@ Diese Komponenten gibt es schon in mehreren Projekten. Sie sind eingeplant; bis 
 
 ## Nur in einem Projekt
 
-<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Nur in einem Projekt">
+Ein Klick auf das Foto zeigt es groß, „Ansehen“ öffnet eine Seite, auf der die Komponente vorkommt, „Code“ die Datei auf GitHub. Fehlt ein Foto, steht der Grund in der Kachel. Mit der neuen Website cranach-kirby werden voraussichtlich Seitenblättern, Teaser und Brotkrumen ein zweites Projekt finden.
 
-| Komponente | Projekt | Fundort | Zweck |
-|---|---|---|---|
-| Seitenblättern | cranach-search | `src/components/structure/interacting/search-result-navigation` | durch Trefferseiten blättern |
-| Zeitraum-Schieber | cranach-search | `src/components/base/interacting/dating-rangeslider` | Filter nach Datierung (noUiSlider) |
-| Baumliste | cranach-search | `src/components/structure/interacting/tree-list` | verschachtelte Filter mit Trefferzahlen |
-| Kategorie-Eintrag | cranach-search | `src/components/base/interacting/category-filter` | Menüeintrag zur Wahl der Suchkategorie (heute ein Link ohne `href`) |
-| Trefferzahl | cranach-search | `src/components/base/visualizing/size` | Zahl in Dekorationsfarbe mit „#“ davor |
-| Merkliste | cranach-search | `src/components/structure/interacting/my-cranach` | gemerkte Werke |
-| Nach oben | cranach-search | `src/components/base/interacting/scroll-to` | Sprung an den Seitenanfang |
-| Leiste der Ergebnisseite | cranach-search | `src/components/structure/interacting/secondary-navigation` | Filter, Merkliste, Ansicht und Sprachwahl |
-| Wartungshinweis | cranach-search | `src/components/pages/maintenance-notice` | Seite während Wartungsarbeiten |
-| Definitionsliste | cranach-artefacts | `src/assets/styles/scss/components/lists.scss` (`.definition-list`) | Angaben als Begriff und Wert |
-| Bildunterschrift | cranach-artefacts | `components/image-caption.scss` | Text unter Abbildungen |
-| Verwandte Werke | cranach-artefacts | `components/related-objects.scss` | Liste verwandter Objekte |
-| Gutachten | cranach-artefacts | `components/surveys.scss` | Untersuchungsberichte |
-| Umschaltbarer Inhalt | cranach-artefacts | `components/additional-info.scss` (`.switchable-content-handle`) | Zusatzinhalte ein- und ausblenden |
-| Literaturverweise | cranach-artefacts | `components/literature-links.scss` | Verweise auf Literatur |
-| Bildleiste | cranach-artefacts | `composition/leporello-explore.scss` (`.image-stripe`) | Bildfolge mit Tooltip |
-| Metadaten-Formular | cranach-artefacts | `components/meta-data-form.scss` | internes Bearbeiten von Metadaten |
-| Trennstriche | cranach-artefacts | `.has-separator`, `.has-tight-separator`, `.has-small-separator` | gelbe Striche zwischen Abschnitten |
-| Etikett | cranach-image-metadata | `style.css` (`.issue`) | Hinweis auf fehlerhafte Metadaten |
-| Verzeichnisliste | cranach-image-tools | `styles/components.css` (`.dir-list`) | Ordner im Bild-Browser |
-| Vergleichsfläche | cranach-compare | `public/styles/components.css` (`.comparism-stage`) | zwei Bilder nebeneinander |
-| Fortschrittsanzeige | cranach-timeline | `src/components/timeline/ImagePrefetchIndicator.tsx` | Laden der Vorschaubilder |
-| Sperre für kleine Bildschirme | cranach-timeline | `src/components/layout/MobileBlocker.tsx` | Hinweis unter 768 px |
-| Karte mit Standorten | cranach-map | `src/components/map/` | Mapbox-Karte |
-| Teaser | cda-orga | `assets/_scss/components/teaser.scss` | Anreißer auf der Startseite |
-| Brotkrumen | cranach-kirby | `site/snippets/breadcrumb.php` | Pfad zur aktuellen Seite |
-| Hero | cranach-kirby | `site/snippets/blocks/hero.php` | großes Bild mit Titel |
-
-</div>
-
-Die Pfade unter cranach-artefacts liegen in `src/assets/styles/scss/`. Mit der neuen Website cranach-kirby werden voraussichtlich Seitenblättern, Teaser und Brotkrumen ein zweites Projekt finden.
+<Story of={Projektkomponenten.Katalog} />
 
 ## Bibliotheken
 
@@ -87,3 +56,14 @@ Bibliotheken bleiben Bibliotheken, auch in mehreren Projekten. Das Designsystem 
 </div>
 
 Bildviewer gibt es damit in drei Projekten mit zwei Bibliotheken. Vor dem nächsten Bildviewer klären, ob OpenSeadragon der gemeinsame Standard wird.
+
+## Eintrag ergänzen
+
+Die Einträge stehen in `stories/projektkomponenten.json`, je Komponente ein Block mit Name, Projekt, Zweck, Fundort, Code-Link und – wenn öffentlich – Live-Seite. Das Foto entsteht so:
+
+- **Öffentliche Seite:** unter `photo` Adresse und CSS-Selektor des Elements eintragen, dann `npm run catalog:photos -- <Name>`. Das Skript fotografiert das Element in einem unsichtbaren Chrome, legt es als WebP unter `stories/assets/projektkomponenten/` ab und setzt das Datum. Braucht lokal Google Chrome und `cwebp` (`brew install webp`).
+- **Interne Seite oder lokaler Prototyp:** Bildschirmfoto von Hand als WebP mit höchstens 1200 px Breite ablegen, Dateinamen unter `image` und das Datum unter `shot` eintragen.
+- **Kein Foto möglich:** Grund unter `noPhoto` eintragen, etwa „erscheint erst beim Scrollen“.
+
+Ändert sich eine Komponente im Projekt, das Foto neu aufnehmen.
+

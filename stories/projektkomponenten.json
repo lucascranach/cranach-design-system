@@ -1,0 +1,362 @@
+{
+  "$description": "Katalog der Projektkomponenten (ADR 0020): Komponenten, die es nur in einem Projekt gibt. Bilder in stories/assets/projektkomponenten/, aufgenommen mit npm run catalog:photos (Angaben unter photo) oder von Hand (interne Projekte). live: öffentliche Seite mit der Komponente; noPhoto: warum es kein Foto gibt.",
+  "components": [
+    {
+      "name": "Seitenblättern",
+      "project": "cranach-search",
+      "purpose": "durch Trefferseiten blättern",
+      "path": "src/components/structure/interacting/search-result-navigation",
+      "code": "https://github.com/lucascranach/cranach-search/tree/master/src/components/structure/interacting/search-result-navigation",
+      "live": "https://lucascranach.org/de/search/",
+      "image": "seitenblaettern.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/search/",
+        "selector": ".pagination",
+        "all": true,
+        "pad": 10
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Zeitraum-Schieber",
+      "project": "cranach-search",
+      "purpose": "Filter nach Datierung (noUiSlider)",
+      "path": "src/components/base/interacting/dating-rangeslider",
+      "code": "https://github.com/lucascranach/cranach-search/tree/master/src/components/base/interacting/dating-rangeslider",
+      "live": "https://lucascranach.org/de/search/",
+      "image": "zeitraum-schieber.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/search/",
+        "selector": ".dating-rangeslider"
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Baumliste",
+      "project": "cranach-search",
+      "purpose": "verschachtelte Filter mit Trefferzahlen",
+      "path": "src/components/structure/interacting/tree-list",
+      "code": "https://github.com/lucascranach/cranach-search/tree/master/src/components/structure/interacting/tree-list",
+      "live": "https://lucascranach.org/de/search/",
+      "image": "baumliste.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/search/",
+        "selector": ".tree-list"
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Kategorie-Eintrag",
+      "project": "cranach-search",
+      "purpose": "Menüeintrag zur Wahl der Suchkategorie (heute ein Link ohne href)",
+      "path": "src/components/base/interacting/category-filter",
+      "code": "https://github.com/lucascranach/cranach-search/tree/master/src/components/base/interacting/category-filter",
+      "live": "https://lucascranach.org/de/search/",
+      "image": "kategorie-eintrag.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/search/",
+        "selector": ".main-navigation .menu"
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Trefferzahl",
+      "project": "cranach-search",
+      "purpose": "Zahl in Dekorationsfarbe mit „#“ davor",
+      "path": "src/components/base/visualizing/size",
+      "code": "https://github.com/lucascranach/cranach-search/tree/master/src/components/base/visualizing/size",
+      "live": "https://lucascranach.org/de/search/",
+      "image": "trefferzahl.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/search/",
+        "selector": ".search-result-info"
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Leiste der Ergebnisseite",
+      "project": "cranach-search",
+      "purpose": "Filter, Merkliste, Ansicht und Sprachwahl",
+      "path": "src/components/structure/interacting/secondary-navigation",
+      "code": "https://github.com/lucascranach/cranach-search/tree/master/src/components/structure/interacting/secondary-navigation",
+      "live": "https://lucascranach.org/de/search/",
+      "image": "leiste-ergebnisseite.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/search/",
+        "selector": ".secondary-navigation",
+        "before": "document.querySelector('.secondary-navigation__trigger')?.click();"
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Merkliste",
+      "project": "cranach-search",
+      "purpose": "gemerkte Werke",
+      "path": "src/components/structure/interacting/my-cranach",
+      "code": "https://github.com/lucascranach/cranach-search/tree/master/src/components/structure/interacting/my-cranach",
+      "live": "https://lucascranach.org/de/search/",
+      "image": "",
+      "noPhoto": "erscheint erst, wenn Werke gemerkt sind",
+      "shot": ""
+    },
+    {
+      "name": "Nach oben",
+      "project": "cranach-search",
+      "purpose": "Sprung an den Seitenanfang",
+      "path": "src/components/base/interacting/scroll-to",
+      "code": "https://github.com/lucascranach/cranach-search/tree/master/src/components/base/interacting/scroll-to",
+      "live": "https://lucascranach.org/de/search/",
+      "image": "",
+      "noPhoto": "erscheint erst beim Scrollen",
+      "shot": ""
+    },
+    {
+      "name": "Wartungshinweis",
+      "project": "cranach-search",
+      "purpose": "Seite während Wartungsarbeiten",
+      "path": "src/components/pages/maintenance-notice",
+      "code": "https://github.com/lucascranach/cranach-search/tree/master/src/components/pages/maintenance-notice",
+      "live": "",
+      "image": "",
+      "noPhoto": "nur während Wartungsarbeiten zu sehen",
+      "shot": ""
+    },
+    {
+      "name": "Definitionsliste",
+      "project": "cranach-artefacts",
+      "purpose": "Angaben zum Werk als Begriff und Wert",
+      "path": "src/assets/styles/scss/components/lists.scss",
+      "code": "https://github.com/lucascranach/cranach-artefacts/blob/main/src/assets/styles/scss/components/lists.scss",
+      "live": "https://lucascranach.org/de/AT_KHM_GG6905/",
+      "image": "definitionsliste.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/AT_KHM_GG6905/",
+        "selector": ".block:has(.definition-list)",
+        "all": true
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Bildunterschrift",
+      "project": "cranach-artefacts",
+      "purpose": "Text unter Abbildungen",
+      "path": "src/assets/styles/scss/components/image-caption.scss",
+      "code": "https://github.com/lucascranach/cranach-artefacts/blob/main/src/assets/styles/scss/components/image-caption.scss",
+      "live": "https://lucascranach.org/de/AT_KHM_GG6905/",
+      "image": "bildunterschrift.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/AT_KHM_GG6905/",
+        "selector": ".image-caption-wrap",
+        "height": 1400
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Verwandte Werke",
+      "project": "cranach-artefacts",
+      "purpose": "Verweise auf ähnliche oder inhaltlich verwandte Werke",
+      "path": "src/assets/styles/scss/components/related-objects.scss",
+      "code": "https://github.com/lucascranach/cranach-artefacts/blob/main/src/assets/styles/scss/components/related-objects.scss",
+      "live": "https://lucascranach.org/de/AT_KHM_GG886/",
+      "image": "verwandte-werke.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/AT_KHM_GG886/",
+        "selector": ".related-item",
+        "before": "document.querySelectorAll('.js-expand-trigger, .is-expand-trigger').forEach(e => e.click());"
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Gutachten",
+      "project": "cranach-artefacts",
+      "purpose": "Untersuchungsberichte",
+      "path": "src/assets/styles/scss/components/surveys.scss",
+      "code": "https://github.com/lucascranach/cranach-artefacts/blob/main/src/assets/styles/scss/components/surveys.scss",
+      "live": "https://lucascranach.org/de/AT_KHM_GG6905/",
+      "image": "gutachten.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/AT_KHM_GG6905/",
+        "selector": ".survey",
+        "before": "document.querySelectorAll('.js-expand-trigger, .is-expand-trigger').forEach(e => e.click());"
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Umschaltbarer Inhalt",
+      "project": "cranach-artefacts",
+      "purpose": "Zusatzinhalte ein- und ausblenden",
+      "path": "src/assets/styles/scss/components/additional-info.scss",
+      "code": "https://github.com/lucascranach/cranach-artefacts/blob/main/src/assets/styles/scss/components/additional-info.scss",
+      "live": "https://lucascranach.org/de/AT_KHM_GG6905/",
+      "image": "umschaltbarer-inhalt.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/AT_KHM_GG6905/",
+        "selector": ":has(> .switchable-content-handle)"
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Link zum Eintrag",
+      "project": "cranach-artefacts",
+      "purpose": "Link aus einer Liste auf die Detailseite (gelb unterstrichen)",
+      "path": "src/assets/styles/scss/components/literature-links.scss",
+      "code": "https://github.com/lucascranach/cranach-artefacts/blob/main/src/assets/styles/scss/components/literature-links.scss",
+      "live": "https://lucascranach.org/de/AT_KHM_GG6905/",
+      "image": "",
+      "noPhoto": "steht in zugeklappten Bereichen",
+      "shot": ""
+    },
+    {
+      "name": "Bildleiste",
+      "project": "cranach-artefacts",
+      "purpose": "Bildfolge mit Tooltip",
+      "path": "src/assets/styles/scss/composition/leporello-explore.scss",
+      "code": "https://github.com/lucascranach/cranach-artefacts/blob/main/src/assets/styles/scss/composition/leporello-explore.scss",
+      "live": "https://lucascranach.org/de/AT_KHM_GG886/",
+      "image": "bildleiste.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/AT_KHM_GG886/",
+        "selector": ".image-stripe-list",
+        "before": "document.querySelectorAll('.js-expand-trigger, .is-expand-trigger').forEach(e => e.click());"
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Trennstriche",
+      "project": "cranach-artefacts",
+      "purpose": "gelbe Striche zwischen Abschnitten (.has-separator u. a.)",
+      "path": "src/assets/styles/scss/utils/utilities.scss",
+      "code": "https://github.com/lucascranach/cranach-artefacts/blob/main/src/assets/styles/scss/utils/utilities.scss",
+      "live": "https://lucascranach.org/de/AT_KHM_GG6905/",
+      "image": "trennstriche.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/AT_KHM_GG6905/",
+        "selector": ".has-tight-separator"
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Metadaten-Formular",
+      "project": "cranach-artefacts",
+      "purpose": "internes Bearbeiten von Metadaten",
+      "path": "src/assets/styles/scss/components/meta-data-form.scss",
+      "code": "https://github.com/lucascranach/cranach-artefacts/blob/main/src/assets/styles/scss/components/meta-data-form.scss",
+      "live": "",
+      "image": "metadaten-formular.webp",
+      "noPhoto": "intern – Foto folgt",
+      "shot": ""
+    },
+    {
+      "name": "Etikett",
+      "project": "cranach-image-metadata",
+      "purpose": "Hinweis auf fehlerhafte Metadaten (.issue)",
+      "path": "style.css",
+      "code": "https://github.com/lucascranach/cranach-image-metadata/blob/main/style.css",
+      "live": "",
+      "image": "etikett.webp",
+      "noPhoto": "intern – Foto folgt",
+      "shot": ""
+    },
+    {
+      "name": "Verzeichnisliste",
+      "project": "cranach-image-tools",
+      "purpose": "Ordner im Bild-Browser (.dir-list)",
+      "path": "styles/components.css",
+      "code": "https://github.com/lucascranach/cranach-image-tools/blob/main/styles/components.css",
+      "live": "",
+      "image": "verzeichnisliste.webp",
+      "noPhoto": "intern – Foto folgt",
+      "shot": ""
+    },
+    {
+      "name": "Vergleichsfläche",
+      "project": "cranach-compare",
+      "purpose": "zwei Bilder nebeneinander (.comparism-stage)",
+      "path": "public/styles/components.css",
+      "code": "https://github.com/lucascranach/cranach-compare/blob/main/public/styles/components.css",
+      "live": "",
+      "image": "",
+      "noPhoto": "Adresse der Live-Seite unbekannt",
+      "shot": ""
+    },
+    {
+      "name": "Fortschrittsanzeige",
+      "project": "cranach-timeline",
+      "purpose": "Laden der Vorschaubilder",
+      "path": "src/components/timeline/ImagePrefetchIndicator.tsx",
+      "code": "https://github.com/lucascranach/cranach-timeline/blob/main/src/components/timeline/ImagePrefetchIndicator.tsx",
+      "live": "https://lucascranach.org/de/timeline/",
+      "image": "",
+      "noPhoto": "nur kurz beim Laden zu sehen",
+      "shot": ""
+    },
+    {
+      "name": "Sperre für kleine Bildschirme",
+      "project": "cranach-timeline",
+      "purpose": "Hinweis unter 768 px",
+      "path": "src/components/layout/MobileBlocker.tsx",
+      "code": "https://github.com/lucascranach/cranach-timeline/blob/main/src/components/layout/MobileBlocker.tsx",
+      "live": "https://lucascranach.org/de/timeline/",
+      "image": "sperre-kleine-bildschirme.webp",
+      "photo": {
+        "url": "https://lucascranach.org/de/timeline/",
+        "selector": "#root > *",
+        "width": 375,
+        "height": 700,
+        "pad": 0,
+        "wait": 9000
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Karte mit Standorten",
+      "project": "cranach-map",
+      "purpose": "Standorte der Werke auf einer Karte (Mapbox)",
+      "path": "src/components/map",
+      "code": "https://github.com/lucascranach/cranach-map/tree/main/src/components/map",
+      "live": "https://lucascranach.org/map/",
+      "image": "karte.webp",
+      "photo": {
+        "url": "https://lucascranach.org/map/",
+        "selector": "body",
+        "height": 800,
+        "pad": 0,
+        "wait": 12000
+      },
+      "shot": "2026-11-11"
+    },
+    {
+      "name": "Teaser",
+      "project": "cda-orga",
+      "purpose": "Anreißer auf der Startseite",
+      "path": "assets/_scss/components/teaser.scss",
+      "code": "https://github.com/lucascranach/cda-orga/blob/main/assets/_scss/components/teaser.scss",
+      "live": "",
+      "image": "teaser.webp",
+      "noPhoto": "intern – Foto folgt",
+      "shot": ""
+    },
+    {
+      "name": "Brotkrumen",
+      "project": "cranach-kirby",
+      "purpose": "Pfad zur aktuellen Seite",
+      "path": "site/snippets/breadcrumb.php",
+      "code": "https://github.com/lucascranach/cranach-kirby/blob/main/site/snippets/breadcrumb.php",
+      "live": "",
+      "image": "",
+      "noPhoto": "Prototyp, nicht veröffentlicht",
+      "shot": ""
+    },
+    {
+      "name": "Hero",
+      "project": "cranach-kirby",
+      "purpose": "großes Bild mit Titel",
+      "path": "site/snippets/blocks/hero.php",
+      "code": "https://github.com/lucascranach/cranach-kirby/blob/main/site/snippets/blocks/hero.php",
+      "live": "",
+      "image": "",
+      "noPhoto": "Prototyp, nicht veröffentlicht",
+      "shot": ""
+    }
+  ]
+}
