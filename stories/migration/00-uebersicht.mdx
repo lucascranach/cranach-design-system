@@ -57,7 +57,7 @@ Die Tokens übernehmen die Werte aus den Projekten, nicht alles bleibt aber glei
 
 ### Schriftgewichte zuordnen
 
-In search, artefacts, map, image-metadata, image-tools und cda-orga passen Name, Zahl und Datei nicht zusammen: `$fw-semibold` heißt „Halbfett“, hat die Zahl 400 und lädt die Datei „Medium“. Zugeordnet wird **nach der Datei**, die das Projekt für die Variable lädt – nicht nach dem Namen und nicht nach der Zahl. Dann behält jede Textstelle das Gewicht, das sie heute hat. Ausnahme ist der Fließtext: Er wird bewusst von Light auf Regular umgestellt (ADR 0009) und außerdem größer, siehe „Was sich sichtbar ändert“.
+In search, artefacts, map, image-metadata, image-tools und cda-orga passen Name, Zahl und Datei nicht zusammen: `$fw-semibold` heißt „Halbfett“, hat die Zahl 400 und lädt die Datei „Medium“. Welches neue Token eine alte Gewichts-Variable ersetzt, richtet sich **nach der Datei**, die das Projekt für diese Variable lädt – nicht nach ihrem Namen und nicht nach ihrer Zahl. Dann behält jede Textstelle das Gewicht, das sie heute hat. Ausnahme ist der Fließtext: Er wird bewusst von Light auf Regular umgestellt (ADR 0009) und außerdem größer, siehe „Was sich sichtbar ändert“.
 
 <div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Schriftgewichte zuordnen">
 
