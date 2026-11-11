@@ -31,7 +31,7 @@ Ausgeschlossen sind cranach-grafiken-gatsby (Archiv) und cranach-api-documentati
 
 1. **Einbinden.** `cranach.css` einbinden, wie unter [Einbinden](?path=/docs/einbinden--docs) beschrieben. Alle Styles des Designsystems liegen in Cascade Layers. Die Styles des Projekts haben ohne Layer immer Vorrang, deshalb ändert sich zunächst nichts am Aussehen.
 2. **Tokens zuordnen.** Die alten Variablen auf die neuen Tokens zeigen lassen, etwa `$accent: var(--cda-color-accent-default);` in Sass oder `--accent: var(--cda-color-accent-default);` in CSS. So stellt ein Projekt in einem Schritt um, ohne jede Stelle anzufassen. Danach die alten Namen nach und nach durch die neuen ersetzen und zuletzt entfernen.
-3. **Komponenten umstellen.** Eine Komponente nach der anderen: Markup auf die `cda-`-Klassen umstellen, die alten Styles dazu löschen, prüfen. Komponenten, die es im Designsystem nicht gibt, bleiben zunächst im Projekt und nutzen dort die Tokens. Kommen sie in mehreren Projekten vor, gehören sie ins Designsystem – siehe [Fehlende Komponenten](#fehlende-komponenten).
+3. **Komponenten umstellen.** Eine Komponente nach der anderen: Markup auf die `cda-`-Klassen umstellen, die alten Styles dazu löschen, prüfen. Komponenten, die es im Designsystem nicht gibt, bleiben zunächst im Projekt und nutzen dort die Tokens. Sie stehen im Katalog [Projektkomponenten](?path=/docs/projektkomponenten--docs); braucht ein zweites Projekt sie, kommen sie ins Designsystem (ADR 0020).
 
 ## Was sich sichtbar ändert
 
@@ -130,20 +130,4 @@ Jede Projektseite hat Tabellen zu **Werten** und zu **Klassen**, am Ende stehen 
 
 ## Fehlende Komponenten
 
-Das Designsystem enthält bisher die Komponenten, die die Roadmap vorsah. Bei der Durchsicht sind weitere aufgefallen. Was nur ein Projekt braucht, bleibt dort. Was in mehreren Projekten vorkommt, kommt ins Designsystem – mit eigener Seite hier im Storybook:
-
-<div className="docs-scroll" role="region" tabIndex={0} aria-label="Tabelle: Fehlende Komponenten">
-
-| Komponente | heute in |
-|---|---|
-| Dialog (Fenster über der Seite mit abgedunkeltem Hintergrund) | artefacts `.overlay`, image-metadata `.detail`, timeline `ui/sheet` |
-| Seitenleiste, die sich über den Inhalt schiebt | artefacts `.drawer`, image-metadata `.sidebar` (unter 1024 px), timeline `ui/sidebar` |
-| Meldung (Hinweis, Fehler, Erfolg) | artefacts `.notification` und Formularmeldungen, image-metadata `.message` |
-| Tabelle | artefacts `.table`, `.info-table`, `.literature-table`, search `artefact-table`, image-metadata Tabulator und `.detail-table` |
-| Werk-Karte als Listenzeile (Bild links) | search `artefact-line`, map `Card` |
-
-</div>
-
-Nur in einem Projekt und deshalb vorerst dort: Seitenblättern (search), Zeitraum-Schieber (search), Baumliste (search), Etikett (image-metadata `.issue`), Teaser (cda-orga), Brotkrumen (kirby), Fortschrittsanzeige (timeline). Der Bildviewer (OpenSeadragon in artefacts und compare) ist eine Bibliothek und bekommt höchstens Tokens.
-
-Alle fünf Kandidaten kommen ins Designsystem (Entscheidung Volker Schaefer, 11.11.2026). Sie stehen als Schritte 23 bis 27 in der Roadmap; bis dahin bleiben sie in den Projekten.
+Komponenten ohne Gegenstück im Designsystem stehen im Katalog [Projektkomponenten](?path=/docs/projektkomponenten--docs) – mit Projekt, Fundort und Zweck. Was schon in mehreren Projekten vorkommt (Meldung, Dialog, Seitenleiste, Tabelle, Werk-Karte als Listenzeile), kommt mit den Roadmap-Schritten 23 bis 27 ins Designsystem. Für alles andere gilt ADR 0020: Ins Designsystem kommt eine Komponente, sobald ein zweites Projekt sie braucht.

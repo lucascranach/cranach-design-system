@@ -40,6 +40,7 @@ const preview = {
           'Grundlagen',
           ['Farben', 'Typografie', 'Abstände', 'z-Ebenen', 'Icons'],
           'Komponenten',
+          'Projektkomponenten',
           'Utilities',
           // Reihenfolge der Projekte nach ADR 0015
           'Migration',

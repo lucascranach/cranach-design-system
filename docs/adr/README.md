@@ -25,3 +25,4 @@ Format: Status · Kontext · Entscheidung · Konsequenzen. Neue Entscheidungen b
 | [0017](0017-familienname-cranach-sans.md) | Familienname „Cranach Sans“ für IBM Plex Sans | angenommen |
 | [0018](0018-link-unterstreichung.md) | Link-Unterstreichung mit mindestens 3:1 | angenommen |
 | [0019](0019-stufenwoerter-semantischer-tokens.md) | Stufenwörter semantischer Tokens (`subtle`, `medium`, `strong`, `muted`) | angenommen |
+| [0020](0020-komponenten-aufnahme-und-katalog.md) | Aufnahme von Komponenten und Katalog der Projektkomponenten | angenommen |
