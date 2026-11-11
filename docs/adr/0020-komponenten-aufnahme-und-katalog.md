@@ -25,7 +25,7 @@ Bleibt eine Komponente dagegen nur im Projekt, gerät sie leicht in Vergessenhei
 ## Konsequenzen
 - Der Katalog lebt im Repo des Designsystems (`stories/projektkomponenten.*`). Eine neue Projektkomponente bedeutet deshalb auch eine kleine Änderung hier.
 - Die Liste ist nur so gut wie ihre Pflege. Der Eintrag gehört zur Fertigstellung einer Projektkomponente, wie ein Test zur Funktion.
-- Die fünf Kandidaten aus Schritt 22, die schon in mehreren Projekten vorkommen (Meldung, Dialog, Seitenleiste, Tabelle, Werk-Karte als Listenzeile), sind als Roadmap-Schritte 23–27 eingeplant.
+- Die fünf Kandidaten aus Schritt 22, die schon in mehreren Projekten vorkommen (Meldung, Dialog, Seitenleiste, Tabelle, Werk-Karte als Listenzeile), sind als Roadmap-Schritte 24–28 eingeplant.
 
 ## Ergänzung (11.11.2026, Entscheidung Volker): Form des Katalogs
 Eine reine Tabelle mit Pfaden half wenig: Man sah nicht, wie eine Komponente aussieht, und fand sie im Projekt schwer wieder. Verglichen wurden Kacheln mit Bildschirmfoto und eine Tabelle nur mit Links; gewählt sind die Kacheln.

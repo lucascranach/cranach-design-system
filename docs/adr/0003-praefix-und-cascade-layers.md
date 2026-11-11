@@ -1,6 +1,6 @@
 # 0003 – Präfix `cda` und Cascade Layers
 
-**Status:** angenommen (Q8, Q11)
+**Status:** angenommen (Q8, Q11) · ergänzt durch ADR 0021 (Layer `cda.layout`, Präfix `cda-l-`)
 
 ## Kontext
 Die Projekte stellen nach und nach um; alte und neue Styles laufen eine Zeit lang parallel. Bestehende Namen kollidieren (`.btn`, `.button`, `$m`, in timeline `--accent`/`--primary` mit anderer Bedeutung).

@@ -1,6 +1,6 @@
 # 0021 – Layout-Bausteine und Regel für Zustände
 
-**Status:** Entwurf (11.11.2026), noch nicht freigegeben · würde ADR 0003 ergänzen · Entscheidungen Volker vom 11.11.2026 eingearbeitet (Präfix, Anzahl der Bausteine, Kartenraster, Breiten, Bereich in Storybook)
+**Status:** angenommen (11.11.2026, Entscheidung Volker) · ergänzt ADR 0003
 
 Angeregt durch die Methode CUBE CSS (Composition, Utility, Block, Exception; [cube.fyi](https://cube.fyi)). Übernommen werden zwei Teile, der Rest nicht – siehe „Abgewogen“.
 
@@ -9,12 +9,12 @@ Angeregt durch die Methode CUBE CSS (Composition, Utility, Block, Exception; [cu
 - **CUBE CSS** trennt dafür eine eigene Ebene ab, die *Composition*: Bausteine, die nur anordnen – Abstände, Spalten, Umbruch – und nichts über Farbe, Schrift oder die Komponente darin wissen. Sie geben dem Browser flexible Regeln vor, statt jede Breite festzulegen, und kommen deshalb meist ohne Media Queries aus. Die Bausteine stammen aus *Every Layout* (Heydon Pickering, Andy Bell).
 - **Zustände** setzen die Komponenten heute schon über ARIA-Attribute (`aria-current`, `aria-pressed`, `aria-expanded`, `aria-invalid`), Varianten über BEM-Modifier (`--primary`, `--small`). Eine Regel dafür steht nirgends. Dialog und Seitenleiste (Roadmap-Schritte 24, 25) brauchen Zustände, für die es nicht immer ein ARIA-Attribut gibt.
 
-## Entscheidung (Vorschlag)
+## Entscheidung
 
 ### 1. Layout-Bausteine
-- Neuer Layer **`cda.compositions`** zwischen `cda.base` und `cda.components`:
+- Neuer Layer **`cda.layout`** zwischen `cda.base` und `cda.components` (in CUBE heißt die Ebene „Composition“; der Name `cda.layout` passt zum Präfix `cda-l-`):
   ```css
-  @layer cda.tokens, cda.reset, cda.base, cda.compositions, cda.components, cda.utilities;
+  @layer cda.tokens, cda.reset, cda.base, cda.layout, cda.components, cda.utilities;
   ```
   Komponenten können damit Abstände eines Bausteins anpassen; Utilities gewinnen weiterhin gegen beide. Die Reihenfolge entspricht der von CUBE (global → Composition → Block), nur stehen Utilities bei uns zuletzt (siehe „Abgewogen“).
 - **Präfix `cda-l-`** (für Layout), analog zu `cda-u-` bei den Utilities. Das verhindert Verwechslungen mit Komponenten: Every Layout nennt Bausteine „Switcher“ und „Sidebar“, im Designsystem sind `.cda-switcher` und die geplante Seitenleiste aber Komponenten. Erwogen und verworfen: `cda-c-` (für Composition) – in den verbreiteten Namensräumen nach Harry Roberts (ITCSS) steht `c-` für Komponenten, `cda-c-stack` würde als Komponente gelesen.
@@ -49,12 +49,9 @@ Zustände werden nie über Klassen wie `.is-active` gesetzt. CSS und JavaScript 
 - **Klassen gruppieren** (`class="[ card ] [ flow ]"`): eine Schreibgewohnheit für Projekte; die Markup-Beispiele der Doku bleiben ohne.
 
 ## Konsequenzen
-- ADR 0003 wird ergänzt (neuer Layer, Präfix `cda-l-`); Stylelint muss `cda-l-` und die Variablen `--cda-l-…` zulassen.
+- ADR 0003 ist ergänzt (neuer Layer, Präfix `cda-l-`); Stylelint muss `cda-l-` und die Variablen `--cda-l-…` zulassen.
 - Zwei neue Tokens für `.cda-l-center`:
   - **`size.measure` = `65ch`** – Zeilenlänge von Textspalten („measure“ ist der typografische Fachbegriff, so auch in Every Layout und CUBE; Name von Volker gewählt, verworfen: `size.line-length`, `size.prose`). Bei 16 px rund 620 px, wegen der schmaleren Buchstaben etwa 70–80 Zeichen; empfohlen sind 45–75, WCAG 1.4.8 nennt höchstens 80. Heute: artefacts 720 px, cda-orga 800 px, kirby `60em` – die Textspalte in artefacts wird damit etwa 100 px schmaler; beim Umsetzen auf einer Werkseite prüfen.
   - **`size.page` = 1536 px** – größte Breite des Seiteninhalts, gleich dem größten Breakpoint `2xl`: Oberhalb des letzten Breakpoints wächst das Layout nicht weiter. Heute begrenzen cda-orga und kirby bei 1920 px, artefacts und search gar nicht. Kachelansichten wie in search dürfen weiter die volle Breite nutzen oder `--cda-l-max` selbst setzen.
-- Die Bausteine sollten vor den Roadmap-Schritten 23–27 entstehen, damit Meldung, Dialog, Seitenleiste, Tabelle und Listenzeile sie gleich nutzen. Vorschlag: neuer Schritt vor 23, die folgenden rücken eine Nummer weiter.
+- Die Bausteine entstehen in Roadmap-Schritt 23, vor Meldung, Dialog, Seitenleiste, Tabelle und Listenzeile (jetzt Schritte 24–28), damit diese sie gleich nutzen.
 - Die Migrationsseiten bekommen je Projekt eine Zuordnung der eigenen Layout-Klassen (`.container`, `.grid`, `composition/` …) zu den Bausteinen.
-
-## Offene Fragen
-1. Name des Layers: `cda.compositions` (Begriff aus CUBE) oder `cda.layout` (passend zum Präfix `cda-l-`)?
