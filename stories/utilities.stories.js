@@ -67,7 +67,7 @@ export const ZEbenen = {
 </div>`,
 };
 
-/** Abstands-Utilities für die Layout-Bausteine, aus den Tokens erzeugt (ADR 0021) */
+/** Abstands-Utilities für die Layouts, aus den Tokens erzeugt (ADR 0021) */
 const spaceKeys = Object.entries(dimension.space)
   .filter(([key]) => !key.startsWith('$'))
   .flatMap(([key, node]) =>
@@ -79,12 +79,12 @@ const spaceKeys = Object.entries(dimension.space)
   );
 
 export const Abstaende = {
-  name: 'Abstände der Layout-Bausteine',
+  name: 'Abstände der Layouts',
   parameters: { docs: { source: { code: '<div class="cda-l-stack cda-u-space-xl">…</div>' } } },
   render: () =>
     `<div class="docs-scroll" role="region" tabindex="0" aria-label="Abstands-Utilities">
   <table class="docs-table">
-    <caption>Klassen für Abstände der Layout-Bausteine</caption>
+    <caption>Klassen für Abstände der Layouts</caption>
     <thead><tr><th scope="col">Klasse</th><th scope="col">setzt --cda-l-space auf</th><th scope="col">Wert</th></tr></thead>
     <tbody>${spaceKeys
       .map(([key, value]) => `<tr><td>${code(`.cda-u-space-${key}`)}</td><td>${code(`--cda-space-${key}`)}</td><td>${esc(value)}</td></tr>`)

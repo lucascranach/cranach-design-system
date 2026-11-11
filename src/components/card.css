@@ -23,7 +23,7 @@
  * Das Bild ist dekorativ (alt=""), weil der Titel daneben steht. Kleine Karten ohne Text
  * haben den Link um das Bild, dann trägt das Bild den Titel als alt.
  *
- * Das Raster kommt vom Layout-Baustein .cda-l-grid (ADR 0021), Standard ist die Mindestbreite
+ * Das Raster kommt vom Layout .cda-l-grid (ADR 0021), Standard ist die Mindestbreite
  * einer Karte. Für kleine Karten:
  *   <ul class="cda-l-grid cda-l-grid--small" role="list">
  *

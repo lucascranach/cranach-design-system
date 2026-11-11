@@ -101,9 +101,9 @@
     z-index: var(--cda-z-skip-link);
   }
 
-  /* ---------- Abstände der Layout-Bausteine (ADR 0021) ----------
+  /* ---------- Abstände der Layouts (ADR 0021) ----------
    * Eine Klasse je Abstands-Token. Sie setzt nur --cda-l-space und damit den Abstand des
-   * Layout-Bausteins am selben Element – keinen Abstand direkt. build-css.mjs prüft, dass zu
+   * Layouts am selben Element – keinen Abstand direkt. build-css.mjs prüft, dass zu
    * jedem Token eine Klasse da ist.
    *
    *   <div class="cda-l-stack cda-u-space-xl">…</div> */

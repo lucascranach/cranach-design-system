@@ -56,7 +56,7 @@ const smallCard = ({ title, img }) =>
     '</article>',
   ].join('\n');
 
-/** Raster aus dem Layout-Baustein .cda-l-grid (ADR 0021), klein mit --small */
+/** Raster aus dem Layout .cda-l-grid (ADR 0021), klein mit --small */
 const grid = (cards, small = false) =>
   [`<ul class="cda-l-grid${small ? ' cda-l-grid--small' : ''}" role="list">`, ...cards.map((c) => ['  <li>', indent(c, 2), '  </li>'].join('\n')), '</ul>'].join(
     '\n',

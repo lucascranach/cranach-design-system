@@ -1,4 +1,4 @@
-/** Hilfen für die Beispiele der Layout-Bausteine (ADR 0021) */
+/** Hilfen für die Beispiele der Layouts (ADR 0021) */
 import { esc } from '../helpers.js';
 
 /** Platzhalter-Kachel */

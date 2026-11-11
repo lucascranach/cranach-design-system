@@ -5,9 +5,9 @@ import * as Utilities from '../utilities.stories.js';
 
 # Layout
 
-Bausteine, die nur anordnen: Abstände, Spalten, Umbruch. Sie wissen nichts über Farbe, Schrift oder die Komponente darin und kommen ohne Media Queries aus – sie reagieren auf den Platz, den sie haben, nicht auf die Fensterbreite. Die Idee stammt aus CUBE CSS (dort „Composition“) und Every Layout (ADR 0021).
+Layouts ordnen nur an: Abstände, Spalten, Umbruch. Sie wissen nichts über Farbe, Schrift oder die Komponente darin und kommen ohne Media Queries aus – sie reagieren auf den Platz, den sie haben, nicht auf die Fensterbreite. Die Idee stammt aus CUBE CSS (dort „Composition“) und Every Layout (ADR 0021).
 
-| Baustein | Aufgabe |
+| Layout | Aufgabe |
 |---|---|
 | [Stack](?path=/docs/layout-stack--docs) | untereinander mit gleichem Abstand |
 | [Cluster](?path=/docs/layout-cluster--docs) | nebeneinander, bricht bei Platzmangel um |
@@ -15,13 +15,13 @@ Bausteine, die nur anordnen: Abstände, Spalten, Umbruch. Sie wissen nichts übe
 | [Grid](?path=/docs/layout-grid--docs) | Raster mit Mindestbreite je Spalte |
 | [Center](?path=/docs/layout-center--docs) | mittig mit größter Breite, auch als Textspalte |
 
-Die Klassen beginnen mit `cda-l-` und liegen im Layer `cda.layout` zwischen den Grundstyles und den Komponenten. Komponenten können einen Baustein also anpassen, Utilities gewinnen gegen beide, Styles des Projekts ohne Layer gegen alles.
+Die Klassen beginnen mit `cda-l-` und liegen im Layer `cda.layout` zwischen den Grundstyles und den Komponenten. Komponenten können ein Layout also anpassen, Utilities gewinnen gegen beide, Styles des Projekts ohne Layer gegen alles.
 
 ## Einstellen
 
-Alle Bausteine lesen den Abstand aus `--cda-l-space`. Breiten wie die der schmalen Spalte oder die Mindestbreite im Grid haben eigene Variablen; sie stehen mit ihren Standardwerten auf der Seite des Bausteins.
+Alle Layouts lesen den Abstand aus `--cda-l-space`. Breiten wie die der schmalen Spalte oder die Mindestbreite im Grid haben eigene Variablen; sie stehen mit ihren Standardwerten auf der Seite des Layouts.
 
-Jeder Baustein setzt seinen Standard selbst. Ein Wert wirkt deshalb nur an dem Element, an dem er gesetzt ist, und sickert nicht in verschachtelte Bausteine durch.
+Jedes Layout setzt seinen Standard selbst. Ein Wert wirkt deshalb nur an dem Element, an dem er gesetzt ist, und sickert nicht in verschachtelte Layouts durch.
 
 So lassen sich die Werte setzen, in dieser Reihenfolge:
 

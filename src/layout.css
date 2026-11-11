@@ -1,15 +1,15 @@
 /*
- * Layout-Bausteine – Layer cda.layout (ADR 0021)
+ * Layouts – Layer cda.layout (ADR 0021)
  *
- * Bausteine, die nur anordnen: Abstände, Spalten, Umbruch. Sie wissen nichts über Farbe, Schrift
+ * Layouts ordnen nur an: Abstände, Spalten, Umbruch. Sie wissen nichts über Farbe, Schrift
  * oder die Komponente darin und kommen ohne Media Queries aus – der Browser verteilt den Platz
  * nach den Regeln selbst. Idee aus CUBE CSS („Composition“) und Every Layout.
  *
- * Der Layer liegt zwischen cda.base und cda.components: Komponenten können einen Baustein
+ * Der Layer liegt zwischen cda.base und cda.components: Komponenten können ein Layout
  * anpassen, Utilities gewinnen gegen beide, Projekt-Styles ohne Layer gegen alles.
  *
- * Einstellbar über Custom Properties. Jeder Baustein setzt seinen Standard selbst, damit ein Wert
- * nicht in verschachtelte Bausteine durchsickert:
+ * Einstellbar über Custom Properties. Jedes Layout setzt seinen Standard selbst, damit ein Wert
+ * nicht in verschachtelte Layouts durchsickert:
  *   --cda-l-space  Abstand zwischen den Kindern (bei .cda-l-center: Abstand zum Rand)
  *   --cda-l-side   Breite der schmalen Spalte (.cda-l-sidebar)
  *   --cda-l-min    Mindestbreite einer Spalte (.cda-l-grid)
