@@ -1,5 +1,4 @@
-import { Canvas, Meta } from '@storybook/addon-docs/blocks';
-import * as Utilities from '../utilities.stories.js';
+import { Meta } from '@storybook/addon-docs/blocks';
 
 <Meta title="Layout/Übersicht" />
 
@@ -25,10 +24,11 @@ Jedes Layout setzt seinen Standard selbst. Ein Wert wirkt deshalb nur an dem Ele
 
 So lassen sich die Werte setzen, in dieser Reihenfolge:
 
-1. **Abstand über eine Utility.** Die Klasse ist `cda-u-` plus der Name des Abstands-Tokens, etwa `--cda-space-xl` → `cda-u-space-xl`:
+1. **Abstand über eine Utility.** Die Klasse ist `cda-u-` plus der Name des Abstands-Tokens, etwa `--cda-space-xl` (32 px) → `cda-u-space-xl`:
    ```html
    <div class="cda-l-stack cda-u-space-xl">…</div>
    ```
+   Alle Klassen mit ihren Werten stehen unter [Utilities](?path=/docs/utilities--docs).
 2. **Breiten und Sonderfälle in einer Regel im Projekt-CSS:**
    ```css
    .ergebnisse { --cda-l-side: 25rem; }
@@ -36,12 +36,6 @@ So lassen sich die Werte setzen, in dieser Reihenfolge:
 3. **`style`-Attribut nur als Notlösung.** Projekte mit strenger Content-Security-Policy verbieten es, und Tippfehler fallen nicht auf – der Wert entfällt dann ohne Meldung.
 
 Feste Varianten mit eigener Bedeutung haben einen Modifier, etwa `.cda-l-sidebar--end` oder `.cda-l-grid--small`.
-
-## Abstände
-
-Alle Utilities für `--cda-l-space`, aus den Tokens erzeugt (auch unter [Utilities](?path=/docs/utilities--docs)):
-
-<Canvas of={Utilities.Abstaende} />
 
 ## Listen
 
