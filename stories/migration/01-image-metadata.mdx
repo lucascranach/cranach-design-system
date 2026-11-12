@@ -80,7 +80,7 @@ Alle Variablen stehen in `style.css` im `:root`-Block. Die Grundgröße `--bfs` 
 | `--sidebar-width` | 403 px | kein Gegenstück | bleibt im Projekt |
 | Rahmen 1 / 2 / 3 px | | `--cda-border-width-s` / `-m` / `-l` | |
 | `opacity: 0.3` | | `--cda-opacity-low` | |
-| `z-index: 20` (`.detail`) | | `--cda-z-modal` | Vorschlag nach ADR 0011; ein natives `<dialog>` bräuchte keinen |
+| `z-index: 20` (`.detail`) | | entfällt | `.cda-drawer` ist ein `<dialog>` im Top-Layer |
 | `z-index: 10` (`.sidebar` unter 1024 px) | | `--cda-z-modal-bg` | Vorschlag; bleibt unter der Detailansicht |
 | `@media (max-width: 1023px)` | | `(width < 1024px)` = unter `--cda-breakpoint-lg` | Wert direkt schreiben, ohne Build kein `@custom-media` |
 
@@ -107,8 +107,9 @@ Alle Variablen stehen in `style.css` im `:root`-Block. Die Grundgröße `--bfs` 
 | `.cda-logo` | **umbenennen**, z. B. `.page-header__logo` | Präfix `cda-` ist reserviert (ADR 0003) |
 | `.page-header`, `.title`, `.layout` | bleiben im Projekt | `.cda-header` ist eine Seitennavigation und passt hier nicht |
 | `.message` | `.cda-message .cda-message--danger` ([Meldung](?path=/docs/komponenten-meldung--docs)) | erscheint per JavaScript, deshalb `role="alert"` setzen, bevor der Text hineinkommt; Symbol `error` |
-| `.sidebar` (unter 1024 px über dem Inhalt) | bleibt vorerst | Gegenstück folgt: Seitenleiste (Schritt 26) |
-| `.detail`, `.detail-table`, `.detail-issues`, `.detail-ok` | bleiben vorerst | Gegenstück folgt: Seitenleiste (Schritt 26) – die Detailansicht fährt von rechts herein – und Tabelle (Schritt 27); der Fokus wird schon gesetzt |
+| `.sidebar` (unter 1024 px über dem Inhalt) | `.cda-drawer` ([Seitenleiste](?path=/docs/komponenten-seitenleiste--docs)) | nur unter 1024 px; darüber bleibt sie eine Spalte im Layout (siehe unten). Heute ohne Sperre der Seite und ohne Fokus |
+| `.detail` mit `__backdrop`, `__panel`, `__head`, `__title`, `__body` | `<dialog class="cda-drawer cda-drawer--wide">` mit `__header`, `__title`, `__body` ([Seitenleiste](?path=/docs/komponenten-seitenleiste--docs)) | `showModal()` statt `hidden`; Abdunkelung über `::backdrop`, Fokus, Escape und Sperre übernimmt der Browser – die eigenen Handler entfallen bis auf den Klick neben die Leiste |
+| `.detail__section`, `.detail-table`, `.detail-issues`, `.detail-ok` | bleiben vorerst | Abschnitte mit `.cda-l-stack`; Gegenstück für die Tabelle folgt (Schritt 27) |
 | Tabulator (`.tabulator*`, `.sort-icon`, `.has-issues`) | bleiben im Projekt | Tokens zuordnen; Sortier-Icon als `.cda-icon`. Schritt 27 prüft, wie weit sich das Aussehen an die Tabelle angleichen lässt |
 | Status „Lade Metadaten …“ | optional `.cda-spinner` ([Loader](?path=/docs/komponenten-loader--docs)) | `role="status"` ergänzen, damit Screenreader es ansagen |
 
@@ -122,7 +123,7 @@ Eigene Layout-Regeln des Projekts, die ein [Layout](?path=/docs/layout-übersich
 
 | Alt | Neu | Hinweis |
 |---|---|---|
-| `.layout` (Tabelle links, Filterleiste rechts mit `--sidebar-width`) | `.cda-l-sidebar--end` mit `--cda-l-side: var(--sidebar-width)` | unter 1024 px legt sich die Leiste heute über den Inhalt; dafür folgt die Seitenleiste (Schritt 26) |
+| `.layout` (Tabelle links, Filterleiste rechts mit `--sidebar-width`) | `.cda-l-sidebar--end` mit `--cda-l-side: var(--sidebar-width)` | unter 1024 px legt sich die Leiste heute über den Inhalt; dafür die [Seitenleiste](?path=/docs/komponenten-seitenleiste--docs) |
 
 </div>
 

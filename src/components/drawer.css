@@ -1,0 +1,121 @@
+/*
+ * Seitenleiste (Drawer) – Layer cda.components
+ *
+ * Leiste über die volle Höhe, die sich vom Rand über die Seite schiebt: Filter, Metadaten-Editor,
+ * Detailansicht. Technisch ein Dialog: HTML-Element <dialog>, geöffnet mit showModal(). Der Browser
+ * legt sie in den Top-Layer (kein z-Index nötig, ADR 0011), macht den Rest der Seite unbedienbar,
+ * setzt den Fokus hinein, schließt mit Escape und gibt den Fokus danach zurück.
+ * Nicht zu verwechseln mit dem Layout .cda-l-sidebar, das eine Spalte neben den Inhalt stellt.
+ *
+ *   <dialog class="cda-drawer" aria-labelledby="filter-titel">
+ *     <div class="cda-drawer__header">
+ *       <h2 class="cda-drawer__title" id="filter-titel">Filter</h2>
+ *       <form method="dialog">
+ *         <button class="cda-button cda-button--ghost cda-button--icon" aria-label="Schließen">
+ *           <span class="cda-icon" aria-hidden="true">close</span>
+ *         </button>
+ *       </form>
+ *     </div>
+ *     <div class="cda-drawer__body">…</div>
+ *     <div class="cda-drawer__footer">…Buttons…</div>
+ *   </dialog>
+ *
+ * Standard rechts; --start links. Standard 24rem breit, --wide 48rem für Tabellen und
+ * Detailansichten. Auf schmalen Bildschirmen bleibt links bzw. rechts ein Streifen der Seite
+ * sichtbar, auf den man zum Schließen tippen kann (Klick auf die Abdunkelung schließt das
+ * Projekt per JavaScript). Fußzeile optional, steht immer unten.
+ *
+ * Vorlagen: .drawer in cranach-artefacts, .detail und .sidebar (unter 1024 px) in
+ * cranach-image-metadata, ui/sheet in cranach-timeline. Anders als dort: <dialog> statt eigener
+ * Ebene mit z-Index, Fokus und Sperre der Seite vom Browser, Farben und Breiten aus Tokens.
+ */
+@layer cda.components {
+  .cda-drawer {
+    /* Von hier fährt die Leiste herein: 100 % = von rechts */
+    --cda-drawer-from: 100%;
+
+    inline-size: min(calc(100% - var(--cda-space-2xl)), calc(var(--cda-size-card-min) * 1.5));
+    max-inline-size: none;
+    block-size: 100%;
+    max-block-size: none;
+    padding: 0;
+    margin-block: 0;
+    margin-inline: auto 0;
+    color: var(--cda-color-text-default);
+    background-color: var(--cda-color-background-default);
+    border: 0;
+    border-inline-start: var(--cda-border-width-s) solid var(--cda-color-border-default);
+    box-shadow: var(--cda-shadow-l);
+
+    /* Nur geöffnet als Raster – sonst würde display das Schließen aufheben */
+    &[open] {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      animation: cda-drawer-in var(--cda-duration-medium) var(--cda-easing-default);
+    }
+
+    &::backdrop {
+      background-color: var(--cda-color-background-overlay);
+    }
+  }
+
+  /* Links statt rechts, etwa für die Navigation oder Filter vor der Ergebnisliste */
+  .cda-drawer--start {
+    --cda-drawer-from: -100%;
+
+    margin-inline: 0 auto;
+    border-inline-start: 0;
+    border-inline-end: var(--cda-border-width-s) solid var(--cda-color-border-default);
+  }
+
+  /* Breiter für Tabellen und Detailansichten */
+  .cda-drawer--wide {
+    inline-size: min(calc(100% - var(--cda-space-2xl)), calc(var(--cda-size-card-min) * 3));
+  }
+
+  .cda-drawer__header {
+    display: flex;
+    gap: var(--cda-space-s);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--cda-space-s) var(--cda-space-s) var(--cda-space-s) var(--cda-space-l);
+    border-block-end: var(--cda-border-width-s) solid var(--cda-color-border-default);
+
+    & form {
+      margin: 0;
+    }
+  }
+
+  .cda-drawer__title {
+    margin: 0;
+    font-size: var(--cda-font-size-l);
+  }
+
+  /* Nur der Inhalt scrollt, Kopf und Fußzeile bleiben stehen */
+  .cda-drawer__body {
+    padding: var(--cda-space-l);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .cda-drawer__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cda-space-s);
+    justify-content: flex-end;
+    padding: var(--cda-space-s) var(--cda-space-l);
+    border-block-start: var(--cda-border-width-s) solid var(--cda-color-border-default);
+  }
+
+  /* Die Seite dahinter scrollt nicht mit, solange die Leiste offen ist */
+  :root:has(.cda-drawer:modal) {
+    overflow: hidden;
+  }
+
+  /* Bei reduzierter Bewegung sind die Dauer-Tokens fast 0 (ADR 0010) */
+  @keyframes cda-drawer-in {
+    from {
+      translate: var(--cda-drawer-from) 0;
+    }
+  }
+}

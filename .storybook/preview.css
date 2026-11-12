@@ -13,7 +13,8 @@
   font-size: var(--cda-font-size-m);
   line-height: var(--cda-font-line-height-normal);
 
-  & > * + * {
+  /* Dialoge liegen im Top-Layer und brauchen keinen Abstand */
+  & > * + :not(dialog) {
     margin-block-start: var(--cda-space-l);
   }
 }
@@ -247,4 +248,20 @@
 /* Zeigt die Fläche eines Center-Layouts */
 .docs-outline {
   outline: var(--cda-border-width-s) dashed var(--cda-color-accent-hover);
+}
+
+/* Beschreibungsliste in Beispielen: Begriff links, Wert rechts */
+.docs-fields {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--cda-space-2xs) var(--cda-space-m);
+  margin: 0;
+
+  & dt {
+    color: var(--cda-color-text-muted);
+  }
+
+  & dd {
+    margin: 0;
+  }
 }

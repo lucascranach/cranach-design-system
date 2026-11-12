@@ -22,8 +22,8 @@ Statt freier Zahlen wie 99999 gibt es benannte Ebenen. Die Werte stammen unverä
 ## Regeln
 
 - **Nur über Tokens.** Feste z-Index-Werte im Code vermeiden. Im Markup gibt es dafür je Ebene eine Klasse `.cda-u-z-*` (siehe [Utilities](?path=/docs/utilities--docs)).
-- **Dialoge** bevorzugt mit `<dialog>` oder der Popover-API: Sie liegen im Top-Layer und brauchen keinen z-Index.
-- **Drawer** verwenden `modal-bg` für die Abdunkelung und `modal` für den Inhalt.
+- **Dialoge und Seitenleisten** bevorzugt mit `<dialog>` oder der Popover-API, wie [Dialog](?path=/docs/komponenten-dialog--docs) und [Seitenleiste](?path=/docs/komponenten-seitenleiste--docs): Sie liegen im Top-Layer und brauchen keinen z-Index.
+- **Ohne `<dialog>`**, etwa in Bibliotheken: `modal-bg` für die Abdunkelung und `modal` für den Inhalt.
 - **toast** liegt über `modal`, damit Benachrichtigungen auch bei offenem Dialog oder Bildviewer sichtbar sind.
 - **skip-link** liegt über allem: Ein fokussiertes Element darf nicht verdeckt sein (WCAG 2.4.11).
 - Wie bei Bolt liegt `tooltip` unter `nav-fixed`: Tooltips im Inhalt werden vom fixierten Header verdeckt.

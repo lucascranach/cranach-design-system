@@ -1,0 +1,84 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Seitenleiste from './seitenleiste.stories.js';
+
+<Meta of={Seitenleiste} />
+
+# Seitenleiste
+
+Eine Leiste über die volle Höhe, die sich vom Rand über die Seite schiebt: Filter, ein Inhaltsverzeichnis, der Metadaten-Editor oder die Detailansicht einer Datei. Technisch ist sie ein [Dialog](?path=/docs/komponenten-dialog--docs) am Rand und baut ebenso auf dem HTML-Element `<dialog>` auf. Die Klasse heißt `cda-drawer`. Das Layout [Sidebar](?path=/docs/layout-sidebar--docs) ist etwas anderes: Es stellt eine Spalte fest neben den Inhalt.
+
+Vorlagen sind `.drawer` aus cranach-artefacts, die Detailansicht `.detail` und die Filterleiste auf schmalen Bildschirmen aus cranach-image-metadata sowie `ui/sheet` aus cranach-timeline.
+
+```html
+<button type="button" class="cda-button" id="filter-oeffnen">Filter</button>
+
+<dialog class="cda-drawer" id="filter" aria-labelledby="filter-titel">
+  <div class="cda-drawer__header">
+    <h2 class="cda-drawer__title" id="filter-titel">Filter</h2>
+    <form method="dialog">
+      <button class="cda-button cda-button--ghost cda-button--icon" aria-label="Schließen">
+        <span class="cda-icon" aria-hidden="true">close</span>
+      </button>
+    </form>
+  </div>
+  <div class="cda-drawer__body">…</div>
+  <form method="dialog" class="cda-drawer__footer">
+    <button class="cda-button" value="zuruecksetzen">Zurücksetzen</button>
+    <button class="cda-button cda-button--primary" value="anwenden">Anwenden</button>
+  </form>
+</dialog>
+```
+
+<Canvas of={Seitenleiste.Standard} />
+
+## Öffnen und Schließen
+
+Wie beim Dialog:
+
+- **Öffnen** per JavaScript mit `showModal()`. Ebene, Abdunkelung, Fokus und die Sperre der Seite übernimmt dann der Browser; die Tabelle dazu steht beim [Dialog](?path=/docs/komponenten-dialog--docs).
+- **Schließen** über einen Button in einem `<form method="dialog">` oder mit Escape. Der `value` des Buttons steht danach in `returnValue`.
+
+Anders als beim Dialog erwartet man bei einer Seitenleiste, dass ein Klick neben die Leiste sie schließt. Das löst das Projekt mit wenigen Zeilen JavaScript. Ein Klick auf die Abdunkelung trifft das `<dialog>` selbst, ein Klick in die Leiste eines der Elemente darin:
+
+```js
+const filter = document.querySelector('#filter');
+document.querySelector('#filter-oeffnen').addEventListener('click', () => filter.showModal());
+filter.addEventListener('click', (event) => {
+  if (event.target === filter) filter.close();
+});
+```
+
+## Aufbau
+
+Kopf, Inhalt und Fußzeile wie beim Dialog: Der Titel benennt die Leiste für Screenreader (`aria-labelledby`), nur der Inhalt scrollt, die Fußzeile ist optional und steht immer unten.
+
+- **Breite:** 24rem. Auf schmalen Bildschirmen bleibt neben der Leiste ein Streifen der Seite sichtbar. Er zeigt, dass die Seite noch da ist, und lässt sich zum Schließen antippen.
+- **Rand:** Die Leiste kommt von rechts. Ein Rahmen trennt sie auf der Innenseite von der Abdunkelung.
+
+## Links
+
+`cda-drawer--start` holt die Leiste von links, etwa für ein Inhaltsverzeichnis oder Filter, die links neben den Ergebnissen erwartet werden.
+
+```html
+<dialog class="cda-drawer cda-drawer--start" aria-labelledby="…">…</dialog>
+```
+
+<Canvas of={Seitenleiste.Links} />
+
+## Breit
+
+`cda-drawer--wide` ist 48rem breit, für Detailansichten mit Tabellen wie in cranach-image-metadata.
+
+```html
+<dialog class="cda-drawer cda-drawer--wide" aria-labelledby="…">…</dialog>
+```
+
+<Canvas of={Seitenleiste.Breit} />
+
+## Leiste neben dem Inhalt
+
+In cranach-image-metadata und cranach-timeline steht die Leiste auf breiten Bildschirmen fest neben dem Inhalt und fährt erst auf schmalen herein. Auf breiten Bildschirmen ist das kein Dialog, sondern eine Spalte im Layout [Sidebar](?path=/docs/layout-sidebar--docs) mit einem `<aside>`. Auf schmalen Bildschirmen öffnet das Projekt dieselben Inhalte in der Seitenleiste.
+
+## Bewegung
+
+Die Leiste fährt beim Öffnen vom Rand herein; bei reduzierter Bewegung (Systemeinstellung) entfällt das (ADR 0010). Beim Schließen verschwindet sie sofort.

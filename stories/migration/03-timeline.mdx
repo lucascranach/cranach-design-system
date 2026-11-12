@@ -103,7 +103,7 @@ Der Adapter setzt weder `--canvas-*` noch `--sidebar-*`. Sie müssen von Hand au
 | `ui/input` | `components/ui/input.tsx` | `.cda-input` ([Textfeld](?path=/docs/komponenten-textfeld--docs)) | nur in ungenutztem SidebarInput |
 | `ui/button` | `components/ui/button.tsx` | `.cda-button` oder bleibt shadcn | nur über SidebarTrigger, der nicht gerendert wird |
 | SidebarTrigger (lucide PanelLeft) | `components/ui/sidebar.tsx` | `.cda-icon` `left_panel_open` | |
-| `ui/sheet` (lucide X) | `components/ui/sheet.tsx` | bleibt shadcn; Icon `close`, Ebenen `modal-bg`/`modal` | wird praktisch nie angezeigt (siehe MobileBlocker) |
+| `ui/sheet` (lucide X) | `components/ui/sheet.tsx` | bleibt shadcn; Icon `close`, Ebenen `modal-bg`/`modal`. Aussehen wie die [Seitenleiste](?path=/docs/komponenten-seitenleiste--docs) | wird praktisch nie angezeigt (siehe MobileBlocker); Radix setzt Fokus und Sperre selbst |
 | `ui/sidebar`, `ui/separator`, `ui/tooltip` | `components/ui/` | bleiben shadcn | Farben kommen über den Adapter |
 | AppSidebar, YearColumn | `layout/` | bleiben, Farben auf `cda`-Utilities | gelbe Linie → `bg-cda-accent-default`; Links `[&_a]:text-primary` → `text-cda-link-default` |
 | ImagePrefetchIndicator | `timeline/ImagePrefetchIndicator.tsx` | kein Gegenstück (Fortschrittsbalken) | Text mit `role="status"`, Ebene `--cda-z-toast` |
