@@ -27,7 +27,12 @@
  * einer Karte. Für kleine Karten:
  *   <ul class="cda-l-grid cda-l-grid--small" role="list">
  *
- * Vorlage: artefact-card aus cranach-search und cranach-artefacts. Anders als dort: ein Link
+ * Als Zeile in Ergebnislisten (--row): Bild links in der kleinen Kachelgröße, Text rechts, gleiche
+ * Elemente und gleiches Link-Muster. Die Zeilen stehen in einem Stack:
+ *   <ul class="cda-l-stack cda-u-space-s" role="list"><li><article class="cda-card cda-card--row">…
+ *
+ * Vorlage: artefact-card aus cranach-search und cranach-artefacts, für --row artefact-line aus
+ * cranach-search und Card aus cranach-map. Anders als dort: ein Link
  * statt zwei, Merken als Button mit aria-pressed statt <a> ohne href, Merken-Button auch per
  * Tastatur und auf Touch-Geräten sichtbar, Fokusring um die ganze Karte.
  */
@@ -92,6 +97,28 @@
     color: var(--cda-color-text-muted);
   }
 
+  /* ---------- Zeile ----------
+   * Bild links, Text rechts. Die gelbe Linie beim Überfahren sitzt unten statt über dem Text
+   * (Regel nach dem Hover der Karte). */
+
+  .cda-card--row {
+    flex-direction: row;
+
+    & .cda-card__image {
+      flex: none;
+      align-self: flex-start;
+      inline-size: var(--cda-size-card-min-small);
+    }
+
+    & .cda-card__content {
+      /* Rechts Platz für den Merken-Button */
+      padding-block: var(--cda-space-xs);
+      padding-inline: var(--cda-space-m) calc(var(--cda-space-xl) + var(--cda-space-s));
+      border-block-start-width: 0;
+      border-block-end: var(--cda-border-width-m) solid transparent;
+    }
+  }
+
   /* ---------- Link über die ganze Karte ---------- */
 
   .cda-card__link {
@@ -133,6 +160,11 @@
     & .cda-card__content {
       border-block-start-color: var(--cda-color-accent-default);
     }
+  }
+
+  .cda-card--row:hover .cda-card__content,
+  .cda-card--row:has(:focus-visible) .cda-card__content {
+    border-block-end-color: var(--cda-color-accent-default);
   }
 
   /* ---------- Merken ---------- */

@@ -143,7 +143,7 @@ Pfade unter `src/components/`.
 
 **Tabelle** ([Tabelle](?path=/docs/komponenten-tabelle--docs)): artefact-table → `.cda-table` in `.cda-table-scroll`. Sichtbar ändert sich viel: Linien statt grauer Zeilen mit Abstand und gelber Linie. Sortieren über den Button `cda-table__sort` im `<th>` mit `aria-sort` statt anklickbarer Köpfe mit `sort--asc`/`--desc`. Die ganze Zeile ist heute anklickbar (`cursor: pointer`), aber ohne Link für die Tastatur – künftig ist der Titel der Link. `.no-wrap` → `cda-table__nowrap`. Bildspalte (`__image-field`) und Merken (`__favorite`) bleiben als Zellen im Projekt; Merken wie bei der [Werk-Karte](?path=/docs/komponenten-werk-karte--docs) als Button mit `aria-pressed`.
 
-**Gegenstück folgt** (bis dahin im Projekt): artefact-line → Werk-Karte als Listenzeile (Schritt 28).
+**Werk-Karte als Zeile** ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)): artefact-line → `.cda-card.cda-card--row` in einem `.cda-l-stack`. `__image`, `__content`, `__title`, `__subtitle`, `__text` wie bei der Kachel; `__master-data` → weiteres `cda-card__text`. Ein Link im Titel statt zwei Links (Bild und Text); Merken als Button mit `aria-pressed` wie bei artefact-card. Die graue Fläche und die feste gelbe Linie entfallen, die gelbe Linie erscheint beim Überfahren.
 
 **Ohne Gegenstück, bleiben im Projekt:** tree-list, dating-rangeslider (noUiSlider), search-result-navigation (Seitenblättern), my-cranach, secondary-navigation, scroll-to, size, image, maintenance-notice, Seitenraster `.page`/`.sidebar`.
 

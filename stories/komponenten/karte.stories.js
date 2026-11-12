@@ -26,10 +26,10 @@ const indent = (html, depth) =>
 const plain = (html) => html.replace(/<[^>]+>/g, '');
 
 /** Karte – dasselbe Markup, das die Doku als Quelltext zeigt. Der Titel darf <em> enthalten. */
-function card({ title, subtitle, text, img, favorite, withFavorite = true }) {
+function card({ title, subtitle, text, img, favorite, withFavorite = true, row = false }) {
   const name = plain(title).replace(/, \d{4}$/, '');
   return [
-    '<article class="cda-card">',
+    `<article class="cda-card${row ? ' cda-card--row' : ''}">`,
     `  <div class="cda-card__image"><img src="${img}" alt="" loading="lazy"></div>`,
     '  <div class="cda-card__content">',
     `    <h2 class="cda-card__title"><a class="cda-card__link" href="#werk">${title}</a></h2>`,
@@ -103,4 +103,14 @@ export const Klein = {
       [...WORKS, ...WORKS].map((w) => smallCard(w)),
       true,
     ),
+};
+
+/** Zeile für Ergebnislisten: gleiche Elemente, Bild links; die Zeilen stehen in einem Stack */
+export const Zeile = {
+  render: () =>
+    [
+      '<ul class="cda-l-stack cda-u-space-s" role="list">',
+      ...WORKS.map((w) => ['  <li>', indent(card({ ...w, row: true }), 2), '  </li>'].join('\n')),
+      '</ul>',
+    ].join('\n'),
 };

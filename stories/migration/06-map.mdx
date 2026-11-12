@@ -52,7 +52,7 @@ Von der Datei nutzt map nur wenige Werte: `colors.accent`, `dark`, `darkest`, `d
 | `.material-icons` (`styles/App.css`) | `.cda-icon` ([Icons](?path=/docs/grundlagen-icons--docs)) | Google-Fonts-Link in `index.html` entfällt (ADR 0012) |
 | react-icons `FaChevronDown` / `FaChevronUp` | `.cda-icon` `expand_more` / `expand_less` oder der Pfeil des Accordions | `react-icons` kann dann entfallen |
 | `LocationItem` (`<li onClick>`) und `StyledLocationGroup` (`ResultsGroup.jsx`) | `.cda-accordion` ([Accordion](?path=/docs/komponenten-accordion--docs)) mit `__item`, `__summary`, `__content` | heute per Tastatur nicht erreichbar; `details`/`summary` mit Ereignis `toggle` statt `useState` |
-| `Card` (`components/layout/Card.jsx`) | `.cda-card` ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)) mit `__image`, `__content`, `__title` › `__link`, `__subtitle`, `__text` | ein Link im Titel statt zwei; `<img>` mit `alt=""`; `h3` → `p`. Die Karte ist heute waagerecht (Bild links); `.cda-card` ist eine Kachel – die Listenform folgt in Roadmap-Schritt 28 |
+| `Card` (`components/layout/Card.jsx`) | `.cda-card` ([Werk-Karte](?path=/docs/komponenten-werk-karte--docs)) mit `__image`, `__content`, `__title` › `__link`, `__subtitle`, `__text` | ein Link im Titel statt zwei; `<img>` mit `alt=""`; `h3` → `p`. Die Karte ist waagerecht (Bild links): `.cda-card--row`, die Liste als `.cda-l-stack`. Die feste Breite von 28rem entfällt, die Zeile nimmt die Breite der Liste |
 | `List` (`components/styled/List.jsx`) | `.cda-l-grid` mit `--cda-l-min: 20rem` | Mindestbreite wie heute; siehe [Grid](?path=/docs/layout-grid--docs) |
 | Karte (`Map.jsx`, `Layers.jsx`), Ergebnisleiste `Aside`, `Results` | bleiben im Projekt | |
 
@@ -62,4 +62,4 @@ Von der Datei nutzt map nur wenige Werte: `colors.accent`, `dark`, `darkest`, `d
 
 - **Reset ohne Layer:** `src/styles/reset.css` (Meyer-Reset) setzt Abstände, Rahmen und Schrift vieler Elemente zurück und gewinnt gegen alle Komponenten. Löschen; der Reset des Designsystems ersetzt ihn.
 - **Theme:** `darkModeAtom` startet schon mit der Systemeinstellung. Der Schalter muss künftig `data-theme` am `<html>` setzen, dann wechseln alle Tokens mit.
-- **Waagerechte Karte:** Für die Ergebnisliste fehlt noch eine Listenform der Werk-Karte; sie folgt in Roadmap-Schritt 28.
+- **Waagerechte Karte:** Für die Ergebnisliste gibt es die Werk-Karte als Zeile (`.cda-card--row`). Das Bild ist dort 128 px statt 160 px breit.

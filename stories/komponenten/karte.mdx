@@ -63,17 +63,41 @@ Nur Bilder, für die kleine Kachelansicht. Ohne Text steht der Link um das Bild,
 
 <Canvas of={Karte.Klein} />
 
+## Zeile
+
+Für Ergebnislisten: `cda-card--row` stellt das Bild links in der kleinen Kachelgröße (`size.card.min-small`, 128 px) neben den Text. Elemente, Link über die ganze Karte und Merken bleiben gleich; beim Überfahren erscheint die gelbe Linie unter dem Text statt darüber. Die Zeilen stehen in einem [Stack](?path=/docs/layout-stack--docs). Vorlagen sind `artefact-line` aus cranach-search und `Card` aus cranach-map.
+
+```html
+<ul class="cda-l-stack cda-u-space-s" role="list">
+  <li>
+    <article class="cda-card cda-card--row">
+      <div class="cda-card__image"><img src="…" alt="" loading="lazy"></div>
+      <div class="cda-card__content">
+        <h2 class="cda-card__title"><a class="cda-card__link" href="…">Adam und Eva, 1526</a></h2>
+        <p class="cda-card__subtitle">Öl auf Holz</p>
+        <p class="cda-card__text">Courtauld Gallery, London</p>
+      </div>
+      <button type="button" class="cda-card__favorite" aria-pressed="false" aria-label="Adam und Eva merken">
+        <span class="cda-icon" aria-hidden="true">add</span>
+      </button>
+    </article>
+  </li>
+</ul>
+```
+
+<Canvas of={Karte.Zeile} />
+
 ## Zustände
 
 | Zustand | Aussehen |
 |---|---|
-| Überfahren | Bildfläche dunkler, gelbe Linie über dem Text, Merken-Button erscheint |
+| Überfahren | Bildfläche dunkler, gelbe Linie über dem Text (als Zeile darunter), Merken-Button erscheint |
 | Fokus per Tastatur | ebenso, zusätzlich Fokusring um die ganze Karte; nach einem Mausklick nicht |
 | gemerkt | Merken-Button gelb mit Icon `remove`, immer sichtbar |
 
 ## Änderungen gegenüber den Vorlagen
 
-| | cranach-search / cranach-artefacts | Designsystem |
+| Thema | cranach-search / cranach-artefacts | Designsystem |
 |---|---|---|
 | Links | search: zwei Links pro Karte (Bild und Text); artefacts: ein Link um alles | ein Link im Titel, Klickfläche über die ganze Karte |
 | Merken | `<a>` ohne `href`, nicht per Tastatur erreichbar | Button mit `aria-pressed` und Titel im Namen |
