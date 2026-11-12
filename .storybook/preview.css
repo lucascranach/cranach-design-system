@@ -98,9 +98,12 @@
   }
 }
 
-/* Kontrast-Beispiele: Farben kommen per Inline-Style aus den Tokens */
+/* Kontrast-Beispiele: Farben kommen per Inline-Style aus den Tokens. Als Inline-Block nimmt die
+   Fläche ihren Platz in der Zelle ein; der Rand hält Platz für den Fokusring frei, der außen liegt. */
 .docs-pair {
+  display: inline-block;
   padding: var(--cda-space-xs) var(--cda-space-s);
+  margin: calc(var(--cda-focus-ring-width) + var(--cda-focus-ring-offset));
   border-radius: var(--cda-radius-m);
 }
 
