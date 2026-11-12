@@ -1,0 +1,104 @@
+/*
+ * Dialog – Layer cda.components
+ *
+ * Fenster über der Seite, auf Basis des HTML-Elements <dialog>. Geöffnet mit showModal(): Der
+ * Browser legt es in den Top-Layer (kein z-Index nötig, ADR 0011), macht den Rest der Seite
+ * unbedienbar, setzt den Fokus hinein und schließt es mit Escape. Danach kehrt der Fokus zu dem
+ * Element zurück, das den Dialog geöffnet hat.
+ *
+ *   <dialog class="cda-dialog" aria-labelledby="download-titel">
+ *     <div class="cda-dialog__header">
+ *       <h2 class="cda-dialog__title" id="download-titel">Herunterladen</h2>
+ *       <form method="dialog">
+ *         <button class="cda-button cda-button--ghost cda-button--icon" aria-label="Schließen">
+ *           <span class="cda-icon" aria-hidden="true">close</span>
+ *         </button>
+ *       </form>
+ *     </div>
+ *     <div class="cda-dialog__body">…</div>
+ *     <div class="cda-dialog__footer">…Buttons…</div>
+ *   </dialog>
+ *
+ * Öffnen im Projekt: document.querySelector('…').showModal(). Schließen ohne JavaScript über das
+ * Formular mit method="dialog" oder Escape. Fußzeile optional. --wide für große Inhalte wie
+ * Bildlisten.
+ *
+ * Vorlage: .overlay in cranach-artefacts (Download, Bildlisten). Anders als dort: Abdunkelung
+ * über ::backdrop statt Schatten, Schließen als Button mit Namen statt Icon per ::after.
+ */
+@layer cda.components {
+  .cda-dialog {
+    inline-size: min(calc(100% - 2 * var(--cda-space-m)), var(--cda-size-measure));
+    max-inline-size: none;
+    max-block-size: calc(100% - 2 * var(--cda-space-m));
+    padding: 0;
+    color: var(--cda-color-text-default);
+    background-color: var(--cda-color-background-default);
+    border: var(--cda-border-width-s) solid var(--cda-color-border-default);
+    border-radius: var(--cda-radius-m);
+    box-shadow: var(--cda-shadow-l);
+
+    /* Nur geöffnet als Raster – sonst würde display das Schließen aufheben */
+    &[open] {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      animation: cda-dialog-in var(--cda-duration-fast) var(--cda-easing-default);
+    }
+
+    &::backdrop {
+      background-color: var(--cda-color-background-overlay);
+    }
+  }
+
+  /* Große Inhalte, etwa Bildlisten: bis zur Seitenbreite */
+  .cda-dialog--wide {
+    inline-size: min(calc(100% - 2 * var(--cda-space-m)), var(--cda-size-page));
+  }
+
+  .cda-dialog__header {
+    display: flex;
+    gap: var(--cda-space-s);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--cda-space-s) var(--cda-space-s) var(--cda-space-s) var(--cda-space-l);
+    border-block-end: var(--cda-border-width-s) solid var(--cda-color-border-default);
+
+    & form {
+      margin: 0;
+    }
+  }
+
+  .cda-dialog__title {
+    margin: 0;
+    font-size: var(--cda-font-size-l);
+  }
+
+  /* Nur der Inhalt scrollt, Kopf und Fußzeile bleiben stehen */
+  .cda-dialog__body {
+    padding: var(--cda-space-l);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .cda-dialog__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cda-space-s);
+    justify-content: flex-end;
+    padding: var(--cda-space-s) var(--cda-space-l);
+    border-block-start: var(--cda-border-width-s) solid var(--cda-color-border-default);
+  }
+
+  /* Die Seite dahinter scrollt nicht mit, solange ein Dialog offen ist */
+  :root:has(.cda-dialog:modal) {
+    overflow: hidden;
+  }
+
+  /* Bei reduzierter Bewegung sind die Dauer-Tokens fast 0 (ADR 0010) */
+  @keyframes cda-dialog-in {
+    from {
+      opacity: 0;
+      translate: 0 var(--cda-space-xs);
+    }
+  }
+}

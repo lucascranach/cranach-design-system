@@ -155,7 +155,9 @@ Die alten Werte springen bei 1440 und 1800 px, die neuen wachsen gleitend. Abwei
 - `.notification` (gelber Balken nach dem Kopieren, `components/notification.scss` und die Klasse `Notification` in `assets/scripts/main.js`) → `.cda-message--success` bzw. `--danger` in einem `.cda-toast-region role="status"`, der von Anfang an im HTML steht. Heute sehen Erfolg und Fehler gleich aus und Screenreader hören nichts; Fehler künftig stehen lassen.
 - Formularmeldungen `.message.info`, `.success`, `.error` im Metadaten-Editor (`components/meta-data-form.scss`) → `.cda-message`, `--success`, `--danger`, ebenfalls im Toast-Bereich; die Farben #ffd364, #71ff99, #ff6e6e entfallen zugunsten der Tokens `color.feedback.*`.
 
-**Gegenstück folgt** (Roadmap-Schritte 25–27, bis dahin bleiben sie im Projekt): `.overlay` → Dialog, `.drawer` → Seitenleiste, `.table`, `.info-table`, `.literature-table` → Tabelle.
+**Dialoge** ([Dialog](?path=/docs/komponenten-dialog--docs)): `.overlay` (heute schon `<dialog>` mit `showModal()`) → `.cda-dialog`, `.overlay--maximized` → `.cda-dialog--wide`, `.overlay__header` → `.cda-dialog__header` mit `__title`, `.overlay__close` → Icon-Button mit `aria-label` in `<form method="dialog">`. Die Abdunkelung über `box-shadow: 0 0 0 100vw` entfällt, dafür sorgt `::backdrop`; `.overlay__grid` → `.cda-l-grid`.
+
+**Gegenstück folgt** (Roadmap-Schritte 26–27, bis dahin bleiben sie im Projekt): `.drawer` → Seitenleiste, `.table`, `.info-table`, `.literature-table` → Tabelle.
 
 **Ohne Gegenstück, bleiben im Projekt:** `.definition-list`, `.related-item`, `.image-caption`, `.survey`, `.additional-content`, Bildviewer und Bildleisten (OpenSeadragon), SVG-Sprite für Dateitypen, die Trennstriche `.has-separator` u. ä. Links wie `a.link` folgen bereits dem Linkmuster der Grundstyles.
 

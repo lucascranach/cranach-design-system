@@ -1,0 +1,69 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Dialog from './dialog.stories.js';
+
+<Meta of={Dialog} />
+
+# Dialog
+
+Ein Fenster über der Seite für eine abgeschlossene Aufgabe: eine Datei herunterladen, eine Auswahl treffen, alle Abbildungen eines Werks durchsehen. Vorlage ist `.overlay` aus cranach-artefacts, das schon das HTML-Element `<dialog>` nutzt.
+
+```html
+<dialog class="cda-dialog" id="download" aria-labelledby="download-titel">
+  <div class="cda-dialog__header">
+    <h2 class="cda-dialog__title" id="download-titel">Bild herunterladen</h2>
+    <form method="dialog">
+      <button class="cda-button cda-button--ghost cda-button--icon" aria-label="Schließen">
+        <span class="cda-icon" aria-hidden="true">close</span>
+      </button>
+    </form>
+  </div>
+  <div class="cda-dialog__body">…</div>
+  <form method="dialog" class="cda-dialog__footer">
+    <button class="cda-button" value="abbrechen">Abbrechen</button>
+    <button class="cda-button cda-button--primary" value="download">Herunterladen</button>
+  </form>
+</dialog>
+```
+
+<Canvas of={Dialog.Standard} />
+
+## Öffnen und Schließen
+
+- **Öffnen** per JavaScript mit `showModal()`:
+  ```js
+  document.querySelector('#download').showModal();
+  ```
+  Nicht mit `show()` oder dem Attribut `open` – dann fehlen Abdunkelung, Fokus und Sperre der Seite.
+- **Schließen** ohne JavaScript: Jeder Button in einem `<form method="dialog">` schließt den Dialog. Sein `value` steht danach in `dialog.returnValue`, etwa `"download"` oder `"abbrechen"`. Escape schließt ebenfalls.
+
+Das übernimmt der Browser:
+
+| | |
+|---|---|
+| Ebene | Der Dialog liegt im Top-Layer über allem; ein z-Index ist nicht nötig (ADR 0011). |
+| Abdunkelung | `::backdrop` in `color.background.overlay`. |
+| Fokus | geht beim Öffnen in den Dialog (das erste bedienbare Element oder eines mit `autofocus`) und beim Schließen zurück zum Button, der ihn geöffnet hat. |
+| Sperre | Der Rest der Seite ist nicht bedienbar und für Screenreader ausgeblendet. Die Seite dahinter scrollt nicht mit. |
+
+Klick auf die Abdunkelung schließt den Dialog nicht. Das Attribut `closedby="any"` dafür unterstützen noch nicht alle Browser; wer es braucht, löst es im Projekt per JavaScript.
+
+## Aufbau
+
+- **Kopf** mit Titel und Schließen-Button. Der Titel benennt den Dialog für Screenreader (`aria-labelledby`). Die Überschriften-Ebene passt zur Seite; die Klasse bleibt `cda-dialog__title`.
+- **Inhalt** scrollt, wenn er höher ist als der Platz; Kopf und Fußzeile bleiben stehen. Enthält ein langer Inhalt nur Text und keine Links oder Buttons, bekommt `cda-dialog__body` ein `tabindex="0"` – sonst lässt er sich mit der Tastatur nicht scrollen.
+- **Fußzeile** optional, mit den Aktionen rechts. Die Hauptaktion als `cda-button--primary` ganz rechts.
+- **Breite:** höchstens eine gut lesbare Zeilenlänge (`size.measure`), auf schmalen Bildschirmen fast fensterbreit.
+
+## Breit
+
+Für große Inhalte wie die Bildlisten in cranach-artefacts: `cda-dialog--wide` geht bis zur Seitenbreite (`size.page`).
+
+```html
+<dialog class="cda-dialog cda-dialog--wide" aria-labelledby="…">…</dialog>
+```
+
+<Canvas of={Dialog.Breit} />
+
+## Bewegung
+
+Der Dialog blendet kurz ein; bei reduzierter Bewegung (Systemeinstellung) entfällt das (ADR 0010).
