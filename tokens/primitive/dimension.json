@@ -49,6 +49,7 @@
       "min-small": { "$value": "128px" }
     },
     "measure": { "$value": "65ch", "$description": "Zeilenlänge von Textspalten (typografisch „measure“), bei 16 px etwa 70–80 Zeichen; Standard für Text in .cda-l-center (ADR 0021). In Figma nur zur Information, ch gibt es dort nicht." },
+    "term": { "$value": "192px", "$description": "Breite der Begriffsspalte in Tabellen mit Angaben (.cda-table--details), 12rem. In cranach-artefacts $term-width = 12 × 0,9rem ≈ 173 px; hier auf das 16-px-Raster gebracht." },
     "page": { "$value": "1536px", "$description": "Größte Breite des Seiteninhalts, gleich dem Breakpoint 2xl: oberhalb wächst das Layout nicht weiter. Standard von .cda-l-center (ADR 0021)." }
   },
   "focus": {

@@ -103,7 +103,7 @@ export const Sortieren = {
 export const Angaben = {
   render: () =>
     [
-      '<table class="cda-table">',
+      '<table class="cda-table cda-table--details">',
       '  <caption>Kreuzigung Christi, 1501</caption>',
       '  <tbody>',
       ...[

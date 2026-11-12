@@ -76,7 +76,8 @@ Die Sass-Größen dienen als Abstand **und** als Schriftgröße. Deshalb zwei Sp
 | `$xxxl` | 37,44 px | `--cda-space-xl` (32) | `--cda-font-size-3xl` (40) | |
 | `$tile-xxs` in `minmax()` | 100,8 px | `.cda-l-grid--small` (128) | | |
 | `$tile-xs` in `minmax()` | 201,6 px | `.cda-l-grid` (Standard `--cda-size-card-min`, 256) | | Kacheln werden breiter |
-| `$column-*`, `$term-width*`, `$image-small`, `$tile-s` | | kein Gegenstück | | bleiben im Projekt |
+| `$term-width` | 172,8 px | `--cda-size-term` (192) | | Begriffsspalte in `.cda-table--details`, etwas breiter |
+| `$column-*`, `$term-width-large`, `$image-small`, `$tile-s` | | kein Gegenstück | | bleiben im Projekt |
 
 </div>
 
@@ -162,7 +163,7 @@ Die alten Werte springen bei 1440 und 1800 px, die neuen wachsen gleitend. Abwei
 **Tabellen** ([Tabelle](?path=/docs/komponenten-tabelle--docs)), alle in `components/tables.scss`:
 
 - `.table` → `.cda-table`; `.head`, `.body`, `.row`, `.cell` entfallen zugunsten von `thead`, `tbody`, `tr`, `th`/`td` ohne Klassen. `.is-striped` → `--striped`, `.-center` → `cda-table__number` (rechtsbündig) oder eigene Regel. Die ein- und ausklappbaren Detailzeilen (`.is-detail`, `.is-visible`) bleiben im Projekt.
-- `.info-table` und `.literature-item-details-table` (Begriff und Wert) → `.cda-table` ohne Kopf, Begriff als `<th scope="row">`; `.is-tight` → `--compact`. Der Doppelpunkt per `::after` und die rechtsbündigen Begriffe entfallen. `__remark` (gedämpfte dritte Spalte) bleibt als eigene Regel mit `--cda-color-text-muted`.
+- `.info-table` und `.literature-item-details-table` (Begriff und Wert) → `.cda-table.cda-table--details` ohne Kopf, Begriff als `<th scope="row">`; `$term-width` → `--cda-size-term` (12rem statt rund 10,8rem); `.is-tight` → `--compact`. Der Doppelpunkt per `::after` und die rechtsbündigen Begriffe entfallen. `__remark` (gedämpfte dritte Spalte) bleibt als eigene Regel mit `--cda-color-text-muted`.
 - `.literature-table` → `.cda-table--striped` mit sortierbaren Köpfen: Button `cda-table__sort` im `<th>`, `aria-sort` statt der Klassen `dir-u`/`dir-d`, Pfeile statt des gedrehten `filter_list`.
 - `.responsive-table-wrap` → `.cda-table-scroll` mit `role="region"`, `tabindex="0"` und Namen.
 

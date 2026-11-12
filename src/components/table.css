@@ -20,6 +20,7 @@
  *                     Rand, solange dort Spalten folgen (--cda-table-scroll-background: Fläche dahinter)
  * --striped           jede zweite Zeile hinterlegt statt Linien
  * --compact           weniger Innenabstand, für lange Listen
+ * --details           Angaben aus Begriff und Wert: Begriff (th scope="row") gedämpft in fester Spalte
  * __number            Zelle rechtsbündig (Zahlen)
  * __nowrap            Zelle bricht nicht um (Datierung, Maße, Nummern), auch am Spaltenkopf
  * __sort              Button im Spaltenkopf zum Sortieren; Richtung über aria-sort am <th>
@@ -74,6 +75,13 @@
 
   .cda-table--compact {
     --cda-table-padding: var(--cda-space-2xs) var(--cda-space-xs);
+  }
+
+  /* Angaben zu einem Werk: Der Wert ist das Wichtige, der Begriff ordnet nur ein. Die feste
+     Breite hält mehrere Tabellen untereinander bündig. */
+  .cda-table--details tbody th {
+    inline-size: var(--cda-size-term);
+    color: var(--cda-color-text-muted);
   }
 
   .cda-table .cda-table__number {
