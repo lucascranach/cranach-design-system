@@ -47,11 +47,11 @@ Die Bestandsprojekte (`../cranach-*`, `../cda-orga`) werden in dieser Phase **ni
 - [x] Figma-Sync am 12.11.2026 (auf Bitte von Volker): 16 Variablen angelegt – `size.measure`, `size.page`, die Meldungsfarben `color.feedback.*`, `color.background.shadow`, Palette green, red 100/900, `alpha.black-20` –, 121 unverändert, keine Fehler; jetzt 137 Variablen. Library noch nicht veröffentlicht.
 - [x] 28 · Werk-Karte als Zeile – Variante `.cda-card--row` (Name: Entscheidung Volker, 12.11.2026) in `src/components/card.css`: Bild links in `size.card.min-small` (128 px), Text rechts mit Platz für den Merken-Button; gleiche Elemente, ein Link über die ganze Karte, Merken wie bei der Kachel; beim Überfahren gelbe Linie unter dem Text statt darüber. Zeilen in `.cda-l-stack`. Vorlagen `artefact-line` aus cranach-search, `Card` aus cranach-map; Katalog und Migrationsseiten angepasst. Nebenbei: leere Kopfzelle in der Vergleichstabelle der Karten-Doku gefüllt (axe).
 - [x] Tabelle: Variante `--details` für Angaben aus Begriff und Wert – Begriff gedämpft (`text.muted`) in fester Spalte, neues Token `size.term` (192 px, aus `$term-width` in cranach-artefacts); Entscheidung Volker 12.11.2026 nach Vergleich von fünf Varianten.
-  - ⏸ **Haltepunkt:** die fünf neuen Komponenten (Meldung, Dialog, Seitenleiste, Tabelle, Werk-Karte als Zeile) von Volker prüfen lassen.
+  - ⏸ **Haltepunkt:** die fünf neuen Komponenten (Meldung, Dialog, Seitenleiste, Tabelle, Werk-Karte als Zeile) von Volker prüfen lassen – freigegeben am 12.11.2026, nach Anpassungen: Toast-Bereich im Dialog und Meldung im Formular, Tabelle mit Randschatten, `__nowrap`, Variante `--details` und bündigen Außenspalten.
 
 ## Offen
 
-Kein Roadmap-Schritt offen; als Nächstes der Haltepunkt nach Schritt 28.
+Kein Roadmap-Schritt offen. Die Haltepunkte bis Schritt 28 sind freigegeben; weitere Schritte legt Volker fest.
 
 Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.components`, Story mit allen Varianten und Zuständen in beiden Themes, deutsche Doku mit Markup-Beispiel, axe ohne Fehler. Vorlagen aus den Bestandsprojekten stehen in `docs/bestandsaufnahme.md` Abschnitt 4.
 
