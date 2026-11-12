@@ -20,6 +20,7 @@
  * --striped           jede zweite Zeile hinterlegt statt Linien
  * --compact           weniger Innenabstand, für lange Listen
  * __number            Zelle rechtsbündig (Zahlen)
+ * __nowrap            Zelle bricht nicht um (Datierung, Maße, Nummern), auch am Spaltenkopf
  * __sort              Button im Spaltenkopf zum Sortieren; Richtung über aria-sort am <th>
  *
  * Vorlagen: .table, .info-table, .literature-table in cranach-artefacts, artefact-table in
@@ -76,6 +77,11 @@
 
   .cda-table .cda-table__number {
     text-align: end;
+  }
+
+  /* Sonst schrumpft eine zu breite Tabelle jede Spalte auf ihr längstes Wort, bevor sie scrollt */
+  .cda-table .cda-table__nowrap {
+    white-space: nowrap;
   }
 
   /* ---------- Sortieren ----------

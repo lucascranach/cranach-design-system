@@ -1,4 +1,5 @@
 import { esc } from '../helpers.js';
+import { resizable } from '../layout/beispiele.js';
 
 const PAINTINGS = [
   { title: 'Kreuzigung Christi', date: '1501', collection: 'Kunsthistorisches Museum Wien', inventory: 'GG 6905', images: 14 },
@@ -115,4 +116,51 @@ export const Angaben = {
       '  </tbody>',
       '</table>',
     ].join('\n'),
+};
+
+/** Viele Spalten: Die Tabelle scrollt in ihrer Hülle seitlich; der Rahmen außen lässt sich schmaler ziehen */
+const WIDE_COLUMNS = ['Titel', 'Datierung', 'Zuschreibung', 'Technik', 'Bildträger', 'Maße', 'Sammlung', 'Ort', 'Inventarnummer', 'CDA-ID'];
+const WIDE_ROWS = [
+  ['Kreuzigung Christi', '1501', 'Lucas Cranach der Ältere', 'Ölmalerei', 'Nadelholz', '138 × 99 cm', 'Kunsthistorisches Museum', 'Wien', 'GG 6905', 'AT_KHM_GG6905'],
+  ['Bildnis Martin Luther', '1528', 'Lucas Cranach der Ältere, Werkstatt', 'Ölmalerei', 'Buchenholz', '40 × 26 cm', 'Klassik Stiftung', 'Weimar', 'G 25', 'DE_KSW_G25'],
+  ['Venus', '1532', 'Lucas Cranach der Ältere', 'Ölmalerei', 'Buchenholz', '38 × 25 cm', 'Städel Museum', 'Frankfurt am Main', '1125', 'DE_SMF_1125'],
+  ['Melancholie', '1532', 'Lucas Cranach der Ältere', 'Ölmalerei', 'Buchenholz', '51 × 97 cm', 'Statens Museum for Kunst', 'Kopenhagen', 'KMS 3', 'DK_SMK_KMS3'],
+];
+
+/** Datierung, Maße, Inventarnummer und CDA-ID brechen nicht um */
+const nowrap = (i) => ([1, 5, 8, 9].includes(i) ? ' class="cda-table__nowrap"' : '');
+
+export const Breit = {
+  render: () =>
+    resizable(
+      'Beispiel breite Tabelle',
+      [
+        '<div class="cda-table-scroll" role="region" tabindex="0" aria-labelledby="werke-titel">',
+        '  <table class="cda-table">',
+        '    <caption id="werke-titel">Werke mit allen Angaben</caption>',
+        `    <thead>\n      <tr>${WIDE_COLUMNS.map((c, i) => `<th scope="col"${nowrap(i)}>${esc(c)}</th>`).join('')}</tr>\n    </thead>`,
+        '    <tbody>',
+        ...WIDE_ROWS.map((row) => `      <tr>${row.map((v, i) => (i === 0 ? `<th scope="row"><a href="#">${esc(v)}</a></th>` : `<td${nowrap(i)}>${esc(v)}</td>`)).join('')}</tr>`),
+        '    </tbody>',
+        '  </table>',
+        '</div>',
+      ].join('\n'),
+    ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<div class="cda-table-scroll" role="region" tabindex="0" aria-labelledby="werke-titel">
+  <table class="cda-table">
+    <caption id="werke-titel">Werke mit allen Angaben</caption>
+    <thead>
+      <tr>…<th scope="col" class="cda-table__nowrap">Maße</th>…</tr>
+    </thead>
+    <tbody>
+      <tr>…<td class="cda-table__nowrap">138 × 99 cm</td>…</tr>
+    </tbody>
+  </table>
+</div>`,
+      },
+    },
+  },
 };

@@ -37,6 +37,7 @@ Grundstil für Datentabellen: eine kräftige Linie unter dem Kopf, eine dünne u
 - **Spaltenköpfe** als `<th scope="col">` im `<thead>`.
 - **Zeilenköpfe** als `<th scope="row">`, meist die erste Spalte mit dem Titel. Sie sehen aus wie normale Zellen; Screenreader nennen sie beim Wechsel in eine andere Spalte mit.
 - **Zahlen** rechtsbündig mit `cda-table__number` an der Zelle und am Spaltenkopf.
+- **Kurze Werte**, die zusammenbleiben sollen – Datierung, Maße, Inventarnummern –, mit `cda-table__nowrap` an Zelle und Spaltenkopf. Wichtig vor allem bei breiten Tabellen.
 
 ## Breite Tabellen
 
@@ -47,6 +48,10 @@ Passt eine Tabelle nicht in die Breite, scrollt sie seitlich in der Hülle `cda-
 - einen Namen, meist `aria-labelledby` mit der `id` der Überschrift.
 
 Ist die Tabelle sicher schmal genug, etwa bei zwei Spalten, entfällt die Hülle.
+
+Bevor eine Tabelle scrollt, schrumpft der Browser jede Spalte bis auf ihr längstes Wort. Damit „138 × 99 cm“ nicht über drei Zeilen läuft, tragen Datierung, Maße und Nummern im Beispiel `cda-table__nowrap`. Die Tabelle ist dann breiter als der Platz und scrollt seitlich, die Seite selbst bleibt stehen. Zum Ausprobieren den gestrichelten Rahmen an der Ecke unten rechts schmaler ziehen oder die Tabelle mit Tab anwählen und mit den Pfeiltasten scrollen.
+
+<Canvas of={Tabelle.Breit} />
 
 ## Zebra
 
