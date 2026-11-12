@@ -69,6 +69,6 @@ npm run catalog:photos   # Fotos für den Katalog der Projektkomponenten (nur lo
 
 ## Stand der Infrastruktur
 
-- GitHub-Repo `lucascranach/cranach-design-system` (privat) ist als `origin` gesetzt; gepusht wird nur auf ausdrückliche Bitte. npm-Organisation und Server-Pfad stehen als Aufgaben für Volker in der Roadmap.
+- GitHub-Repo `lucascranach/cranach-design-system` (privat) ist als `origin` gesetzt, `main` liegt dort seit 12.11.2026. Ab jetzt jede Änderung auf einem eigenen Branch mit Pull Request (siehe „Branches“); gepusht wird nur auf ausdrückliche Bitte. npm-Organisation und Server-Pfad stehen als Aufgaben für Volker in der Roadmap.
 - Figma: Library-Datei [Cranach Design System](https://www.figma.com/design/GV3vvoVc8GebPQ79YwA1yz/Cranach-Design-System), Figma-MCP-Server in Claude Code eingerichtet. Variablen per Sync nach `docs/figma-sync.md`; die Library wird erst nach gemeinsamer Prüfung veröffentlicht (ADR 0014).
 - Node-Version: 24 (`.nvmrc`), vor der Arbeit `nvm use`.
