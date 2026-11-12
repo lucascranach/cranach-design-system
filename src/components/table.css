@@ -30,7 +30,11 @@
  */
 @layer cda.components {
   .cda-table {
-    --cda-table-padding: var(--cda-space-xs) var(--cda-space-s);
+    --cda-table-padding-block: var(--cda-space-xs);
+    --cda-table-padding-inline: var(--cda-space-s);
+
+    /* Außen kein Abstand: Text steht bündig mit Überschrift und Linien. Zebra braucht ihn. */
+    --cda-table-padding-edge: 0;
 
     inline-size: 100%;
     border-collapse: collapse;
@@ -44,9 +48,17 @@
 
     & th,
     & td {
-      padding: var(--cda-table-padding);
+      padding: var(--cda-table-padding-block) var(--cda-table-padding-inline);
       text-align: start;
       vertical-align: top;
+
+      &:first-child {
+        padding-inline-start: var(--cda-table-padding-edge);
+      }
+
+      &:last-child {
+        padding-inline-end: var(--cda-table-padding-edge);
+      }
     }
 
     & thead th {
@@ -65,6 +77,10 @@
     }
   }
 
+  .cda-table--striped {
+    --cda-table-padding-edge: var(--cda-table-padding-inline);
+  }
+
   .cda-table--striped tbody tr {
     border-block-end: 0;
 
@@ -74,7 +90,8 @@
   }
 
   .cda-table--compact {
-    --cda-table-padding: var(--cda-space-2xs) var(--cda-space-xs);
+    --cda-table-padding-block: var(--cda-space-2xs);
+    --cda-table-padding-inline: var(--cda-space-xs);
   }
 
   /* Angaben zu einem Werk: Der Wert ist das Wichtige, der Begriff ordnet nur ein. Die feste
