@@ -21,6 +21,9 @@
  * steht. Er liegt oben rechts auf der z-Ebene toast (ADR 0011). Ein- und Ausblenden übernimmt das
  * Projekt per JavaScript; Fehlermeldungen nicht von selbst verschwinden lassen.
  *   <div class="cda-toast-region" role="status">…</div>
+ * Ein offener <dialog> liegt über jeder z-Ebene und sperrt den Rest der Seite. Dialoge und
+ * Seitenleisten, die Meldungen auslösen, bekommen deshalb einen eigenen Bereich als letztes Kind;
+ * er erscheint an derselben Stelle im Fenster.
  *
  * Screenreader: role="status" liest neue Meldungen höflich vor, role="alert" sofort (für Fehler).
  * Die Rolle muss am Element stehen, bevor der Text hineinkommt – sonst wird nichts angesagt.

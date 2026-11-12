@@ -62,7 +62,7 @@ Ein Icon-Button am Ende; das Entfernen übernimmt das Projekt per JavaScript.
 Eine Meldung, die oben rechts über dem Inhalt schwebt und den Inhalt nicht verschiebt – wie der Balken nach dem Kopieren auf den Werkseiten. Dafür steht ein Bereich `cda-toast-region` von Anfang an im HTML; das Projekt legt die Meldungen hinein und entfernt sie wieder. Er liegt auf der z-Ebene `toast` (ADR 0011), auf schmalen Bildschirmen fast so breit wie das Fenster. Mit den beiden Buttons unten lässt sich das ausprobieren.
 
 ```html
-<div class="cda-toast-region" role="status">
+<div class="cda-toast-region" id="meldungen" role="status">
   <!-- hier fügt das Projekt Meldungen ein -->
 </div>
 ```
@@ -74,6 +74,28 @@ Regeln für das Projekt:
 - **Erfolg und Hinweis** verschwinden frühestens nach 5 Sekunden, bei längeren Texten später.
 - **Fehler bleiben stehen**, bis sie geschlossen werden – sonst verpasst man sie. Für sofortige Ansage `role="alert"` an die Meldung selbst.
 - **Nichts Wichtiges nur im Toast:** Wer gerade woanders hinschaut, sieht ihn nicht. Was man noch braucht, gehört zusätzlich auf die Seite.
+
+### Bei offenem Dialog
+
+Ein offener [Dialog](?path=/docs/komponenten-dialog--docs) oder eine offene [Seitenleiste](?path=/docs/komponenten-seitenleiste--docs) liegt über allem und sperrt den Rest der Seite. Ein Toast im Bereich der Seite läge dann unter der Abdunkelung, ließe sich nicht schließen und würde nicht angesagt. Deshalb bekommt jeder Dialog, der Meldungen auslösen kann, einen eigenen Toast-Bereich als letztes Element. Die Meldung erscheint trotzdem oben rechts im Fenster, nicht im Dialog.
+
+```html
+<dialog class="cda-dialog" aria-labelledby="…">
+  …
+  <div class="cda-toast-region" role="status"></div>
+</dialog>
+```
+
+Das Projekt legt eine Meldung in den Bereich des offenen Dialogs, sonst in den der Seite (hier mit `id="meldungen"`):
+
+```js
+const region =
+  document.querySelector('dialog:modal .cda-toast-region') ?? document.querySelector('#meldungen');
+```
+
+Bei Formularen im Dialog, etwa dem Metadaten-Editor, kann die Meldung stattdessen direkt im Inhalt stehen, nahe am Button, der sie ausgelöst hat.
+
+<Canvas of={Meldung.ToastImDialog} />
 
 ## Screenreader
 

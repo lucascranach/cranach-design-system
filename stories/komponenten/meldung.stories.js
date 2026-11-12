@@ -100,3 +100,43 @@ ${message({ type: 'success', text: 'Das Element wurde in die Zwischenablage kopi
     }
   },
 };
+
+/**
+ * Toast bei offenem Dialog: Der Dialog hat einen eigenen Bereich, sonst läge die Meldung unter der
+ * Abdunkelung und wäre gesperrt. Das Projekt wählt den Bereich des offenen Dialogs, sonst den der Seite.
+ */
+export const ToastImDialog = {
+  name: 'Toast im Dialog',
+  render: () =>
+    `<button type="button" class="cda-button" data-open>Metadaten bearbeiten …</button>
+
+<dialog class="cda-dialog" aria-labelledby="toast-dialog-titel">
+  <div class="cda-dialog__header">
+    <h2 class="cda-dialog__title" id="toast-dialog-titel">Metadaten bearbeiten</h2>
+    <form method="dialog">
+      <button class="cda-button cda-button--ghost cda-button--icon" aria-label="Schließen">
+        <span class="cda-icon" aria-hidden="true">close</span>
+      </button>
+    </form>
+  </div>
+  <div class="cda-dialog__body">
+    <p>Änderungen werden sofort gespeichert und erscheinen nach der nächsten Aktualisierung auf der Werkseite.</p>
+  </div>
+  <div class="cda-dialog__footer">
+    <button type="button" class="cda-button cda-button--primary" data-save>Speichern</button>
+  </div>
+  <div class="cda-toast-region" role="status"></div>
+</dialog>`,
+  play: ({ canvasElement }) => {
+    const dialog = canvasElement.querySelector('dialog');
+    canvasElement.querySelector('[data-open]').addEventListener('click', () => dialog.showModal());
+    canvasElement.querySelector('[data-save]').addEventListener('click', () => {
+      const region = canvasElement.querySelector('dialog:modal .cda-toast-region');
+      const holder = document.createElement('div');
+      holder.innerHTML = message({ type: 'success', text: 'Gespeichert.' });
+      const element = holder.firstElementChild;
+      region.append(element);
+      setTimeout(() => element.remove(), 5000);
+    });
+  },
+};
