@@ -59,7 +59,7 @@ Ein Icon-Button am Ende; das Entfernen übernimmt das Projekt per JavaScript.
 
 ## Toast
 
-Eine Meldung, die oben rechts über dem Inhalt schwebt und den Inhalt nicht verschiebt – wie der Balken nach dem Kopieren auf den Werkseiten. Dafür steht ein Bereich `cda-toast-region` von Anfang an im HTML; das Projekt legt die Meldungen hinein und entfernt sie wieder. Er liegt auf der z-Ebene `toast` (ADR 0011), auf schmalen Bildschirmen fast so breit wie das Fenster. Die Buttons unten probieren es aus.
+Eine Meldung, die oben rechts über dem Inhalt schwebt und den Inhalt nicht verschiebt – wie der Balken nach dem Kopieren auf den Werkseiten. Dafür steht ein Bereich `cda-toast-region` von Anfang an im HTML; das Projekt legt die Meldungen hinein und entfernt sie wieder. Er liegt auf der z-Ebene `toast` (ADR 0011), auf schmalen Bildschirmen fast so breit wie das Fenster. Mit den beiden Buttons unten lässt sich das ausprobieren.
 
 ```html
 <div class="cda-toast-region" role="status">
@@ -71,7 +71,7 @@ Eine Meldung, die oben rechts über dem Inhalt schwebt und den Inhalt nicht vers
 
 Regeln für das Projekt:
 
-- **Erfolg und Hinweis** dürfen nach einigen Sekunden verschwinden (in der Vorlage 4 Sekunden; 5 oder mehr sind angenehmer zu lesen).
+- **Erfolg und Hinweis** verschwinden frühestens nach 5 Sekunden, bei längeren Texten später.
 - **Fehler bleiben stehen**, bis sie geschlossen werden – sonst verpasst man sie. Für sofortige Ansage `role="alert"` an die Meldung selbst.
 - **Nichts Wichtiges nur im Toast:** Wer gerade woanders hinschaut, sieht ihn nicht. Was man noch braucht, gehört zusätzlich auf die Seite.
 
