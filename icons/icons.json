@@ -11,11 +11,17 @@
     "arrow_back": [
       "kirby"
     ],
+    "arrow_downward": [
+      "design-system (Tabelle, ersetzt das gedrehte filter_list beim Sortieren)"
+    ],
     "arrow_drop_up": [
       "search"
     ],
     "arrow_forward": [
       "search"
+    ],
+    "arrow_upward": [
+      "design-system (Tabelle, ersetzt das gedrehte filter_list beim Sortieren)"
     ],
     "aspect_ratio": [
       "image-tools"
@@ -175,6 +181,9 @@
     ],
     "tune": [
       "image-metadata"
+    ],
+    "unfold_more": [
+      "design-system (Tabelle, ersetzt das gedrehte filter_list beim Sortieren)"
     ],
     "view_comfy": [
       "search"

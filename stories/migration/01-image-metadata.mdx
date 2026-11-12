@@ -109,8 +109,9 @@ Alle Variablen stehen in `style.css` im `:root`-Block. Die Grundgröße `--bfs` 
 | `.message` | `.cda-message .cda-message--danger` ([Meldung](?path=/docs/komponenten-meldung--docs)) | erscheint per JavaScript, deshalb `role="alert"` setzen, bevor der Text hineinkommt; Symbol `error` |
 | `.sidebar` (unter 1024 px über dem Inhalt) | `.cda-drawer` ([Seitenleiste](?path=/docs/komponenten-seitenleiste--docs)) | nur unter 1024 px; darüber bleibt sie eine Spalte im Layout (siehe unten). Heute ohne Sperre der Seite und ohne Fokus |
 | `.detail` mit `__backdrop`, `__panel`, `__head`, `__title`, `__body` | `<dialog class="cda-drawer cda-drawer--wide">` mit `__header`, `__title`, `__body` ([Seitenleiste](?path=/docs/komponenten-seitenleiste--docs)) | `showModal()` statt `hidden`; Abdunkelung über `::backdrop`, Fokus, Escape und Sperre übernimmt der Browser – die eigenen Handler entfallen bis auf den Klick neben die Leiste |
-| `.detail__section`, `.detail-table`, `.detail-issues`, `.detail-ok` | bleiben vorerst | Abschnitte mit `.cda-l-stack`; Gegenstück für die Tabelle folgt (Schritt 27) |
-| Tabulator (`.tabulator*`, `.sort-icon`, `.has-issues`) | bleiben im Projekt | Tokens zuordnen; Sortier-Icon als `.cda-icon`. Schritt 27 prüft, wie weit sich das Aussehen an die Tabelle angleichen lässt |
+| `.detail-table` | `.cda-table` ([Tabelle](?path=/docs/komponenten-tabelle--docs)), Begriff als `<th scope="row">` | Linien statt grauer Zellen mit Abstand; `overflow-wrap: anywhere` für lange Dateipfade als eigene Regel behalten |
+| `.detail__section`, `.detail-issues`, `.detail-ok` | bleiben im Projekt | Abschnitte mit `.cda-l-stack` |
+| Tabulator (`.tabulator*`, `.sort-icon`, `.has-issues`) | bleibt im Projekt, Aussehen angeglichen | Regeln mit Tokens stehen bei der [Tabelle](?path=/docs/komponenten-tabelle--docs) unter „Tabulator“. In `sortElement` (`app.js`) `arrow_upward`, `arrow_downward`, `unfold_more` statt `filter_list`; `aria-sort` setzt Tabulator selbst |
 | Status „Lade Metadaten …“ | optional `.cda-spinner` ([Loader](?path=/docs/komponenten-loader--docs)) | `role="status"` ergänzen, damit Screenreader es ansagen |
 
 </div>

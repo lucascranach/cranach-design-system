@@ -44,6 +44,7 @@ const SOURCES = [
   'src/components/message.css',
   'src/components/dialog.css',
   'src/components/drawer.css',
+  'src/components/table.css',
   'src/components/card.css',
   'src/components/header.css',
   'src/components/footer.css',

@@ -1,0 +1,112 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Tabelle from './tabelle.stories.js';
+
+<Meta of={Tabelle} />
+
+# Tabelle
+
+Grundstil für Datentabellen: eine kräftige Linie unter dem Kopf, eine dünne unter jeder Zeile. Zahlen haben gleich breite Ziffern, damit sie untereinander stehen. Vorlagen sind `.table`, `.info-table` und `.literature-table` aus cranach-artefacts, `artefact-table` aus cranach-search sowie `.detail-table` und die Tabelle mit Tabulator aus cranach-image-metadata.
+
+```html
+<div class="cda-table-scroll" role="region" tabindex="0" aria-labelledby="gemaelde-titel">
+  <table class="cda-table">
+    <caption id="gemaelde-titel">Gemälde (Auswahl)</caption>
+    <thead>
+      <tr>
+        <th scope="col">Titel</th>
+        <th scope="col">Datierung</th>
+        <th scope="col" class="cda-table__number">Abbildungen</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row"><a href="…">Kreuzigung Christi</a></th>
+        <td>1501</td>
+        <td class="cda-table__number">14</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+<Canvas of={Tabelle.Standard} />
+
+## Aufbau
+
+- **Überschrift** als `<caption>`. Sie benennt die Tabelle für Screenreader; mehrere Tabellen auf einer Seite brauchen verschiedene Namen. Steht die Überschrift schon darüber als `<h2>`, fällt `<caption>` weg und die Tabelle bekommt `aria-labelledby` mit der `id` der Überschrift.
+- **Spaltenköpfe** als `<th scope="col">` im `<thead>`.
+- **Zeilenköpfe** als `<th scope="row">`, meist die erste Spalte mit dem Titel. Sie sehen aus wie normale Zellen; Screenreader nennen sie beim Wechsel in eine andere Spalte mit.
+- **Zahlen** rechtsbündig mit `cda-table__number` an der Zelle und am Spaltenkopf.
+
+## Breite Tabellen
+
+Passt eine Tabelle nicht in die Breite, scrollt sie seitlich in der Hülle `cda-table-scroll`, statt die Seite zu verbreitern. Die Hülle braucht drei Attribute:
+
+- `tabindex="0"`, damit man sie mit der Tastatur erreicht und mit den Pfeiltasten scrollt,
+- `role="region"`, damit Screenreader sie als Bereich finden,
+- einen Namen, meist `aria-labelledby` mit der `id` der Überschrift.
+
+Ist die Tabelle sicher schmal genug, etwa bei zwei Spalten, entfällt die Hülle.
+
+## Zebra
+
+`cda-table--striped` hinterlegt jede zweite Zeile statt der Linien. Hilft bei vielen Spalten, damit das Auge in der Zeile bleibt.
+
+<Canvas of={Tabelle.Zebra} />
+
+## Kompakt
+
+`cda-table--compact` verringert den Innenabstand, für lange Listen wie in cranach-image-metadata. Mit `--striped` kombinierbar.
+
+<Canvas of={Tabelle.Kompakt} />
+
+## Sortieren
+
+Ein Button im Spaltenkopf mit `cda-table__sort`. Das Projekt sortiert per JavaScript und setzt an der sortierten Spalte `aria-sort="ascending"` oder `"descending"` – immer nur an einer. Daraus folgt das Symbol: Pfeil nach oben oder unten, an unsortierten Spalten ein gedämpfter Doppelpfeil. Screenreader sagen die Richtung über `aria-sort` an.
+
+```html
+<th scope="col" aria-sort="ascending">
+  <button type="button" class="cda-table__sort">Datierung</button>
+</th>
+```
+
+Zum Ausprobieren auf die Spaltenköpfe klicken:
+
+<Canvas of={Tabelle.Sortieren} />
+
+Anders als in den Vorlagen ist der Spaltenkopf ein Button und kein anklickbares `<th>`: So erreicht man ihn mit der Tastatur. Die Pfeile ersetzen das gedrehte Icon `filter_list`, das eher nach Filter aussieht.
+
+## Angaben zu einem Werk
+
+Für Begriff und Wert, wie `.info-table` in cranach-artefacts: eine Tabelle ohne Kopf, der Begriff als Zeilenkopf.
+
+```html
+<table class="cda-table">
+  <caption>Kreuzigung Christi, 1501</caption>
+  <tbody>
+    <tr><th scope="row">Material</th><td>Malerei auf Nadelholz</td></tr>
+  </tbody>
+</table>
+```
+
+<Canvas of={Tabelle.Angaben} />
+
+## Tabulator
+
+cranach-image-metadata zeichnet seine Tabelle mit der Bibliothek Tabulator. Sie bleibt im Projekt; ihr Aussehen lässt sich aber über Tokens an die Tabelle angleichen. Die Regeln kommen ins CSS des Projekts, in einen Layer nach `cda` oder ohne Layer:
+
+```css
+.tabulator { border: 0; background: none; font-variant-numeric: tabular-nums; }
+.tabulator .tabulator-header {
+  border-block-end: var(--cda-border-width-m) solid var(--cda-color-border-strong);
+  background: var(--cda-color-background-default);
+  font-weight: var(--cda-font-weight-semibold);
+}
+.tabulator .tabulator-header .tabulator-col { border: 0; background: inherit; }
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content,
+.tabulator-row .tabulator-cell { padding: var(--cda-space-xs) var(--cda-space-s); border: 0; }
+.tabulator .tabulator-tableholder .tabulator-table { background: none; color: var(--cda-color-text-default); }
+.tabulator-row { border-block-end: var(--cda-border-width-s) solid var(--cda-color-border-default); background: var(--cda-color-background-default); }
+```
+
+Für Zebra statt Linien die Zeilen `.tabulator-row-even` mit `--cda-color-background-subtle` hinterlegen. Beim Sortieren setzt Tabulator `aria-sort` selbst; das Symbol liefert das Projekt schon heute über die Option `headerSortElement`. Dort die Pfeile `arrow_upward`, `arrow_downward` und `unfold_more` als `.cda-icon` statt des gedrehten `filter_list` einsetzen.

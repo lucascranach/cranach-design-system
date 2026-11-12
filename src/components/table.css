@@ -1,0 +1,145 @@
+/*
+ * Tabelle – Layer cda.components
+ *
+ * Grundstil für Datentabellen: kräftige Linie unter dem Kopf, dünne Linie unter jeder Zeile
+ * (Entscheidung Volker, 12.11.2026). Zahlen mit gleich breiten Ziffern.
+ *
+ *   <div class="cda-table-scroll" role="region" tabindex="0" aria-labelledby="gemaelde-titel">
+ *     <table class="cda-table">
+ *       <caption id="gemaelde-titel">Gemälde</caption>
+ *       <thead>
+ *         <tr><th scope="col">Titel</th><th scope="col" class="cda-table__number">Abbildungen</th></tr>
+ *       </thead>
+ *       <tbody>
+ *         <tr><th scope="row">Kreuzigung Christi</th><td class="cda-table__number">14</td></tr>
+ *       </tbody>
+ *     </table>
+ *   </div>
+ *
+ * .cda-table-scroll   Hülle für breite Tabellen: scrollt seitlich, per Tastatur erreichbar
+ * --striped           jede zweite Zeile hinterlegt statt Linien
+ * --compact           weniger Innenabstand, für lange Listen
+ * __number            Zelle rechtsbündig (Zahlen)
+ * __sort              Button im Spaltenkopf zum Sortieren; Richtung über aria-sort am <th>
+ *
+ * Vorlagen: .table, .info-table, .literature-table in cranach-artefacts, artefact-table in
+ * cranach-search, .detail-table und Tabulator in cranach-image-metadata.
+ */
+@layer cda.components {
+  .cda-table {
+    --cda-table-padding: var(--cda-space-xs) var(--cda-space-s);
+
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+
+    & caption {
+      padding-block-end: var(--cda-space-xs);
+      font-weight: var(--cda-font-weight-semibold);
+      text-align: start;
+    }
+
+    & th,
+    & td {
+      padding: var(--cda-table-padding);
+      text-align: start;
+      vertical-align: top;
+    }
+
+    & thead th {
+      font-weight: var(--cda-font-weight-semibold);
+      vertical-align: bottom;
+      border-block-end: var(--cda-border-width-m) solid var(--cda-color-border-strong);
+    }
+
+    /* Zeilenköpfe (scope="row") sehen aus wie Zellen; sie benennen die Zeile nur für Screenreader */
+    & tbody th {
+      font-weight: var(--cda-font-weight-regular);
+    }
+
+    & tbody tr {
+      border-block-end: var(--cda-border-width-s) solid var(--cda-color-border-default);
+    }
+  }
+
+  .cda-table--striped tbody tr {
+    border-block-end: 0;
+
+    &:nth-child(even) {
+      background-color: var(--cda-color-background-subtle);
+    }
+  }
+
+  .cda-table--compact {
+    --cda-table-padding: var(--cda-space-2xs) var(--cda-space-xs);
+  }
+
+  .cda-table .cda-table__number {
+    text-align: end;
+  }
+
+  /* ---------- Sortieren ----------
+   * Der Spaltenkopf enthält einen Button; das Projekt sortiert per JavaScript und setzt
+   * aria-sort="ascending" bzw. "descending" am <th> der sortierten Spalte – nur an einer.
+   * Das Symbol folgt aus aria-sort: unsortiert gedämpft, sonst Pfeil nach oben bzw. unten. */
+
+  .cda-table__sort {
+    display: inline-flex;
+    gap: var(--cda-space-2xs);
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    cursor: pointer;
+    background: none;
+    border: 0;
+
+    /* Der Schrägstrich-Text ist der Name für Screenreader – leer, die Richtung sagt aria-sort */
+    &::after {
+      content: "unfold_more";
+      content: "unfold_more" / "";
+      flex: none;
+      inline-size: 1em;
+      block-size: 1em;
+      overflow: hidden;
+      font-family: var(--cda-font-family-icon);
+      font-size: var(--cda-font-size-l);
+      font-weight: var(--cda-font-weight-regular);
+      line-height: 1;
+      color: var(--cda-color-text-muted);
+      white-space: nowrap;
+      font-feature-settings: "liga";
+      -webkit-font-smoothing: antialiased;
+    }
+
+    &:hover::after {
+      color: var(--cda-color-text-default);
+    }
+  }
+
+  .cda-table__number .cda-table__sort {
+    flex-direction: row-reverse;
+  }
+
+  [aria-sort="ascending"] > .cda-table__sort::after {
+    content: "arrow_upward";
+    content: "arrow_upward" / "";
+    color: var(--cda-color-text-default);
+  }
+
+  [aria-sort="descending"] > .cda-table__sort::after {
+    content: "arrow_downward";
+    content: "arrow_downward" / "";
+    color: var(--cda-color-text-default);
+  }
+
+  /* ---------- Breite Tabellen ----------
+   * Die Hülle scrollt seitlich, statt die Seite zu verbreitern. tabindex="0" macht sie per
+   * Tastatur scrollbar, role="region" mit Namen macht sie für Screenreader auffindbar. */
+
+  .cda-table-scroll {
+    overflow-x: auto;
+  }
+}
