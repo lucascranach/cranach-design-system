@@ -34,6 +34,21 @@
       "strong": { "$value": "{color.neutral.500}", "$description": "Rahmen von Bedienelementen, mind. 3:1" },
       "hover": { "$value": "{color.neutral.300}", "$description": "Linie unter Navigationseinträgen beim Überfahren; ohne Mindestkontrast, der Tastaturfokus hat seinen eigenen Ring" }
     },
+    "feedback": {
+      "$description": "Rückmeldungen (Komponente Meldung): zarte Fläche, kräftiger Rand und Symbol; Text bleibt text.default.",
+      "info": {
+        "background": { "$value": "{color.yellow.100}", "$description": "Fläche einer Meldung: Hinweis" },
+        "border": { "$value": "{color.yellow.800}", "$description": "Rand und Symbol einer Meldung: Hinweis, mind. 3:1" }
+      },
+      "success": {
+        "background": { "$value": "{color.green.100}", "$description": "Fläche einer Meldung: Erfolg" },
+        "border": { "$value": "{color.green.700}", "$description": "Rand und Symbol einer Meldung: Erfolg, mind. 3:1" }
+      },
+      "danger": {
+        "background": { "$value": "{color.red.100}", "$description": "Fläche einer Meldung: Fehler" },
+        "border": { "$value": "{color.red.700}", "$description": "Rand und Symbol einer Meldung: Fehler, mind. 3:1" }
+      }
+    },
     "focus": {
       "ring": { "$value": "{color.yellow.800}", "$description": "Fokusring, mind. 3:1 gegen den Hintergrund" }
     }

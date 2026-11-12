@@ -106,7 +106,7 @@ Alle Variablen stehen in `style.css` im `:root`-Block. Die Grundgröße `--bfs` 
 | `.issue` (Hinweis-Etikett) | bleibt im Projekt | kein Badge im Designsystem; Tokens `text-danger`, `radius-s`, `font-size-xs` |
 | `.cda-logo` | **umbenennen**, z. B. `.page-header__logo` | Präfix `cda-` ist reserviert (ADR 0003) |
 | `.page-header`, `.title`, `.layout` | bleiben im Projekt | `.cda-header` ist eine Seitennavigation und passt hier nicht |
-| `.message` | bleibt vorerst | Gegenstück folgt: Meldung (Roadmap-Schritt 24) |
+| `.message` | `.cda-message .cda-message--danger` ([Meldung](?path=/docs/komponenten-meldung--docs)) | erscheint per JavaScript, deshalb `role="alert"` setzen, bevor der Text hineinkommt; Symbol `error` |
 | `.sidebar` (unter 1024 px über dem Inhalt) | bleibt vorerst | Gegenstück folgt: Seitenleiste (Schritt 26) |
 | `.detail`, `.detail-table`, `.detail-issues`, `.detail-ok` | bleiben vorerst | Gegenstück folgt: Dialog (Schritt 25) und Tabelle (Schritt 27); der Fokus wird schon gesetzt |
 | Tabulator (`.tabulator*`, `.sort-icon`, `.has-issues`) | bleiben im Projekt | Tokens zuordnen; Sortier-Icon als `.cda-icon`. Schritt 27 prüft, wie weit sich das Aussehen an die Tabelle angleichen lässt |

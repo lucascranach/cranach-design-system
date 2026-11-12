@@ -32,6 +32,8 @@ export function scopesFor(collection, name) {
     if (sub === 'text' || name === 'color/link/default' || name === 'color/link/hover-text') return ['TEXT_FILL'];
     if (sub === 'border' || sub === 'focus' || name === 'color/link/underline') return ['STROKE_COLOR'];
     if (sub === 'accent') return [...surface, 'STROKE_COLOR'];
+    // Meldungen: Rand und Symbol (Icon-Font, also Textfarbe) bzw. Fläche
+    if (sub === 'feedback') return name.endsWith('/border') ? ['STROKE_COLOR', 'TEXT_FILL'] : surface;
     return surface; // background/*, link/hover-background
   }
   if (group === 'space') return ['GAP', 'WIDTH_HEIGHT'];

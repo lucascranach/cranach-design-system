@@ -36,9 +36,18 @@
       "700": { "$value": "#b84f00" }
     },
     "red": {
-      "$description": "Fehlerfarbe. 700 ist das bisherige $error (#c00).",
+      "$description": "Fehlerfarbe. 700 ist das bisherige $error (#c00). 100 und 900 sind Flächen für Meldungen (hell/dunkel).",
+      "100": { "$value": "#fde8e8" },
       "300": { "$value": "#ff7a7a" },
-      "700": { "$value": "#cc0000" }
+      "700": { "$value": "#cc0000" },
+      "900": { "$value": "#4d1414" }
+    },
+    "green": {
+      "$description": "Erfolgsfarbe für Meldungen (neu, ADR 0008 ergänzt in Schritt 24). 700 als Rand und Symbol auf Hell, 300 auf Dunkel; 100 und 900 als Flächen.",
+      "100": { "$value": "#e6f4ea" },
+      "300": { "$value": "#6fcf7f" },
+      "700": { "$value": "#2e7d32" },
+      "900": { "$value": "#183d22" }
     },
     "alpha": {
       "black-40": { "$value": "rgba(0, 0, 0, 0.4)", "$description": "Schattenfarbe aus cranach-search/-artefacts" },

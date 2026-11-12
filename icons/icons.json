@@ -23,6 +23,9 @@
     "backspace": [
       "search"
     ],
+    "check_circle": [
+      "design-system (Meldung)"
+    ],
     "chevron_left": [
       "image-tools"
     ],
@@ -97,6 +100,9 @@
     ],
     "image": [
       "image-tools"
+    ],
+    "info": [
+      "design-system (Meldung)"
     ],
     "left_panel_open": [
       "timeline (lucide PanelLeft)"

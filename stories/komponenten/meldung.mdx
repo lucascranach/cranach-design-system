@@ -1,0 +1,87 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as Meldung from './meldung.stories.js';
+
+<Meta of={Meldung} />
+
+# Meldung
+
+Rückmeldung an die Nutzer: ein Hinweis, ein Erfolg oder ein Fehler. Vorlagen sind der gelbe Balken nach dem Kopieren auf den Werkseiten und die farbigen Meldungen im internen Metadaten-Editor (beide cranach-artefacts) sowie der Hinweistext in cranach-image-metadata.
+
+```html
+<div class="cda-message cda-message--success" role="status">
+  <span class="cda-icon cda-message__icon" aria-hidden="true">check_circle</span>
+  <div class="cda-message__content">
+    <p>Das Element wurde in die Zwischenablage kopiert.</p>
+  </div>
+</div>
+```
+
+<Canvas of={Meldung.Arten} />
+
+## Arten
+
+| Art | Klasse | Symbol | Rolle für Screenreader |
+|---|---|---|---|
+| Hinweis | `cda-message` | `info` | `role="status"` |
+| Erfolg | `cda-message cda-message--success` | `check_circle` | `role="status"` |
+| Fehler | `cda-message cda-message--danger` | `error` | `role="alert"`, wenn sofort angesagt werden soll |
+
+Die Art ist nie nur an der Farbe erkennbar: Symbol und Text sagen sie mit (WCAG 1.4.1). Die Farben kommen aus den Tokens `color.feedback.info`, `.success` und `.danger`, je mit Fläche (`background`) und Rand samt Symbol (`border`); der Text bleibt in der normalen Textfarbe. Alle Paarungen erfüllen den Kontrast in beiden Themes.
+
+## Mit Titel
+
+Für längere Meldungen ein kurzer Titel vor dem Text.
+
+```html
+<div class="cda-message cda-message--danger" role="alert">
+  <span class="cda-icon cda-message__icon" aria-hidden="true">error</span>
+  <div class="cda-message__content">
+    <p class="cda-message__title">Speichern fehlgeschlagen</p>
+    <p>Die Verbindung zum Server wurde unterbrochen. Bitte später noch einmal versuchen.</p>
+  </div>
+</div>
+```
+
+<Canvas of={Meldung.MitTitel} />
+
+## Mit Schließen
+
+Ein Icon-Button am Ende; das Entfernen übernimmt das Projekt per JavaScript.
+
+```html
+<button type="button" class="cda-button cda-button--ghost cda-button--icon cda-message__close"
+        aria-label="Meldung schließen">
+  <span class="cda-icon" aria-hidden="true">close</span>
+</button>
+```
+
+<Canvas of={Meldung.MitSchliessen} />
+
+## Toast
+
+Eine Meldung, die oben rechts über dem Inhalt schwebt und den Inhalt nicht verschiebt – wie der Balken nach dem Kopieren auf den Werkseiten. Dafür steht ein Bereich `cda-toast-region` von Anfang an im HTML; das Projekt legt die Meldungen hinein und entfernt sie wieder. Er liegt auf der z-Ebene `toast` (ADR 0011), auf schmalen Bildschirmen fast so breit wie das Fenster. Die Buttons unten probieren es aus.
+
+```html
+<div class="cda-toast-region" role="status">
+  <!-- hier fügt das Projekt Meldungen ein -->
+</div>
+```
+
+<Canvas of={Meldung.Toast} />
+
+Regeln für das Projekt:
+
+- **Erfolg und Hinweis** dürfen nach einigen Sekunden verschwinden (in der Vorlage 4 Sekunden; 5 oder mehr sind angenehmer zu lesen).
+- **Fehler bleiben stehen**, bis sie geschlossen werden – sonst verpasst man sie. Für sofortige Ansage `role="alert"` an die Meldung selbst.
+- **Nichts Wichtiges nur im Toast:** Wer gerade woanders hinschaut, sieht ihn nicht. Was man noch braucht, gehört zusätzlich auf die Seite.
+
+## Screenreader
+
+- `role="status"` liest neue Meldungen vor, sobald Screenreader eine Pause haben; `role="alert"` unterbricht sofort – nur für Fehler.
+- Die Rolle muss am Element stehen, **bevor** der Text hineinkommt: Ein Bereich, der mit Rolle und Inhalt zugleich erscheint, wird oft nicht angesagt. Deshalb steht der Toast-Bereich von Anfang an im HTML.
+- Meldungen, die mit der Seite geladen werden, brauchen keine Rolle.
+- In der Vorlage sagte keine der Meldungen etwas an.
+
+## Bewegung
+
+Schwebende Meldungen blenden kurz ein. Bei reduzierter Bewegung (Systemeinstellung) entfällt das (ADR 0010).

@@ -1,0 +1,117 @@
+/*
+ * Meldung – Layer cda.components
+ *
+ * Rückmeldung an die Nutzer: Hinweis (Standard), Erfolg (--success) oder Fehler (--danger).
+ * Die Art ist nie nur an der Farbe erkennbar (WCAG 1.4.1): Symbol und Text sagen sie mit.
+ *
+ *   <div class="cda-message cda-message--success" role="status">
+ *     <span class="cda-icon cda-message__icon" aria-hidden="true">check_circle</span>
+ *     <div class="cda-message__content">
+ *       <p class="cda-message__title">Gespeichert</p>
+ *       <p>Die Metadaten wurden übernommen.</p>
+ *     </div>
+ *   </div>
+ *
+ * Symbole: info (Hinweis), check_circle (Erfolg), error (Fehler). Titel und Schließen-Button sind
+ * optional:
+ *   <button type="button" class="cda-button cda-button--ghost cda-button--icon cda-message__close"
+ *           aria-label="Meldung schließen"><span class="cda-icon" aria-hidden="true">close</span></button>
+ *
+ * Schwebend (Toast): Meldungen in einen Bereich .cda-toast-region legen, der von Anfang an im HTML
+ * steht. Er liegt oben rechts auf der z-Ebene toast (ADR 0011). Ein- und Ausblenden übernimmt das
+ * Projekt per JavaScript; Fehlermeldungen nicht von selbst verschwinden lassen.
+ *   <div class="cda-toast-region" role="status">…</div>
+ *
+ * Screenreader: role="status" liest neue Meldungen höflich vor, role="alert" sofort (für Fehler).
+ * Die Rolle muss am Element stehen, bevor der Text hineinkommt – sonst wird nichts angesagt.
+ *
+ * Vorlagen: .notification und .message in cranach-artefacts, .message in cranach-image-metadata.
+ * Anders als dort: Art an Symbol und Farbe erkennbar, Farben aus Tokens (color.feedback.*), für
+ * Screenreader angesagt, Fehler bleiben stehen.
+ */
+@layer cda.components {
+  .cda-message {
+    --cda-message-background: var(--cda-color-feedback-info-background);
+    --cda-message-border: var(--cda-color-feedback-info-border);
+
+    display: flex;
+    gap: var(--cda-space-s);
+    align-items: flex-start;
+    padding: var(--cda-space-s) var(--cda-space-m);
+    color: var(--cda-color-text-default);
+    background-color: var(--cda-message-background);
+    border: var(--cda-border-width-s) solid var(--cda-message-border);
+    border-inline-start-width: var(--cda-border-width-l);
+    border-radius: var(--cda-radius-m);
+  }
+
+  .cda-message--success {
+    --cda-message-background: var(--cda-color-feedback-success-background);
+    --cda-message-border: var(--cda-color-feedback-success-border);
+  }
+
+  .cda-message--danger {
+    --cda-message-background: var(--cda-color-feedback-danger-background);
+    --cda-message-border: var(--cda-color-feedback-danger-border);
+  }
+
+  .cda-message__icon {
+    flex: none;
+    color: var(--cda-message-border);
+  }
+
+  .cda-message__content {
+    flex: 1;
+    min-inline-size: 0;
+
+    /* Textabstände wie ein Stack, ohne zusätzliche Klasse im Markup (ADR 0021) */
+    & > * {
+      margin-block: 0;
+    }
+
+    & > * + * {
+      margin-block-start: var(--cda-space-2xs);
+    }
+  }
+
+  .cda-message__title {
+    font-weight: var(--cda-font-weight-semibold);
+  }
+
+  /* Der Icon-Button ist größer als eine Textzeile; er ragt in den Innenabstand hinein */
+  .cda-message__close {
+    flex: none;
+    margin-block: calc(-1 * var(--cda-space-xs));
+    margin-inline-end: calc(-1 * var(--cda-space-xs));
+  }
+
+  /* ---------- Toast ----------
+   * Bereich für schwebende Meldungen oben rechts. Er selbst fängt keine Klicks ab, nur die
+   * Meldungen darin. Auf schmalen Bildschirmen fast so breit wie das Fenster. */
+
+  .cda-toast-region {
+    position: fixed;
+    inset-block-start: var(--cda-space-m);
+    inset-inline-end: var(--cda-space-m);
+    z-index: var(--cda-z-toast);
+    display: flex;
+    flex-direction: column;
+    gap: var(--cda-space-xs);
+    inline-size: min(calc(100% - 2 * var(--cda-space-m)), calc(var(--cda-size-card-min) * 1.5));
+    pointer-events: none;
+
+    & > .cda-message {
+      pointer-events: auto;
+      box-shadow: var(--cda-shadow-m);
+      animation: cda-message-in var(--cda-duration-medium) var(--cda-easing-default);
+    }
+  }
+
+  /* Bei reduzierter Bewegung sind die Dauer-Tokens fast 0 (ADR 0010) */
+  @keyframes cda-message-in {
+    from {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--cda-space-xs));
+    }
+  }
+}

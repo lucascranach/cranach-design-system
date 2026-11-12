@@ -41,6 +41,7 @@ const SOURCES = [
   'src/components/switcher.css',
   'src/components/accordion.css',
   'src/components/loader.css',
+  'src/components/message.css',
   'src/components/card.css',
   'src/components/header.css',
   'src/components/footer.css',

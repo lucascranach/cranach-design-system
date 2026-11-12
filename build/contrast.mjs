@@ -44,6 +44,15 @@ export const pairs = [
   ['border.strong', 'background.default', UI],
   ['focus.ring', 'background.default', UI],
   ['focus.ring', 'background.subtle', UI],
+  ['text.default', 'feedback.info.background', TEXT],
+  ['feedback.info.border', 'feedback.info.background', UI, 'Rand und Symbol der Meldung'],
+  ['feedback.info.border', 'background.default', UI, 'Rand der Meldung zur Seite'],
+  ['text.default', 'feedback.success.background', TEXT],
+  ['feedback.success.border', 'feedback.success.background', UI, 'Rand und Symbol der Meldung'],
+  ['feedback.success.border', 'background.default', UI, 'Rand der Meldung zur Seite'],
+  ['text.default', 'feedback.danger.background', TEXT],
+  ['feedback.danger.border', 'feedback.danger.background', UI, 'Rand und Symbol der Meldung'],
+  ['feedback.danger.border', 'background.default', UI, 'Rand der Meldung zur Seite'],
   ['accent.default', 'background.default', 1, 'nur Fläche, kein Text'],
 ];
 
