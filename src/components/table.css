@@ -16,7 +16,8 @@
  *     </table>
  *   </div>
  *
- * .cda-table-scroll   Hülle für breite Tabellen: scrollt seitlich, per Tastatur erreichbar
+ * .cda-table-scroll   Hülle für breite Tabellen: scrollt seitlich, per Tastatur erreichbar, Schatten am
+ *                     Rand, solange dort Spalten folgen (--cda-table-scroll-background: Fläche dahinter)
  * --striped           jede zweite Zeile hinterlegt statt Linien
  * --compact           weniger Innenabstand, für lange Listen
  * __number            Zelle rechtsbündig (Zahlen)
@@ -146,6 +147,20 @@
    * Tastatur scrollbar, role="region" mit Namen macht sie für Screenreader auffindbar. */
 
   .cda-table-scroll {
+    /* Fläche, auf der die Tabelle steht; auf anderen Flächen im Projekt überschreiben */
+    --cda-table-scroll-background: var(--cda-color-background-default);
+    --cda-table-scroll-shadow: var(--cda-color-background-shadow);
+
     overflow-x: auto;
+
+    /* Schatten am Rand, solange dort noch Spalten folgen (Technik von Lea Verou): Die Schatten
+       bleiben am Rand stehen (scroll), zwei Abdeckungen in der Flächenfarbe wandern mit dem Inhalt
+       (local) und verdecken sie am Anfang und am Ende. */
+    background:
+      linear-gradient(to right, var(--cda-table-scroll-background) 50%, transparent) left / var(--cda-space-xl) 100% no-repeat local,
+      linear-gradient(to left, var(--cda-table-scroll-background) 50%, transparent) right / var(--cda-space-xl) 100% no-repeat local,
+      linear-gradient(to right, var(--cda-table-scroll-shadow), transparent) left / var(--cda-space-s) 100% no-repeat scroll,
+      linear-gradient(to left, var(--cda-table-scroll-shadow), transparent) right / var(--cda-space-s) 100% no-repeat scroll,
+      var(--cda-table-scroll-background);
   }
 }

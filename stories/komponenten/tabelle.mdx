@@ -53,6 +53,14 @@ Bevor eine Tabelle scrollt, schrumpft der Browser jede Spalte bis auf ihr längs
 
 <Canvas of={Tabelle.Breit} />
 
+Ein schmaler Schatten am Rand zeigt, dass dort noch Spalten folgen – wichtig, weil viele Systeme den Scrollbalken erst beim Scrollen einblenden. Er kommt aus reinem CSS. Steht die Tabelle nicht auf der Standardfläche, nennt das Projekt die Fläche, sonst wären am Anfang und Ende helle Streifen zu sehen:
+
+```css
+.filter-ergebnisse .cda-table-scroll { --cda-table-scroll-background: var(--cda-color-background-subtle); }
+```
+
+Bei `--striped` verdecken die hinterlegten Zeilen den Schatten; er ist dann nur in den übrigen Zeilen zu sehen.
+
 ## Zebra
 
 `cda-table--striped` hinterlegt jede zweite Zeile statt der Linien. Hilft bei vielen Spalten, damit das Auge in der Zeile bleibt.

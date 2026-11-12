@@ -53,6 +53,7 @@
       "black-40": { "$value": "rgba(0, 0, 0, 0.4)", "$description": "Schattenfarbe aus cranach-search/-artefacts" },
       "black-60": { "$value": "rgba(0, 0, 0, 0.6)" },
       "black-10": { "$value": "rgba(0, 0, 0, 0.1)" },
+      "black-20": { "$value": "rgba(0, 0, 0, 0.2)" },
       "white-10": { "$value": "rgba(255, 255, 255, 0.1)" }
     }
   }
