@@ -140,3 +140,51 @@ export const ToastImDialog = {
     });
   },
 };
+
+/**
+ * Meldung im Formular: steht beim Button, der sie ausgelöst hat, und bleibt stehen. Der Bereich mit
+ * role="status" ist von Anfang an da; das Projekt ersetzt seinen Inhalt bei jedem Speichern.
+ */
+export const ImFormular = {
+  name: 'Im Formular',
+  render: () =>
+    `<button type="button" class="cda-button" data-open>Metadaten bearbeiten …</button>
+
+<dialog class="cda-dialog" aria-labelledby="formular-titel">
+  <div class="cda-dialog__header">
+    <h2 class="cda-dialog__title" id="formular-titel">Metadaten bearbeiten</h2>
+    <form method="dialog">
+      <button class="cda-button cda-button--ghost cda-button--icon" aria-label="Schließen">
+        <span class="cda-icon" aria-hidden="true">close</span>
+      </button>
+    </form>
+  </div>
+  <div class="cda-dialog__body cda-l-stack">
+    <div class="cda-field">
+      <label class="cda-field__label" for="formular-aufnahme">Aufnahme</label>
+      <input class="cda-input" id="formular-aufnahme" type="text" value="Sichtbares Licht, Vorderseite">
+    </div>
+    <div role="status"></div>
+  </div>
+  <div class="cda-dialog__footer">
+    <button type="button" class="cda-button" data-save="danger">Speichern ohne Verbindung</button>
+    <button type="button" class="cda-button cda-button--primary" data-save="success">Speichern</button>
+  </div>
+</dialog>`,
+  play: ({ canvasElement }) => {
+    const dialog = canvasElement.querySelector('dialog');
+    const status = dialog.querySelector('[role="status"]');
+    canvasElement.querySelector('[data-open]').addEventListener('click', () => {
+      status.replaceChildren();
+      dialog.showModal();
+    });
+    for (const button of dialog.querySelectorAll('[data-save]')) {
+      button.addEventListener('click', () => {
+        status.innerHTML =
+          button.dataset.save === 'success'
+            ? message({ type: 'success', text: 'Gespeichert.' })
+            : message({ type: 'danger', title: 'Speichern fehlgeschlagen', text: 'Keine Verbindung zum Server. Ihre Eingaben bleiben erhalten.' });
+      });
+    }
+  },
+};

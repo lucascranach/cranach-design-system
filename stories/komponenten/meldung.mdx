@@ -93,9 +93,33 @@ const region =
   document.querySelector('dialog:modal .cda-toast-region') ?? document.querySelector('#meldungen');
 ```
 
-Bei Formularen im Dialog, etwa dem Metadaten-Editor, kann die Meldung stattdessen direkt im Inhalt stehen, nahe am Button, der sie ausgelöst hat.
-
 <Canvas of={Meldung.ToastImDialog} />
+
+Bei Formularen im Dialog ist ein Toast oft nicht die beste Wahl, siehe [Im Formular](#im-formular).
+
+## Im Formular
+
+Eine Rückmeldung auf das Absenden eines Formulars – „Gespeichert“ oder „Speichern fehlgeschlagen“ – gehört oft nicht in einen Toast, sondern ins Formular: als normale `cda-message` direkt beim Button, der sie ausgelöst hat. Dort schaut man gerade hin, und die Meldung bleibt stehen, bis man das Formular verlässt oder erneut absendet. So arbeitet heute schon der Metadaten-Editor in cranach-artefacts. Das gilt im Dialog wie auf einer normalen Seite.
+
+Der Bereich, in den die Meldung kommt, steht wie der Toast-Bereich von Anfang an im HTML und trägt `role="status"`; das Projekt ersetzt bei jedem Absenden seinen Inhalt:
+
+```html
+<div class="cda-dialog__body cda-l-stack">
+  … Formularfelder …
+  <div role="status">
+    <!-- hier setzt das Projekt die Meldung ein -->
+  </div>
+</div>
+<div class="cda-dialog__footer">
+  <button type="button" class="cda-button cda-button--primary">Speichern</button>
+</div>
+```
+
+Zum Ausprobieren den Dialog öffnen und beide Buttons drücken:
+
+<Canvas of={Meldung.ImFormular} />
+
+Faustregel: **Toast**, wenn die Aktion woanders stattfand und kein Formular dazugehört, etwa „In die Zwischenablage kopiert“. **Im Formular**, wenn die Meldung zu dem gehört, was man gerade ausgefüllt hat.
 
 ## Screenreader
 
