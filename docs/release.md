@@ -29,7 +29,7 @@ Ein Roadmap-Schritt entspricht einem Pull Request.
 **Einstellungen auf GitHub** (einmalig, Volker):
 
 - *Settings → General → Pull Requests:* nur „Allow squash merging“ erlauben, die anderen beiden Arten abschalten; „Default commit message“ auf „Pull request title“ (bzw. „Pull request title and description“).
-- *Settings → Rules → Rulesets:* Regel für `main` – Änderungen nur über Pull Request, „Require status checks to pass“ mit der Prüfung „PR-Titel prüfen“. Rulesets gibt es im Tarif „free“ der Organisation nur für öffentliche Repos; deshalb ist das Repo öffentlich.
+- *Settings → Rules → Rulesets:* Regel für `main` – Änderungen nur über Pull Request, „Require status checks to pass“ mit den Prüfungen „PR-Titel prüfen“ und „Build, Tests und axe“. Rulesets gibt es im Tarif „free“ der Organisation nur für öffentliche Repos; deshalb ist das Repo öffentlich.
 - *Settings → Actions → General → Workflow permissions:* „Allow GitHub Actions to create and approve pull requests“ einschalten, sonst kann release-please keinen PR anlegen.
 
 Alle drei sind seit November 2026 eingestellt.

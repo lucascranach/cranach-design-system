@@ -18,6 +18,8 @@ const config = {
     },
     '@storybook/addon-a11y',
     '@storybook/addon-themes',
+    // Prüft alle Stories mit Vitest und axe (vitest.config.js, npm run test:storybook)
+    '@storybook/addon-vitest',
   ],
   core: {
     // Keine Nutzungsdaten an Storybook senden, keine Neuigkeiten-Hinweise laden
