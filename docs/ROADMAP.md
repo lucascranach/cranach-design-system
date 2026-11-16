@@ -60,10 +60,10 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 | Wann | Aufgabe | Status |
 |---|---|---|
 | vor Schritt 5 (Font-Datei) | `npm run build:icons` auf einem Rechner mit Zugriff auf Google Fonts ausführen | entfällt – Google Fonts war in der Entwicklungsumgebung erreichbar |
-| vor dem ersten Push | GitHub-Repo `lucascranach/cranach-design-system` anlegen, Remote setzen | erledigt 28.10.2026 – privat, `origin` per SSH gesetzt; `main` erstmals gepusht am 12.11.2026 (auf Bitte von Volker) |
+| vor dem ersten Push | GitHub-Repo `lucascranach/cranach-design-system` anlegen, Remote setzen | erledigt 28.10.2026 – `origin` per SSH gesetzt; `main` erstmals gepusht am 12.11.2026 (auf Bitte von Volker); seit November 2026 öffentlich |
 | vor Schritt 20 | leere Figma-Library-Datei im Team-Projekt anlegen, Link bereitstellen; Figma-MCP-Server in Claude Code verbinden | erledigt 29.10.2026: [Cranach Design System](https://www.figma.com/design/GV3vvoVc8GebPQ79YwA1yz/Cranach-Design-System), MCP-Server angemeldet, Variablen synchronisiert (`docs/figma-sync.md`); Library veröffentlichen erst nach gemeinsamer Prüfung |
 | vor dem ersten Release | Zielordner und SSH-Host für `/design-system/` auf lucascranach.org klären; wird lokal als `CDA_DEPLOY_TARGET` gesetzt (`docs/release.md`) | offen |
-| vor dem ersten Release | Repo nach GitHub pushen und die Einstellungen aus `docs/release.md` vornehmen: nur Squash-Merge mit PR-Titel als Nachricht, Ruleset für `main` (nur per Pull Request, Prüfung „PR-Titel prüfen“), Actions dürfen Pull Requests anlegen | Push erledigt 12.11.2026; Einstellungen offen |
+| vor dem ersten Release | Repo nach GitHub pushen und die Einstellungen aus `docs/release.md` vornehmen: nur Squash-Merge mit PR-Titel als Nachricht, Ruleset für `main` (nur per Pull Request, Prüfung „PR-Titel prüfen“), Actions dürfen Pull Requests anlegen | erledigt im November 2026: gepusht, nur Squash-Merge mit PR-Titel, Ruleset `main` aktiv, Actions dürfen PRs anlegen |
 | vor dem ersten Release | Entscheiden: erstes Release 0.1.0 oder gleich 1.0.0 | erledigt 30.10.2026: Start mit 0.1.0, 1.0.0 nach dem ersten Projekt in Produktion und der Überarbeitung des Header (`docs/release.md`) |
 | vor dem ersten Release | npm-Organisation `lucascranach` auf npmjs.com anlegen (falls belegt: `@lucas-cranach`, dann Paketname, README und ADR 0016 anpassen) | offen |
 
@@ -72,7 +72,7 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 - **Header inhaltlich überarbeiten** (Anmerkung Volker, 29.10.2026, nach Schritt 16): Aufbau und Inhalte des Headers stehen vorerst, sollen aber noch einmal überarbeitet werden. Details klärt Volker.
 - **Favicon im Paket?** (aus Schritt 22) cranach-compare lädt das Favicon heute aus dem alten Styleguide; search, artefacts, map und timeline haben dieselbe `favicon.svg`. Ins Paket aufnehmen, damit der Styleguide archiviert werden kann? Entscheidung Volker.
 - **Logo im Paket?** Das CDA-Logo liegt bisher nur für die Doku in `stories/logo.js` (SVG mit `fill="currentColor"`, ersetzt die Farbvarianten `cda-logo-bw/-gw/-ws/-ys`). Soll es als Datei bzw. Snippet ins Paket, damit die Projekte es von dort beziehen? Entscheidung Volker.
-- **Vor dem ersten Release – Sichtbarkeit des GitHub-Repos:** Das Repo ist derzeit privat. npm erzeugt Provenance-Angaben beim Veröffentlichen nur aus öffentlichen Repos; Trusted Publishing selbst funktioniert auch privat.
+- ~~**Vor dem ersten Release – Sichtbarkeit des GitHub-Repos**~~ Das Repo ist seit November 2026 öffentlich (Entscheidung Volker). Nötig für das Ruleset: Die Organisation `lucascranach` hat den Tarif „free“, dort gibt es Rulesets nur für öffentliche Repos. Damit kann npm beim Veröffentlichen auch Provenance-Angaben erzeugen.
 - Ist ein SSH-Deploy aus GitHub Actions auf den Hochschul-Server zulässig? (erst für die automatische Release-Action relevant)
 - **Automatische axe-Prüfung aller Stories in CI** (ADR 0013 „lokal und in CI“): mit `@storybook/addon-vitest` (Vitest, Playwright) nachrüsten, sobald es eine CI gibt. Bis dahin prüft axe jede Story in Storybook selbst.
 - **Hosting der Doku** unter `lucascranach.org/design-system/docs/` (ADR 0013): `npm run release -- --publish` lädt `storybook-static/` nach `<Ziel>/docs/` und `<Ziel>/X.Y/docs/` hoch (Schritt 21); wartet auf Zielordner und SSH-Zugang.
