@@ -29,8 +29,12 @@ Ein Roadmap-Schritt entspricht einem Pull Request.
 **Einstellungen auf GitHub** (einmalig, Volker):
 
 - *Settings → General → Pull Requests:* nur „Allow squash merging“ erlauben, die anderen beiden Arten abschalten; „Default commit message“ auf „Pull request title“ (bzw. „Pull request title and description“).
-- *Settings → Rules → Rulesets:* Regel für `main` – Änderungen nur über Pull Request, „Require status checks to pass“ mit der Prüfung „PR-Titel prüfen“.
+- *Settings → Rules → Rulesets:* Regel für `main` – Änderungen nur über Pull Request, „Require status checks to pass“ mit der Prüfung „PR-Titel prüfen“. Rulesets gibt es im Tarif „free“ der Organisation nur für öffentliche Repos; deshalb ist das Repo öffentlich.
 - *Settings → Actions → General → Workflow permissions:* „Allow GitHub Actions to create and approve pull requests“ einschalten, sonst kann release-please keinen PR anlegen.
+
+Alle drei sind seit November 2026 eingestellt.
+
+**Release-PR freigeben:** Den Release-PR legt eine Action an. Workflows an solchen PRs startet GitHub nicht von selbst; die Prüfung „PR-Titel prüfen“ steht dort auf „action_required“. Vor dem Merge im PR einmal „Approve and run workflows“ klicken.
 
 ## Ausliefern
 
@@ -63,7 +67,7 @@ Offene Aufgaben für Volker (Roadmap):
 
 - npm-Organisation `lucascranach` auf npmjs.com anlegen; das eigene npm-Konto mit Zwei-Faktor-Anmeldung als Besitzer.
 - Zielordner und SSH-Zugang für `/design-system/` auf lucascranach.org klären → `CDA_DEPLOY_TARGET`.
-- Das Repo nach GitHub pushen, damit die Actions laufen, und die [Einstellungen auf GitHub](#arbeitsweise-mit-branches) vornehmen.
+- ~~Das Repo nach GitHub pushen und die [Einstellungen auf GitHub](#arbeitsweise-mit-branches) vornehmen.~~ Erledigt im November 2026.
 
 ## Später
 
