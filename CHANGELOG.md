@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/lucascranach/cranach-design-system/compare/v0.1.0...v0.1.1) (2026-11-17)
+
+
+### Dokumentation
+
+* Release 0.1.0 und Server-Zugang in Roadmap, Anleitung und CLAUDE.md vermerkt ([#6](https://github.com/lucascranach/cranach-design-system/issues/6)) ([ce070b9](https://github.com/lucascranach/cranach-design-system/commit/ce070b988f21bda6ae236c14268c3d58b1e933a0))
+
 ## 0.1.0 (2026-11-17)
 
 
