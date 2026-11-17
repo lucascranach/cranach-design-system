@@ -48,6 +48,8 @@ CDA_DEPLOY_TARGET=benutzer@host:/pfad/zu/design-system npm run release -- --publ
 
 `CDA_DEPLOY_TARGET` ist das rsync-Ziel des Ordners, der auf lucascranach.org unter `/design-system/` erreichbar ist – ohne Schrägstrich am Ende. Er steht nicht im Repo; am einfachsten in der eigenen Shell-Konfiguration setzen.
 
+Das Skript ruft `ssh` und `rsync` ohne eigene Optionen auf. Braucht der Server einen anderen Port oder Benutzer, beides in `~/.ssh/config` unter einem Kurznamen eintragen (`Host`, `HostName`, `Port`, `User`, `IdentityFile`) und den Kurznamen im Ziel verwenden: `CDA_DEPLOY_TARGET=kurzname:/pfad/zu/design-system`. Anmeldung per SSH-Schlüssel (`ssh-copy-id`), damit rsync nicht nach dem Passwort fragt.
+
 Das Skript `build/release.mjs`:
 
 1. **prüft die Voraussetzungen:** Branch `main`, keine offenen Änderungen, Tag `vX.Y.Z` auf dem aktuellen Commit, Version nicht 0.0.0, Ziel gesetzt. Im Probelauf sind das nur Hinweise, beim Veröffentlichen bricht es ab.
@@ -66,7 +68,7 @@ Mit `--skip-docs` entfallen Bau und Upload der Doku.
 Offene Aufgaben für Volker (Roadmap):
 
 - ~~npm-Organisation `lucascranach` auf npmjs.com anlegen; das eigene npm-Konto mit Zwei-Faktor-Anmeldung als Besitzer.~~ Erledigt am 17.11.2026. Vor dem Veröffentlichen lokal `npm login`; `npm whoami` zeigt das Konto.
-- Zielordner und SSH-Zugang für `/design-system/` auf lucascranach.org klären → `CDA_DEPLOY_TARGET`.
+- ~~Zielordner und SSH-Zugang für `/design-system/` auf lucascranach.org klären → `CDA_DEPLOY_TARGET`.~~ Erledigt am 17.11.2026; 0.1.0 ist am selben Tag erschienen.
 - ~~Das Repo nach GitHub pushen und die [Einstellungen auf GitHub](#arbeitsweise-mit-branches) vornehmen.~~ Erledigt im November 2026.
 
 ## Später
