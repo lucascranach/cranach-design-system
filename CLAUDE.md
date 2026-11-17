@@ -71,6 +71,7 @@ npm run catalog:photos   # Fotos für den Katalog der Projektkomponenten (nur lo
 
 ## Stand der Infrastruktur
 
-- GitHub-Repo `lucascranach/cranach-design-system` (öffentlich) ist als `origin` gesetzt, `main` liegt dort seit 12.11.2026. Ein Ruleset schützt `main`: Änderungen nur per Pull Request mit Squash-Merge und bestandener Prüfung „PR-Titel prüfen“. Jede Änderung kommt deshalb auf einen eigenen Branch (siehe „Branches“); gepusht wird nur auf ausdrückliche Bitte. npm-Organisation und Server-Pfad stehen als Aufgaben für Volker in der Roadmap.
+- GitHub-Repo `lucascranach/cranach-design-system` (öffentlich) ist als `origin` gesetzt, `main` liegt dort seit 12.11.2026. Ein Ruleset schützt `main`: Änderungen nur per Pull Request mit Squash-Merge und den bestandenen Prüfungen „PR-Titel prüfen“ und „Build, Tests und axe“. Jede Änderung kommt deshalb auf einen eigenen Branch (siehe „Branches“); gepusht wird nur auf ausdrückliche Bitte.
+- Release 0.1.0 ist am 17.11.2026 erschienen: Paket `@lucascranach/design-system` auf npmjs.com (Organisation `lucascranach`, Besitzer Volker), Kopie und Doku unter `lucascranach.org/design-system/`. Veröffentlichen startet Volker selbst (`npm run release -- --publish`, Zwei-Faktor-Bestätigung); das Ziel `CDA_DEPLOY_TARGET` steht nicht im Repo.
 - Figma: Library-Datei [Cranach Design System](https://www.figma.com/design/GV3vvoVc8GebPQ79YwA1yz/Cranach-Design-System), Figma-MCP-Server in Claude Code eingerichtet. Variablen per Sync nach `docs/figma-sync.md`; die Library wird erst nach gemeinsamer Prüfung veröffentlicht (ADR 0014).
 - Node-Version: 24 (`.nvmrc`), vor der Arbeit `nvm use`.
