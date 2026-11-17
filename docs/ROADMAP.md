@@ -65,7 +65,7 @@ Jede Komponente (8–18): CSS in `src/components/<name>.css` im Layer `cda.compo
 | vor dem ersten Release | Zielordner und SSH-Host für `/design-system/` auf lucascranach.org klären; wird lokal als `CDA_DEPLOY_TARGET` gesetzt (`docs/release.md`) | offen |
 | vor dem ersten Release | Repo nach GitHub pushen und die Einstellungen aus `docs/release.md` vornehmen: nur Squash-Merge mit PR-Titel als Nachricht, Ruleset für `main` (nur per Pull Request, Prüfung „PR-Titel prüfen“), Actions dürfen Pull Requests anlegen | erledigt im November 2026: gepusht, nur Squash-Merge mit PR-Titel, Ruleset `main` aktiv, Actions dürfen PRs anlegen |
 | vor dem ersten Release | Entscheiden: erstes Release 0.1.0 oder gleich 1.0.0 | erledigt 30.10.2026: Start mit 0.1.0, 1.0.0 nach dem ersten Projekt in Produktion und der Überarbeitung des Header (`docs/release.md`) |
-| vor dem ersten Release | npm-Organisation `lucascranach` auf npmjs.com anlegen (falls belegt: `@lucas-cranach`, dann Paketname, README und ADR 0016 anpassen) | offen |
+| vor dem ersten Release | npm-Organisation `lucascranach` auf npmjs.com anlegen (falls belegt: `@lucas-cranach`, dann Paketname, README und ADR 0016 anpassen) | erledigt 17.11.2026: Organisation bestand schon, Volker (`vschaefer`) ist Besitzer, Zwei-Faktor-Anmeldung für Anmeldung und Veröffentlichen an. Empfehlung: eine zweite Person als Besitzer einladen |
 
 ## Offene Punkte (nicht blockierend)
 
