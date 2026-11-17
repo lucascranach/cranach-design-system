@@ -99,7 +99,3 @@
 * Storybook nach neuem Build neu starten ([95ad2b4](https://github.com/lucascranach/cranach-design-system/commit/95ad2b4d7b50a98a9f1cdf3b738bcd50084670cb))
 * Überarbeitung des Headers als offenen Punkt notieren ([45214a6](https://github.com/lucascranach/cranach-design-system/commit/45214a6c20854af49bbc2e0516ddd2b840cbd993))
 * Zuordnung der Schriftgewichte in der Migration präziser ([5d0554e](https://github.com/lucascranach/cranach-design-system/commit/5d0554ed6ef077b3910fb1939317a7ffc7f49c06))
-
-## Changelog
-
-Die Einträge erzeugt release-please aus den Commit-Nachrichten (ADR 0006). Nicht von Hand bearbeiten.
