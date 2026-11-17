@@ -26,7 +26,7 @@ Gemeinsame Design-Tokens, Grundstyles und Komponenten für die Frontends des Cra
 - **Layers** (ADR 0003): alles in `@layer cda.tokens, cda.reset, cda.base, cda.layout, cda.components, cda.utilities`. **Kein `!important`, kein `outline: none`**, Fokus über `:focus-visible`.
 - **Werte nur über Tokens:** keine Hex-Farben, px-Abstände o. Ä. in `src/`; neue Werte zuerst in `tokens/*.json` anlegen. `dist/` wird generiert und nie von Hand bearbeitet (und nicht eingecheckt).
 - **Themes** (ADR 0007): helles Theme Standard; dunkel über `data-theme="dark"`, `.dark` oder `prefers-color-scheme`. Komponenten nutzen nur semantische Tokens (`--cda-color-text-default` usw.), damit beide Themes automatisch funktionieren.
-- **Barrierefreiheit:** `npm run check:contrast` muss bestehen; Gelb nur als Fläche mit dunkler Schrift (ADR 0008); Stories ohne axe-Fehler.
+- **Barrierefreiheit:** `npm run check:contrast` muss bestehen; Gelb nur als Fläche mit dunkler Schrift (ADR 0008); Stories ohne axe-Fehler (`npm run test:storybook`, läuft auch bei jedem Pull Request).
 - **z-Ebenen** nur über `--cda-z-*` (ADR 0011).
 - **Icons** (ADR 0012): Material Symbols Sharp als Icon-Font, Subset ausschließlich über `icon_names`. Ist Google Fonts im aktuellen Netz nicht erreichbar, das Build-Skript trotzdem schreiben und Volker bitten, `npm run build:icons` lokal auszuführen.
 - **Auslieferung** (ADR 0016): Paket `@lucascranach/design-system` auf npmjs.com (Build-Projekte), Kopie unter `lucascranach.org/design-system/x.y.z/` (Projekte ohne Build). Zur Laufzeit nur eigener Server, keine externen CDNs.
@@ -43,6 +43,7 @@ npm run build:icons      # Icon-Subset von Google Fonts nach dist/fonts/ (Cache:
 npm run build:css        # dist/cranach.css aus src/ + Schriften nach dist/fonts/
 npm run build:figma      # dist/figma/figma-sync.js für use_figma (Anleitung: docs/figma-sync.md)
 npm run test:figma       # Tests des Figma-Sync-Skripts
+npm run test:storybook   # alle Stories mit axe in Chromium, hell und dunkel (vorher npm run build; einmalig npx playwright install chromium)
 npm run check:contrast   # WCAG-Prüfung beider Themes
 npm run storybook        # bauen und Doku unter http://localhost:6006 starten
 npm run build:storybook  # Doku statisch nach storybook-static/
@@ -64,7 +65,8 @@ npm run catalog:photos   # Fotos für den Katalog der Projektkomponenten (nur lo
 | `stories/` | Storybook-Doku: MDX-Seiten (Deutsch) und Stories; Grundlagen in `stories/grundlagen/`, Layouts in `stories/layout/`, Komponenten in `stories/komponenten/`, Utilities in `stories/utilities.*`, Katalog der Projektkomponenten in `stories/projektkomponenten.*` mit Daten in `.json` und Fotos in `stories/assets/projektkomponenten/` (ADR 0020), Migrationsseiten je Projekt in `stories/migration/` |
 | `.storybook/` | Storybook-Konfiguration; `preview.css` mit Hilfsklassen `docs-*` nur für die Doku |
 | `docs/` | ADRs, Roadmap, Bestandsaufnahme, Hintergrund, Anleitungen (`figma-sync.md`, `release.md`), Archiv |
-| `.github/workflows/` | release-please (pflegt Release-PR und `CHANGELOG.md`, veröffentlicht nichts), PR-Titel (prüft Conventional Commits) |
+| `.github/workflows/` | Prüfungen (Build, Tests, Stories mit axe, Doku, Paketinhalt bei jedem PR), release-please (pflegt Release-PR und `CHANGELOG.md`, veröffentlicht nichts), PR-Titel (prüft Conventional Commits) |
+| `vitest.config.js`, `.storybook/vitest.setup.js` | Prüfung aller Stories mit Vitest und axe, je Theme ein Durchlauf |
 | `dist/` | Build-Ergebnis (nicht eingecheckt) |
 
 ## Stand der Infrastruktur
