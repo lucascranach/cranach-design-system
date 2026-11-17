@@ -65,7 +65,7 @@ Mit `--skip-docs` entfallen Bau und Upload der Doku.
 
 Offene Aufgaben für Volker (Roadmap):
 
-- npm-Organisation `lucascranach` auf npmjs.com anlegen; das eigene npm-Konto mit Zwei-Faktor-Anmeldung als Besitzer.
+- ~~npm-Organisation `lucascranach` auf npmjs.com anlegen; das eigene npm-Konto mit Zwei-Faktor-Anmeldung als Besitzer.~~ Erledigt am 17.11.2026. Vor dem Veröffentlichen lokal `npm login`; `npm whoami` zeigt das Konto.
 - Zielordner und SSH-Zugang für `/design-system/` auf lucascranach.org klären → `CDA_DEPLOY_TARGET`.
 - ~~Das Repo nach GitHub pushen und die [Einstellungen auf GitHub](#arbeitsweise-mit-branches) vornehmen.~~ Erledigt im November 2026.
 
