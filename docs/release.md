@@ -7,7 +7,7 @@ Wie eine neue Version entsteht und ausgeliefert wird (ADR 0006, 0013, 0016). Rel
 | Schritt | Wer | Ergebnis |
 |---|---|---|
 | Änderung auf einem Branch, Pull Request nach `main`, Squash-Merge (siehe [Arbeitsweise](#arbeitsweise-mit-branches)) | alle | ein Commit je Pull Request auf `main`, PR-Titel als Commit-Nachricht |
-| Release-PR pflegen | GitHub Action **release-please** (`.github/workflows/release-please.yml`) | PR „chore(main): release X.Y.Z“ mit Version in `package.json` und Eintrag in `CHANGELOG.md` |
+| Release-PR pflegen | GitHub Action **release-please** (`.github/workflows/release-please.yml`) | PR „chore(main): release X.Y.Z“ mit Version in `package.json` und Eintrag in `CHANGELOG.md` (nicht von Hand bearbeiten: release-please setzt jeden neuen Eintrag direkt unter die Überschrift) |
 | Release-PR prüfen und mergen | Volker | Tag `vX.Y.Z` und GitHub-Release |
 | Ausliefern: `npm run release -- --publish` | Volker, lokal | Paket auf npmjs.com, Kopie unter `lucascranach.org/design-system/X.Y.Z/`, Doku unter `/design-system/docs/` (neuester Stand) und `/design-system/X.Y/docs/` (je Minor-Version) |
 
