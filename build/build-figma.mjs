@@ -12,6 +12,9 @@
  * als Text in den Primitives als Zahlen in eine eigene Sammlung „Cranach Responsive“, je
  * Bildschirmbreite ein Modus (VIEWPORTS), mit dem Wert, den clamp() bei dieser Breite ergibt.
  *
+ * Text- und Effektstile (typography.*, shadow.*) reicht der Build durch und prüft, dass jede
+ * Variable, auf die sie verweisen, im Sync vorkommt.
+ *
  * Setzt voraus, dass build-tokens.mjs vorher gelaufen ist.
  */
 import { readFile, writeFile } from 'node:fs/promises';
@@ -93,7 +96,24 @@ export async function buildFigmaData() {
   const home = new Map();
   for (const c of collections) for (const v of c.variables) home.set(v.name, c.name);
 
+  const known = (style, ref) => {
+    if (!home.has(ref.variable)) throw new Error(`${style}: Verweis auf unbekannte Variable ${ref.variable}`);
+    return { ...ref, collection: home.get(ref.variable) };
+  };
+  const textStyles = (tokens.textStyles ?? []).map((t) => ({
+    ...t,
+    fontFamily: known(t.name, t.fontFamily),
+    fontSize: known(t.name, t.fontSize),
+    fontWeight: known(t.name, t.fontWeight),
+  }));
+  const effectStyles = (tokens.effectStyles ?? []).map((e) => ({
+    ...e,
+    effects: e.effects.map((fx) => ({ ...fx, color: known(e.name, fx.color) })),
+  }));
+
   return {
+    textStyles,
+    effectStyles,
     collections: collections.map((c) => ({
       name: c.name,
       modes: c.modes,
@@ -124,7 +144,10 @@ async function main() {
   const script = template.replace('__TOKENS__', JSON.stringify(data));
   await writeFile(path.join(DIR, 'figma-sync.js'), script);
   const count = data.collections.reduce((n, c) => n + c.variables.length, 0);
-  console.log(`Figma-Sync gebaut: dist/figma/figma-sync.js, ${count} Variablen, ${Math.round(script.length / 1024)} KB.`);
+  console.log(
+    `Figma-Sync gebaut: dist/figma/figma-sync.js, ${count} Variablen, ${data.textStyles.length} Textstile, ` +
+      `${data.effectStyles.length} Effektstile, ${Math.round(script.length / 1024)} KB.`,
+  );
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

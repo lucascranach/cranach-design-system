@@ -1,7 +1,7 @@
 /**
- * Tests für dist/figma/figma-sync.js (ADR 0014) gegen eine nachgebaute Figma-Variablen-API.
- * Prüft: Anlegen in einer leeren Datei, Idempotenz, Zurücksetzen geänderter Werte, Waisen,
- * Typkonflikte und gültige Scopes je Typ.
+ * Tests für dist/figma/figma-sync.js (ADR 0014) gegen eine nachgebaute Figma-API (Variablen,
+ * Text- und Effektstile). Prüft: Anlegen in einer leeren Datei, Idempotenz, Zurücksetzen
+ * geänderter Werte, Waisen, Typkonflikte, gültige Scopes je Typ, geladene Schriften.
  *
  * Aufruf: npm run test:figma (setzt npm run build voraus)
  */
@@ -12,8 +12,11 @@ import vm from 'node:vm';
 
 const SCRIPT = await readFile('dist/figma/figma-sync.js', 'utf8');
 
-/** Anzahl der Variablen laut Tokens – aus den Daten im Skript, damit neue Tokens die Tests nicht brechen */
-const TOTAL = JSON.parse(SCRIPT.match(/^const DATA = (.*);$/m)[1]).collections.reduce((n, c) => n + c.variables.length, 0);
+/** Anzahl der Variablen und Stile laut Tokens – aus den Daten im Skript, damit neue Tokens die Tests nicht brechen */
+const DATA = JSON.parse(SCRIPT.match(/^const DATA = (.*);$/m)[1]);
+const VARS = DATA.collections.reduce((n, c) => n + c.variables.length, 0);
+const STYLES = DATA.textStyles.length + DATA.effectStyles.length;
+const TOTAL = VARS + STYLES;
 
 /** Erlaubte Scopes je Variablentyp laut Figma-Plugin-API */
 const ALLOWED = {
@@ -23,11 +26,15 @@ const ALLOWED = {
   STRING: ['ALL_SCOPES', 'TEXT_CONTENT', 'FONT_FAMILY', 'FONT_STYLE'],
 };
 
-/** Minimaler Nachbau von figma.variables mit den Methoden, die das Skript nutzt */
+/** Minimaler Nachbau von figma.variables und der Stile mit den Methoden, die das Skript nutzt */
 function fakeFigma() {
   let next = 1;
   const collections = [];
   const variables = [];
+  const textStyles = [];
+  const effectStyles = [];
+  const loaded = new Set(['Inter/Regular']);
+  const alias = (v) => ({ type: 'VARIABLE_ALIAS', id: v.id });
   const variablesApi = {
     async getLocalVariableCollectionsAsync() {
       return [...collections];
@@ -93,10 +100,72 @@ function fakeFigma() {
       return v;
     },
     createVariableAlias(v) {
-      return { type: 'VARIABLE_ALIAS', id: v.id };
+      return alias(v);
+    },
+    setBoundVariableForEffect(effect, field, v) {
+      return { ...effect, boundVariables: { ...(effect.boundVariables ?? {}), [field]: alias(v) } };
     },
   };
-  return { figma: { variables: variablesApi }, collections, variables };
+  const figma = {
+    variables: variablesApi,
+    async loadFontAsync({ family, style }) {
+      loaded.add(`${family}/${style}`);
+    },
+    async getLocalTextStylesAsync() {
+      return [...textStyles];
+    },
+    async getLocalEffectStylesAsync() {
+      return [...effectStyles];
+    },
+    createTextStyle() {
+      const s = {
+        id: `s${next++}`,
+        type: 'TEXT',
+        name: '',
+        description: '',
+        fontSize: 12,
+        lineHeight: { unit: 'AUTO' },
+        boundVariables: {},
+        _fontName: { family: 'Inter', style: 'Regular' },
+        get fontName() {
+          return { ...this._fontName };
+        },
+        // Wie in Figma: nur mit geladener Schrift
+        set fontName(f) {
+          if (!loaded.has(`${f.family}/${f.style}`)) throw new Error(`Schrift nicht geladen: ${f.family} ${f.style}`);
+          this._fontName = { ...f };
+        },
+        setBoundVariable(field, v) {
+          if (!['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'lineHeight', 'letterSpacing'].includes(field)) throw new Error(`Feld ${field}`);
+          this.boundVariables = { ...this.boundVariables, [field]: alias(v) };
+        },
+      };
+      textStyles.push(s);
+      return s;
+    },
+    createEffectStyle() {
+      const s = {
+        id: `s${next++}`,
+        type: 'EFFECT',
+        name: '',
+        description: '',
+        _effects: [],
+        get effects() {
+          return this._effects.map((e) => ({ ...e }));
+        },
+        set effects(list) {
+          for (const e of list) {
+            if (!['r', 'g', 'b', 'a'].every((k) => e.color[k] >= 0 && e.color[k] <= 1)) throw new Error('Farbe außerhalb 0–1');
+            if (e.radius < 0) throw new Error('Radius negativ');
+          }
+          this._effects = list.map((e) => ({ ...e, radius: Math.fround(e.radius), color: { ...e.color, a: Math.fround(e.color.a) } }));
+        },
+      };
+      effectStyles.push(s);
+      return s;
+    },
+  };
+  return { figma, collections, variables, textStyles, effectStyles };
 }
 
 /** Führt das Skript aus wie use_figma: als Rumpf einer async-Funktion (daher return am Ende).
@@ -114,7 +183,7 @@ test('leere Datei: legt Sammlungen, Modi und alle Variablen an', async () => {
     ['Cranach Responsive', ['Mobile 375', 'Tablet 768', 'Desktop 1440']],
     ['Cranach Semantic', ['Light', 'Dark']],
   ]);
-  assert.equal(f.variables.length, TOTAL);
+  assert.equal(f.variables.length, VARS);
 
   const byName = (n) => f.variables.find((v) => v.name === n);
   const [light, dark] = f.collections[2].modes.map((m) => m.modeId);
@@ -147,6 +216,26 @@ test('leere Datei: legt Sammlungen, Modi und alle Variablen an', async () => {
   assert.equal(fluid.variableCollectionId, f.collections[1].id);
   assert.deepEqual(f.collections[1].modes.map((m) => fluid.valuesByMode[m.modeId]), [16, 23, 37]);
   assert.equal(f.variables.filter((v) => v.name.startsWith('space/fluid/')).length, 3);
+
+  // Textstile: Schrift, Größe, Zeilenhöhe in Prozent, Bindungen an die Variablen
+  assert.deepEqual(f.textStyles.map((s) => s.name), DATA.textStyles.map((t) => t.name));
+  const h1 = f.textStyles.find((s) => s.name === 'heading/h1');
+  assert.deepEqual(h1.fontName, { family: 'IBM Plex Sans', style: 'SemiBold' });
+  assert.equal(h1.fontSize, 40);
+  assert.deepEqual([h1.lineHeight.unit, h1.lineHeight.value], ['PERCENT', 120]);
+  assert.equal(h1.boundVariables.fontSize.id, byName('font/size/3xl').id);
+  assert.equal(h1.boundVariables.fontWeight.id, byName('font/weight/semibold').id);
+  assert.equal(h1.boundVariables.fontFamily.id, byName('font/family/sans').id);
+  assert.match(h1.description, /var\(--cda-font-size-3xl\)/);
+  assert.deepEqual(f.textStyles.find((s) => s.name === 'code').fontName, { family: 'IBM Plex Mono', style: 'Regular' });
+
+  // Effektstile: Schatten mit Farbe aus der Variable
+  assert.deepEqual(f.effectStyles.map((s) => s.name), ['shadow/s', 'shadow/m', 'shadow/l']);
+  const [m] = f.effectStyles.find((s) => s.name === 'shadow/m').effects;
+  assert.equal(m.type, 'DROP_SHADOW');
+  assert.deepEqual([m.offset.x, m.offset.y, m.radius, m.spread], [1, 1, 12, 0]);
+  assert.ok(Math.abs(m.color.a - 0.4) < 1e-6);
+  assert.equal(m.boundVariables.color.id, byName('color/alpha/black-40').id);
 });
 
 test('zweiter Lauf ändert nichts (idempotent)', async () => {
@@ -156,8 +245,9 @@ test('zweiter Lauf ändert nichts (idempotent)', async () => {
   assert.equal(r.created.length, 0);
   assert.deepEqual(r.changed, []);
   assert.equal(r.unchanged, TOTAL);
-  assert.equal(f.variables.length, TOTAL);
+  assert.equal(f.variables.length, VARS);
   assert.equal(f.collections.length, 3);
+  assert.equal(f.textStyles.length + f.effectStyles.length, STYLES);
 });
 
 test('von Hand geänderte Werte werden zurückgesetzt', async () => {
@@ -177,7 +267,28 @@ test('Variablen, die es nicht mehr gibt, werden gemeldet, nicht gelöscht', asyn
   f.figma.variables.createVariable('color/alt/grau', f.collections[0], 'COLOR');
   const r = await run(f.figma);
   assert.deepEqual(r.orphans, ['Cranach Primitives/color/alt/grau']);
-  assert.equal(f.variables.length, TOTAL + 1);
+  assert.equal(f.variables.length, VARS + 1);
+});
+
+test('von Hand geänderte Stile werden zurückgesetzt, fremde Stile nur gemeldet', async () => {
+  const f = fakeFigma();
+  await run(f.figma);
+  const h2 = f.textStyles.find((s) => s.name === 'heading/h2');
+  h2.fontSize = 30;
+  h2.boundVariables = {};
+  h2.lineHeight = { unit: 'PIXELS', value: 36 };
+  const l = f.effectStyles.find((s) => s.name === 'shadow/l');
+  l._effects = [{ ...l._effects[0], radius: 8 }];
+  f.figma.createTextStyle().name = 'Alt/Überschrift';
+  const r = await run(f.figma);
+  assert.deepEqual(r.changed, [
+    'Textstil heading/h2 (Größe, Zeilenhöhe, Variable fontFamily, Variable fontSize, Variable fontWeight)',
+    'Effektstil shadow/l (Schatten)',
+  ]);
+  assert.deepEqual(r.orphans, ['Textstil Alt/Überschrift']);
+  assert.equal(h2.fontSize, 32);
+  assert.equal(l.effects[0].radius, 20);
+  assert.equal(f.textStyles.length, DATA.textStyles.length + 1);
 });
 
 test('falscher Typ in Figma: Fehler melden, Rest weiter abgleichen', async () => {
