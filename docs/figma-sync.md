@@ -12,11 +12,13 @@
 ## Ablauf
 
 1. `npm run build` – erzeugt unter anderem `dist/figma/figma-sync.js`.
-2. Claude Code bitten: „Figma-Sync ausführen“. Claude übergibt den Inhalt von `dist/figma/figma-sync.js` unverändert an `use_figma` und meldet die Zusammenfassung, beim ersten Lauf in eine leere Datei `124 angelegt` (3 Sammlungen, 121 Variablen), sonst etwa `0 angelegt, 3 geändert, 118 unverändert, 0 nicht mehr in den Tokens, 0 Fehler`.
+2. Claude Code bitten: „Figma-Sync ausführen“. Claude übergibt den Inhalt von `dist/figma/figma-sync.js` unverändert an `use_figma` und meldet die Zusammenfassung, beim ersten Lauf in eine leere Datei `141 angelegt` (3 Sammlungen, 138 Variablen), sonst etwa `0 angelegt, 3 geändert, 135 unverändert, 0 nicht mehr in den Tokens, 0 Fehler`.
 3. Claude prüft eine Stichprobe mit einem reinen Lese-Aufruf von `use_figma` (Modi, Verweise, Werte, Scopes, CSS-Namen). `get_variable_defs` eignet sich dafür nicht: Es zeigt nur Variablen, die an eine ausgewählte Ebene gebunden sind.
-4. In Figma ansehen; die Library erst nach gemeinsamer Prüfung veröffentlichen (ADR 0014).
+4. In Figma ansehen, am einfachsten auf der Seite „Übersicht“ (siehe unten); die Library erst nach gemeinsamer Prüfung veröffentlichen (ADR 0014).
 
 Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen meldet `0 angelegt, 0 geändert`.
+
+**Nur prüfen, ohne zu schreiben:** Claude leitet aus `dist/figma/figma-sync.js` eine Fassung ohne die schreibenden Aufrufe ab (`createVariableCollection`, `addMode`, `renameMode`, `createVariable`, `setValueForMode`, Zuweisungen an `description` und `scopes`, `setVariableCodeSyntax`) und führt sie über `use_figma` aus. Sie vergleicht genauso und meldet `fehlen`, `abweichend`, `gleich`, `nicht mehr in den Tokens` und `Fehler`, ändert aber nichts. Sinnvoll vor einer Freigabe oder wenn unklar ist, ob ein Sync gelaufen ist.
 
 ## Was das Skript macht
 
@@ -51,6 +53,21 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 
 Die Zuordnung steht in `build/build-figma.mjs` (`scopesFor`).
 
+## Seite „Übersicht“
+
+Erste Seite der Library-Datei, angelegt am 23.11.2026, zum Ansehen und Prüfen der Variablen. Sie zeigt nur, was in den Variablen steht; Werte werden weiterhin in `tokens/` geändert.
+
+| Rahmen | Inhalt |
+|---|---|
+| Titel | Name, Zweck, Stand und Paketversion auf Gelb mit dunkler Schrift; eignet sich als Vorschaubild der Library |
+| Farben · Hell, Farben · Dunkel | alle semantischen Farben in Gruppen mit Name, CSS-Name und Beschreibung; derselbe Aufbau, einmal mit Modus Light, einmal mit Modus Dark der Sammlung „Cranach Semantic“ |
+| Grundwerte | Paletten, Schriftgrößen, -familien und -stärken, Abstände, fließende Abstände je Modus von „Cranach Responsive“, Radien, Rahmenstärken, Breiten; am Ende, was noch fehlt (Schatten, Textstile) |
+
+- **An Variablen gebunden:** Flächen, Konturen, Schriftgrößen, -familien und -stärken, Balkenbreiten, Radien und Rahmenstärken. Ändert der Sync einen Wert, zeigt die Seite ihn ohne weiteres Zutun. Geprüft am 23.11.2026: 705 Bindungen, keine feste Farbe.
+- **Nicht im Sync:** Die Seite wurde einmalig über `use_figma` gebaut. Neue oder umbenannte Variablen erscheinen dort nicht von selbst; nach einem Sync, der Variablen anlegt, die Seite ergänzen (Claude bitten: „Übersicht in Figma ergänzen“).
+- **Ohne Darstellung:** z-Ebenen, Breakpoints, Dauern, Deckkraft, Zeilenhöhen, `size/measure` und `size/page` – sie stehen nur zur Information in den Variablen.
+- Stand und Version im Titel sind Text und werden bei einem Release von Hand angepasst.
+
 ## Dateien
 
 | Datei | Inhalt |
@@ -74,3 +91,7 @@ Dabei geklärt:
 Danach ergänzt (Entscheidung Volker): fließende Abstände als eigene Sammlung „Cranach Responsive“ mit den Modi Mobile 375, Tablet 768 und Desktop 1440. Die drei Text-Variablen `space/fluid/*` aus den Primitives wurden in Figma einmalig von Hand entfernt; der Kontrolllauf meldet `0 angelegt, 0 geändert, 121 unverändert, 0 nicht mehr in den Tokens`.
 
 Umbenennung (30.10.2026, ADR 0019): `color/background/muted` wurde in Figma vor dem Sync von Hand in `color/background/medium` umbenannt, damit Verknüpfungen in Entwürfen erhalten bleiben. Der Kontrolllauf übernahm Beschreibung und CSS-Name: `0 angelegt, 1 geändert, 120 unverändert, 0 nicht mehr in den Tokens, 0 Fehler`. So auch bei künftigen Umbenennungen vorgehen: erst in Figma umbenennen, dann synchronisieren.
+
+## Prüfung am 23.11.2026
+
+Abgleich nur lesend (siehe „Nur prüfen, ohne zu schreiben“): `0 fehlen, 0 abweichend, 138 gleich, 0 nicht mehr in den Tokens, 0 Fehler`. Die Roadmap nannte nach dem Sync vom 12.11.2026 noch 137 Variablen; `size/term` kam danach mit der Tabellenvariante `--details` dazu und ist in Figma, der Sync dafür war nicht vermerkt. Den genauen Zeitpunkt zeigt nur der Versionsverlauf der Figma-Datei. Danach die Seite „Übersicht“ angelegt; die leere „Page 1“ heißt jetzt so.
