@@ -133,6 +133,14 @@ test('leere Datei: legt Sammlungen, Modi und alle Variablen an', async () => {
   assert.deepEqual(byName('color/background/default').scopes, ['FRAME_FILL', 'SHAPE_FILL']);
   assert.deepEqual(byName('color/link/underline').scopes, ['STROKE_COLOR']);
 
+  // Bedeutungen ohne Theme (ADR 0022): in „Cranach Semantic“, in Light und Dark derselbe Wert
+  const term = byName('size/term');
+  assert.equal(term.variableCollectionId, f.collections[2].id);
+  assert.deepEqual([term.valuesByMode[light], term.valuesByMode[dark]], [192, 192]);
+  assert.deepEqual(term.scopes, ['WIDTH_HEIGHT']);
+  assert.deepEqual(byName('focus/ring-width').scopes, ['STROKE_FLOAT']);
+  assert.equal(f.variables.filter((v) => v.name.startsWith('size/') || v.name.startsWith('focus/')).length, 7);
+
   // Fließende Abstände: Zahlen je Bildschirmbreite statt clamp()-Text
   const fluid = byName('space/fluid/m');
   assert.equal(fluid.resolvedType, 'FLOAT');

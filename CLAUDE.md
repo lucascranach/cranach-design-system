@@ -58,6 +58,7 @@ npm run catalog:photos   # Fotos für den Katalog der Projektkomponenten (nur lo
 |---|---|
 | `tokens/primitive/` | Paletten und Skalen (DTCG-JSON) |
 | `tokens/semantic/{light,dark}.json` | Bedeutungen je Theme |
+| `tokens/semantic/*.json` (übrige) | Bedeutungen ohne Theme, z. B. `size.*`, `focus.ring-*` (ADR 0022) |
 | `build/` | Build-Skripte (Style Dictionary, Icons, CSS und Schriften, Kontrastprüfung mit Paarungen in `contrast.mjs`, Stylelint-Plugin und -Tests, Figma-Sync mit Vorlage und Tests, Release-Skript `release.mjs`, Fotos für den Katalog `catalog-photos.mjs`) |
 | `stylelint.config.mjs` | CSS-Regeln: Layer, Präfix, Werte nur über Tokens, kein `!important`/`outline: none` |
 | `src/` | CSS für Reset und Grundstyles (`reset.css`, `base.css`), Layouts `cda-l-*` in `layout.css` (ADR 0021), Komponenten in `src/components/`, Hilfsklassen `cda-u-*` in `utilities.css`; Reihenfolge in `build/build-css.mjs` |

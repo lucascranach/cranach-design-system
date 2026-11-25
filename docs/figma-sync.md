@@ -24,9 +24,9 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 
 | Sammlung | Modi | Inhalt |
 |---|---|---|
-| Cranach Primitives | Value | Paletten und Skalen: Farben, Abstände, Radien, Rahmen, Schriften, z-Ebenen, Breakpoints, Dauern … |
+| Cranach Primitives | Value | Paletten und Skalen: Farben, Abstände, Radien, Rahmen, Schriften, z-Ebenen, Breakpoints, Dauern … (`tokens/primitive/`) |
 | Cranach Responsive | Mobile 375, Tablet 768, Desktop 1440 | fließende Abstände `space/fluid/*`, je Bildschirmbreite ausgerechnet |
-| Cranach Semantic | Light, Dark | Farben nach Bedeutung (`color/text/default` …), als Verweis auf die primitiven Farben |
+| Cranach Semantic | Light, Dark | Bedeutungen (`tokens/semantic/`): Farben (`color/text/default` …) als Verweis auf die primitiven Farben; Breiten `size/*` und Fokusring `focus/ring-*` ohne Theme, in Light und Dark derselbe Wert (ADR 0022) |
 
 - **Fließende Abstände:** Im Code sind `space/fluid/*` mit `clamp()` und `vw` definiert, z. B. `clamp(16px, 2vw + 8px, 48px)`. Das kann Figma nicht abbilden; der Build rechnet deshalb für jede Bildschirmbreite den Wert aus, den `clamp()` dort ergibt (`space/fluid/m`: 16 / 23 / 37). In Figma bekommt ein Frame den passenden Modus („Mobile 375“ usw.), alle daran gebundenen fließenden Abstände passen sich an. Breiten der Modi: `VIEWPORTS` in `build/build-figma.mjs`.
 - **Anlegen und abgleichen:** fehlende Sammlungen, Modi und Variablen werden angelegt; Werte, Beschreibungen, Scopes und CSS-Namen werden auf den Stand der Tokens gebracht. Von Hand in Figma geänderte Werte setzt der nächste Lauf zurück.
@@ -95,3 +95,9 @@ Umbenennung (30.10.2026, ADR 0019): `color/background/muted` wurde in Figma vor 
 ## Prüfung am 23.11.2026
 
 Abgleich nur lesend (siehe „Nur prüfen, ohne zu schreiben“): `0 fehlen, 0 abweichend, 138 gleich, 0 nicht mehr in den Tokens, 0 Fehler`. Die Roadmap nannte nach dem Sync vom 12.11.2026 noch 137 Variablen; `size/term` kam danach mit der Tabellenvariante `--details` dazu und ist in Figma, der Sync dafür war nicht vermerkt. Den genauen Zeitpunkt zeigt nur der Versionsverlauf der Figma-Datei. Danach die Seite „Übersicht“ angelegt; die leere „Page 1“ heißt jetzt so.
+
+## Umzug der Rollen-Tokens am 25.11.2026 (ADR 0022)
+
+`size/*` und `focus/ring-*` stehen jetzt in `tokens/semantic/dimension.json` und damit in Figma in „Cranach Semantic“. Figma kann Variablen nicht zwischen Sammlungen verschieben: Der Sync legt sie dort neu an und meldet die 7 alten in „Cranach Primitives“ als „nicht mehr in den Tokens“. Vor dem Löschen der alten Variablen werden gebundene Ebenen auf die neuen umgestellt (auf der Seite „Übersicht“: Breiten und Fokusring).
+
+Ausgeführt am 25.11.2026: Sync `7 angelegt, 0 geändert, 142 unverändert, 7 nicht mehr in den Tokens, 0 Fehler` (unverändert sind 131 Variablen und die 11 Stile aus Schritt 30). Auf der Seite „Übersicht“ 7 Bindungen umgestellt (drei Breiten, vier Konturstärken des Fokusrings). Danach die 7 alten Variablen in „Cranach Primitives“ gelöscht (Freigabe Volker). Stand: Primitives 97, Semantic 38, Responsive 3 – zusammen 138; keine Bindung zeigt ins Leere.

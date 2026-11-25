@@ -1,6 +1,6 @@
 # 0004 – Tokens im DTCG-Format, Build mit Style Dictionary
 
-**Status:** angenommen (Q5)
+**Status:** angenommen (Q5) · ergänzt durch ADR 0022 (Semantik auch ohne Theme)
 
 ## Kontext
 Tokens werden in CSS, JS/TS, Tailwind und Figma gebraucht. Werte sollen an genau einer Stelle gepflegt und versioniert werden.
@@ -9,7 +9,7 @@ Tokens werden in CSS, JS/TS, Tailwind und Figma gebraucht. Werte sollen an genau
 - Maßgebliche Quelle sind JSON-Dateien im Format der W3C Design Tokens Community Group (DTCG) unter `tokens/` (`$value`, `$type`, `$description`, Referenzen `{…}`).
 - Zwei Ebenen:
   - **Primitive** (`tokens/primitive/`): die Palette und Skalen, z. B. `color.yellow.500`.
-  - **Semantik** (`tokens/semantic/`): Bedeutungen je Theme, z. B. `color.accent`, `color.text.default`.
+  - **Semantik** (`tokens/semantic/`): Bedeutungen je Theme, z. B. `color.accent`, `color.text.default`. Seit ADR 0022 auch Bedeutungen ohne Theme in eigenen Dateien (`size.*`, `focus.ring-*`, `typography.*`).
 - Style Dictionary erzeugt daraus alle Ausgabeformate nach `dist/`.
 - Figma liest nur (ADR 0014); Änderungen laufen über Git.
 

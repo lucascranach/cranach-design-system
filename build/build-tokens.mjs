@@ -7,10 +7,15 @@
  *   dist/tokens.js / .d.ts   aufgelöste Werte für JS/TS (three.js, Mapbox, Berechnungen)
  *   dist/figma/tokens.figma.json  Variablen-Beschreibung für den Figma-Sync
  *
- * Siehe ADR 0002, 0004, 0007.
+ * Ebenen (ADR 0004, 0022): tokens/primitive/ Paletten und Skalen; tokens/semantic/ Bedeutungen –
+ * je Theme in light.json/dark.json, ohne Theme in allen übrigen Dateien dort (gelten für beide).
+ * Im CSS und JS zählt nur, ob ein Token ein Theme hat: ohne Theme in :root bzw. auf oberster Ebene.
+ * In Figma kommen alle Bedeutungen in die Sammlung „Cranach Semantic“.
+ *
+ * Siehe ADR 0002, 0004, 0007, 0022.
  */
 import StyleDictionary from 'style-dictionary';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const PREFIX = 'cda';
@@ -19,14 +24,20 @@ const THEMES = ['light', 'dark'];
 
 const transforms = ['name/kebab', 'color/css', 'fontFamily/css', 'cubicBezier/css', 'shadow/css/shorthand'];
 
-const isSemantic = (token) => token.filePath.includes(`${path.sep}semantic${path.sep}`) || token.filePath.includes('/semantic/');
+const inSemantic = (token) => token.filePath.includes(`${path.sep}semantic${path.sep}`) || token.filePath.includes('/semantic/');
+/** Token aus einer Theme-Datei (semantic/light.json, semantic/dark.json) */
+const isThemed = (token) => inSemantic(token) && THEMES.includes(path.basename(token.filePath, '.json'));
+/** Bedeutungen ohne Theme: alle übrigen Dateien in tokens/semantic/ (ADR 0022) */
+const themeless = (await readdir('tokens/semantic'))
+  .filter((f) => f.endsWith('.json') && !THEMES.includes(path.basename(f, '.json')))
+  .map((f) => `tokens/semantic/${f}`);
 const valueOf = (token) => token.$value ?? token.value;
 const originalOf = (token) => token.original.$value ?? token.original.value;
 
 /** Liefert die aufgelösten Tokens eines Themes (Primitive + Semantik). */
 async function loadTheme(theme) {
   const sd = new StyleDictionary({
-    source: ['tokens/primitive/**/*.json', `tokens/semantic/${theme}.json`],
+    source: ['tokens/primitive/**/*.json', ...themeless, `tokens/semantic/${theme}.json`],
     usesDtcg: true,
     log: { verbosity: 'silent', warnings: 'disabled' },
     platforms: { x: { prefix: PREFIX, transforms } },
@@ -56,8 +67,11 @@ async function main() {
 
   const all = themes.light;
   const byPath = new Map(all.map((t) => [t.path.join('.'), t]));
-  const primitives = all.filter((t) => !isSemantic(t));
-  const semantic = Object.fromEntries(THEMES.map((t) => [t, themes[t].filter(isSemantic)]));
+  // Ohne Theme: Primitive und Bedeutungen ohne Theme – im CSS in :root, im JS auf oberster Ebene
+  const base = all.filter((t) => !isThemed(t));
+  const primitives = base.filter((t) => !inSemantic(t));
+  const semanticBase = base.filter(inSemantic);
+  const semantic = Object.fromEntries(THEMES.map((t) => [t, themes[t].filter(isThemed)]));
 
   await mkdir(path.join(DIST, 'figma'), { recursive: true });
   const header = '/* Cranach Design System – generiert aus tokens/, nicht von Hand bearbeiten. */\n';
@@ -65,12 +79,12 @@ async function main() {
   // ---------- tokens.css ----------
   const decl = (tokens, map) => tokens.map((t) => `${cssVar(t)}: ${cssValue(t, map)};`);
   const darkMap = new Map(themes.dark.map((t) => [t.path.join('.'), t]));
-  const durations = primitives.filter((t) => t.path[0] === 'duration');
+  const durations = base.filter((t) => t.path[0] === 'duration');
   const css = [
     header,
     '@layer cda.tokens, cda.reset, cda.base, cda.layout, cda.components, cda.utilities;\n',
     '@layer cda.tokens {',
-    block(':root', decl(primitives, byPath)),
+    block(':root', decl(base, byPath)),
     '',
     '  /* Helles Theme (Standard) */',
     block(':root, [data-theme="light"], .light', ['color-scheme: light;', ...decl(semantic.light, byPath)]),
@@ -169,7 +183,7 @@ async function main() {
     }
     return out;
   };
-  const jsObj = { ...nest(primitives), light: nest(semantic.light), dark: nest(semantic.dark) };
+  const jsObj = { ...nest(base), light: nest(semantic.light), dark: nest(semantic.dark) };
   await writeFile(
     path.join(DIST, 'tokens.js'),
     `${header}export const tokens = ${JSON.stringify(jsObj, null, 2)};\nexport default tokens;\n`,
@@ -221,6 +235,12 @@ async function main() {
     const val = (tok) => (aliasOf(tok) ? { alias: aliasOf(tok) } : String(valueOf(tok)));
     return { name: figmaName(t), type: 'COLOR', description: t.$description ?? t.description ?? '', values: { Light: val(t), Dark: val(d) } };
   });
+  // Bedeutungen ohne Theme: in Light und Dark derselbe Wert (ADR 0022)
+  for (const t of semanticBase) {
+    const type = figmaType(t);
+    const value = aliasOf(t) ? { alias: aliasOf(t) } : figmaValue(t, type);
+    semVars.push({ name: figmaName(t), type, description: t.$description ?? t.description ?? '', values: { Light: value, Dark: value } });
+  }
   const figma = {
     $comment: 'Generiert aus tokens/. Grundlage für build/figma-sync (ADR 0014).',
     collections: [
@@ -230,7 +250,9 @@ async function main() {
   };
   await writeFile(path.join(DIST, 'figma', 'tokens.figma.json'), JSON.stringify(figma, null, 2) + '\n');
 
-  console.log(`Tokens gebaut: ${primitives.length} Primitive, ${semantic.light.length} semantische Tokens je Theme.`);
+  console.log(
+    `Tokens gebaut: ${primitives.length} Primitive, ${semanticBase.length} semantische ohne Theme, ${semantic.light.length} je Theme.`,
+  );
 }
 
 main().catch((err) => {
