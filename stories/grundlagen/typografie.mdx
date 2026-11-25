@@ -44,3 +44,7 @@ Code-Blöcke (`pre`) scrollen bei langen Zeilen seitlich. Damit sie auch per Tas
 ```
 
 <Canvas of={Typografie.Grundstyles} />
+
+### Textstile in Figma
+
+Welche Schrift-Tokens die Grundstyles zusammensetzen, steht zusätzlich als Textstil in `tokens/` (`typography.*`, z. B. `typography.heading.h1` aus `font.size.3xl`, `font.weight.semibold`, `font.line-height.tight`). Daraus legt der Figma-Sync die Textstile der Library an: `body/default`, `body/small`, `heading/h1`–`heading/h5` (h6 ist gleich h5) und `code`. Im CSS gibt es dafür keine eigenen Custom Properties; der Build bricht ab, wenn `base.css` andere Tokens nutzt als die Textstile.

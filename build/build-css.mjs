@@ -178,11 +178,58 @@ async function checkSpaceUtilities(utilitiesCss) {
   }
 }
 
+/**
+ * Bricht ab, wenn die Grundstyles andere Schrift-Tokens nutzen als die Textstile typography.*
+ * (Quelle der Figma-Textstile). Je Element zählt, was base.css setzt, sonst was es von body erbt;
+ * font-size: 1em erbt ebenfalls.
+ */
+async function checkTypography(baseCss) {
+  const { typography } = JSON.parse(await readFile('tokens/semantic/typography.json', 'utf8'));
+  // Innerste Regeln: Selektorliste → Deklarationen
+  const rules = new Map();
+  for (const [, selectors, body] of baseCss.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    const decls = Object.fromEntries(
+      [...body.matchAll(/(font-family|font-size|font-weight|line-height)\s*:\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]),
+    );
+    for (const sel of selectors.replace(/\/\*[\s\S]*?\*\//g, '').split(',').map((x) => x.trim())) {
+      rules.set(sel, { ...rules.get(sel), ...decls });
+    }
+  }
+  const effective = (el) => {
+    const own = rules.get(el) ?? {};
+    const merged = { ...rules.get('body'), ...own };
+    if (own['font-size'] === '1em') merged['font-size'] = rules.get('body')['font-size'];
+    return merged;
+  };
+  const css = (ref) => `var(--cda-${ref.slice(1, -1).replaceAll('.', '-')})`;
+  const PROPS = { fontFamily: 'font-family', fontSize: 'font-size', fontWeight: 'font-weight', lineHeight: 'line-height' };
+  const problems = [];
+  const walk = (node, path) => {
+    if ('$value' in node) {
+      const elements = node.$extensions?.['org.lucascranach.design-system']?.elements ?? [];
+      if (!elements.length) problems.push(`typography.${path.join('.')}: elements fehlt`);
+      for (const el of elements) {
+        const got = effective(el);
+        for (const [key, prop] of Object.entries(PROPS)) {
+          if (got[prop] !== css(node.$value[key])) {
+            problems.push(`${el}: ${prop} ist ${got[prop] ?? 'nicht gesetzt'}, typography.${path.join('.')} sagt ${css(node.$value[key])}`);
+          }
+        }
+      }
+      return;
+    }
+    for (const [k, v] of Object.entries(node)) if (!k.startsWith('$')) walk(v, [...path, k]);
+  };
+  walk(typography, []);
+  if (problems.length) throw new Error(`src/base.css passt nicht zu den Textstilen in tokens/:\n  ${problems.join('\n  ')}`);
+}
+
 async function main() {
   const { rules, files } = await buildFonts();
   const sources = await Promise.all(SOURCES.map((f) => readFile(f, 'utf8')));
   await checkZUtilities(sources[SOURCES.indexOf('src/utilities.css')]);
   await checkSpaceUtilities(sources[SOURCES.indexOf('src/utilities.css')]);
+  await checkTypography(sources[SOURCES.indexOf('src/base.css')]);
 
   const css = [
     '/* Cranach Design System – generiert aus src/ und tokens/, nicht von Hand bearbeiten. */',

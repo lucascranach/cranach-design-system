@@ -1,0 +1,50 @@
+{
+  "typography": {
+    "$type": "typography",
+    "$description": "Textstile der Grundstyles (src/base.css), zusammengesetzt aus den Schrift-Tokens; Bedeutungen ohne Theme (ADR 0022). Quelle der Figma-Textstile; der CSS-Build prüft, dass base.css dieselben Tokens nutzt (elements). Nicht als Custom Property ausgegeben.",
+    "body": {
+      "default": {
+        "$value": { "fontFamily": "{font.family.sans}", "fontSize": "{font.size.m}", "fontWeight": "{font.weight.regular}", "lineHeight": "{font.line-height.normal}" },
+        "$description": "Fließtext",
+        "$extensions": { "org.lucascranach.design-system": { "elements": ["body"] } }
+      },
+      "small": {
+        "$value": { "fontFamily": "{font.family.sans}", "fontSize": "{font.size.s}", "fontWeight": "{font.weight.regular}", "lineHeight": "{font.line-height.normal}" },
+        "$description": "Kleingedrucktes, Nebeninformationen",
+        "$extensions": { "org.lucascranach.design-system": { "elements": ["small"] } }
+      }
+    },
+    "heading": {
+      "h1": {
+        "$value": { "fontFamily": "{font.family.sans}", "fontSize": "{font.size.3xl}", "fontWeight": "{font.weight.semibold}", "lineHeight": "{font.line-height.tight}" },
+        "$description": "Überschrift 1",
+        "$extensions": { "org.lucascranach.design-system": { "elements": ["h1"] } }
+      },
+      "h2": {
+        "$value": { "fontFamily": "{font.family.sans}", "fontSize": "{font.size.2xl}", "fontWeight": "{font.weight.semibold}", "lineHeight": "{font.line-height.tight}" },
+        "$description": "Überschrift 2",
+        "$extensions": { "org.lucascranach.design-system": { "elements": ["h2"] } }
+      },
+      "h3": {
+        "$value": { "fontFamily": "{font.family.sans}", "fontSize": "{font.size.xl}", "fontWeight": "{font.weight.semibold}", "lineHeight": "{font.line-height.tight}" },
+        "$description": "Überschrift 3",
+        "$extensions": { "org.lucascranach.design-system": { "elements": ["h3"] } }
+      },
+      "h4": {
+        "$value": { "fontFamily": "{font.family.sans}", "fontSize": "{font.size.l}", "fontWeight": "{font.weight.semibold}", "lineHeight": "{font.line-height.tight}" },
+        "$description": "Überschrift 4",
+        "$extensions": { "org.lucascranach.design-system": { "elements": ["h4"] } }
+      },
+      "h5": {
+        "$value": { "fontFamily": "{font.family.sans}", "fontSize": "{font.size.m}", "fontWeight": "{font.weight.semibold}", "lineHeight": "{font.line-height.tight}" },
+        "$description": "Überschrift 5 und 6 (im CSS gleich)",
+        "$extensions": { "org.lucascranach.design-system": { "elements": ["h5", "h6"] } }
+      }
+    },
+    "code": {
+      "$value": { "fontFamily": "{font.family.mono}", "fontSize": "{font.size.m}", "fontWeight": "{font.weight.regular}", "lineHeight": "{font.line-height.normal}" },
+      "$description": "Code, Tastatur, Ausgabe (code, kbd, samp, pre); im CSS 1em, also so groß wie der umgebende Text",
+      "$extensions": { "org.lucascranach.design-system": { "elements": ["code", "kbd", "samp", "pre"] } }
+    }
+  }
+}

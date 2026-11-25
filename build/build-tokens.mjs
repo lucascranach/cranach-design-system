@@ -5,7 +5,10 @@
  *   dist/custom-media.css    @custom-media-Definitionen der Breakpoints
  *   dist/tailwind.css        Tailwind-4-Theme + Zuordnung der shadcn-Variablen
  *   dist/tokens.js / .d.ts   aufgelöste Werte für JS/TS (three.js, Mapbox, Berechnungen)
- *   dist/figma/tokens.figma.json  Variablen-Beschreibung für den Figma-Sync
+ *   dist/figma/tokens.figma.json  Variablen, Text- und Effektstile für den Figma-Sync
+ *
+ * Zusammengesetzte Textstile (typography.*) gehen nur in den Figma-Sync, nicht ins CSS oder JS:
+ * Im CSS setzen die Grundstyles die einzelnen Schrift-Tokens (build-css.mjs prüft das).
  *
  * Ebenen (ADR 0004, 0022): tokens/primitive/ Paletten und Skalen; tokens/semantic/ Bedeutungen –
  * je Theme in light.json/dark.json, ohne Theme in allen übrigen Dateien dort (gelten für beide).
@@ -67,8 +70,11 @@ async function main() {
 
   const all = themes.light;
   const byPath = new Map(all.map((t) => [t.path.join('.'), t]));
+  // Textstile (typography.*) nur für den Figma-Sync, nicht ins CSS oder JS
+  const isTypography = (t) => t.path[0] === 'typography';
+  const typography = all.filter(isTypography);
   // Ohne Theme: Primitive und Bedeutungen ohne Theme – im CSS in :root, im JS auf oberster Ebene
-  const base = all.filter((t) => !isThemed(t));
+  const base = all.filter((t) => !isThemed(t) && !isTypography(t));
   const primitives = base.filter((t) => !inSemantic(t));
   const semanticBase = base.filter(inSemantic);
   const semantic = Object.fromEntries(THEMES.map((t) => [t, themes[t].filter(isThemed)]));
@@ -241,17 +247,60 @@ async function main() {
     const value = aliasOf(t) ? { alias: aliasOf(t) } : figmaValue(t, type);
     semVars.push({ name: figmaName(t), type, description: t.$description ?? t.description ?? '', values: { Light: value, Dark: value } });
   }
+  // Textstile: Größe, Stärke und Familie als Verweis auf die Variablen (dazu der Wert, mit dem
+  // Figma die Schrift lädt), Zeilenhöhe als Prozent – einen Faktor kann Figma nicht binden
+  const refPath = (ref) => {
+    if (typeof ref !== 'string' || !/^\{[^}]+\}$/.test(ref)) throw new Error(`Textstil: Verweis erwartet, nicht ${JSON.stringify(ref)}`);
+    const tok = byPath.get(ref.slice(1, -1));
+    if (!tok) throw new Error(`Textstil: unbekanntes Token ${ref}`);
+    return tok;
+  };
+  const textStyles = typography.map((t) => {
+    const o = originalOf(t);
+    const [family, size, weight, lh] = [o.fontFamily, o.fontSize, o.fontWeight, o.lineHeight].map(refPath);
+    const css = [size, weight, lh].map((x) => `${{ size: 'font-size', weight: 'font-weight', 'line-height': 'line-height' }[x.path[1]]}: var(${cssVar(x)})`);
+    return {
+      name: figmaName(t).replace(/^typography\//, ''),
+      description: `${t.$description ?? ''} · CSS: ${css.join('; ')}`,
+      fontFamily: { variable: figmaName(family), value: figmaFont(family) },
+      fontSize: { variable: figmaName(size), value: parseFloat(valueOf(size)) * 16 },
+      fontWeight: { variable: figmaName(weight), value: Number(valueOf(weight)) },
+      lineHeight: Math.round(Number(valueOf(lh)) * 100),
+    };
+  });
+  // Effektstile: Schatten (Figma speichert Schatten nicht als Variable); Farbe als Verweis
+  const shadows = primitives.filter((t) => t.path[0] === 'shadow');
+  const effectStyles = shadows.map((t) => {
+    const layers = [originalOf(t)].flat();
+    return {
+      name: figmaName(t),
+      description: `CSS: box-shadow: var(${cssVar(t)})`,
+      effects: layers.map((l) => {
+        const color = refPath(l.color);
+        return {
+          type: l.inset ? 'INNER_SHADOW' : 'DROP_SHADOW',
+          color: { variable: figmaName(color), value: String(valueOf(color)) },
+          offset: { x: parseFloat(l.offsetX), y: parseFloat(l.offsetY) },
+          radius: parseFloat(l.blur),
+          spread: parseFloat(l.spread ?? 0),
+        };
+      }),
+    };
+  });
   const figma = {
     $comment: 'Generiert aus tokens/. Grundlage für build/figma-sync (ADR 0014).',
     collections: [
       { name: 'Cranach Primitives', modes: ['Value'], variables: primVars },
       { name: 'Cranach Semantic', modes: ['Light', 'Dark'], variables: semVars },
     ],
+    textStyles,
+    effectStyles,
   };
   await writeFile(path.join(DIST, 'figma', 'tokens.figma.json'), JSON.stringify(figma, null, 2) + '\n');
 
   console.log(
-    `Tokens gebaut: ${primitives.length} Primitive, ${semanticBase.length} semantische ohne Theme, ${semantic.light.length} je Theme.`,
+    `Tokens gebaut: ${primitives.length} Primitive, ${semanticBase.length} semantische ohne Theme, ${semantic.light.length} je Theme, ` +
+      `${typography.length} Textstile.`,
   );
 }
 
