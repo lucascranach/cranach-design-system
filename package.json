@@ -19,6 +19,7 @@
     "./tokens.css": "./dist/tokens.css",
     "./tailwind.css": "./dist/tailwind.css",
     "./custom-media.css": "./dist/custom-media.css",
+    "./brand/*": "./dist/brand/*",
     "./tokens": {
       "types": "./dist/tokens.d.ts",
       "default": "./dist/tokens.js"
@@ -33,18 +34,20 @@
     "build:tokens": "node build/build-tokens.mjs",
     "build:icons": "node build/build-icons.mjs",
     "build:css": "node build/build-css.mjs",
+    "build:brand": "node build/build-brand.mjs",
     "build:figma": "node build/build-figma.mjs",
     "check:contrast": "node build/check-contrast.mjs",
     "lint:css": "stylelint \"src/**/*.css\" \".storybook/**/*.css\"",
     "test:lint": "node --test build/stylelint.test.mjs",
     "test:figma": "node --test build/figma-sync.test.mjs",
     "test:storybook": "vitest run",
-    "build": "npm run lint:css && npm run build:tokens && npm run build:icons && npm run build:css && npm run build:figma && npm run check:contrast",
+    "build": "npm run lint:css && npm run build:tokens && npm run build:icons && npm run build:css && npm run build:brand && npm run build:figma && npm run check:contrast",
     "prepublishOnly": "npm run build",
     "release": "node build/release.mjs",
     "storybook": "npm run build && storybook dev -p 6006 --no-open",
     "build:storybook": "npm run build && storybook build -o storybook-static",
-    "catalog:photos": "node build/catalog-photos.mjs"
+    "catalog:photos": "node build/catalog-photos.mjs",
+    "brand:raster": "node build/brand-raster.mjs"
   },
   "devDependencies": {
     "@fontsource-variable/ibm-plex-sans": "5.3.0",

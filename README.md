@@ -61,6 +61,7 @@ Icon-Font „Cranach Symbols“, ein Subset von Material Symbols Sharp ([ADR 001
 | Ordner | Inhalt |
 |---|---|
 | `tokens/` | Design-Tokens im DTCG-Format (Primitive und Semantik) |
+| `brand/` | Logo und Favicon des CDA (nicht MIT-lizenziert), Rasterbilder aus `npm run brand:raster` |
 | `build/` | Build-Skripte (Style Dictionary, Icons, Figma-Sync) |
 | `src/` | CSS für Grundstyles, Komponenten und Hilfsklassen (`cda-u-*`) |
 | `icons/` | Liste der benötigten Material-Symbols-Icons |
@@ -83,6 +84,8 @@ npm run build          # CSS prüfen, Tokens, Icons, CSS und Figma-Sync bauen, K
 | `npm run build:tokens` | erzeugt `dist/tokens.css`, `tailwind.css`, `custom-media.css`, `tokens.js`/`.d.ts`, `figma/tokens.figma.json` |
 | `npm run build:icons` | lädt das Icon-Subset über `icon_names` von Google Fonts nach `dist/fonts/cranach-symbols.woff2`; zwischengespeichert in `.cache/icons/`, `-- --refresh` lädt neu |
 | `npm run build:css` | erzeugt `dist/cranach.css` aus `src/` und kopiert die Schriften nach `dist/fonts/` (setzt `build:tokens` und `build:icons` voraus) |
+| `npm run build:brand` | kopiert Logo und Favicon aus `brand/` nach `dist/brand/` und prüft sie (läuft in `npm run build`) |
+| `npm run brand:raster` | erzeugt `brand/favicon.ico` und `brand/apple-touch-icon.png` aus `brand/favicon.svg` (nur lokal, braucht das Chromium von Playwright) |
 | `npm run build:figma` | erzeugt `dist/figma/figma-sync.js` für den Abgleich der Figma-Variablen (Anleitung: [`docs/figma-sync.md`](docs/figma-sync.md)) |
 | `npm run test:figma` | testet das Figma-Sync-Skript gegen eine nachgebaute Figma-API |
 | `npm run release` | Probelauf des Releases; `-- --publish` liefert aus (npm und Server-Kopie, Anleitung: [`docs/release.md`](docs/release.md)) |
@@ -112,5 +115,7 @@ Fehlt ein Wert, kommt er zuerst als Token nach `tokens/`. Die Hilfsstyles der Do
 ## Lizenz
 
 [MIT](LICENSE) – Copyright (c) 2026 Cranach Digital Archive.
+
+**Ausgenommen sind Logo und Favicon** (`brand/`, im Paket `dist/brand/`): Sie sind Zeichen des Cranach Digital Archive, stehen nicht unter MIT und dürfen nur für Angebote des Cranach Digital Archive verwendet werden ([`brand/LICENSE.md`](brand/LICENSE.md)).
 
 Drittanbieter-Ressourcen behalten ihre eigenen Lizenzen: IBM Plex (SIL Open Font License 1.1, Lizenztexte in `dist/fonts/`, bezogen über die Fontsource-Pakete), Material Symbols (Apache License 2.0, Lizenztext in `icons/` und `dist/fonts/`).

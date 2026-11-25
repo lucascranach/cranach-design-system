@@ -37,7 +37,7 @@ Kopfzeile mit Logo, Hauptnavigation, Sprachwahl und – bei wenig Platz – Men�
 ## Aufbau
 
 - **`header`** ist für Screenreader der Seitenkopf („Banner“). Pro Seite nur einer.
-- **Logo** als Link zur Startseite. Das SVG hat `fill="currentColor"` und nimmt so die Textfarbe an: gedämpft, beim Überfahren voll, im dunklen Theme hell. Damit ersetzt eine Datei die Varianten `cda-logo-bw`, `-gw`, `-ws` und `-ys` der Bestandsprojekte. Den Namen trägt der Link (`aria-label`), das SVG ist ausgeblendet.
+- **Logo** als Link zur Startseite. Das SVG hat `fill="currentColor"` und nimmt so die Textfarbe an: gedämpft, beim Überfahren voll, im dunklen Theme hell. Damit ersetzt eine Datei die Varianten `cda-logo-bw`, `-gw`, `-ws` und `-ys` der Bestandsprojekte; sie liegt im Paket unter `dist/brand/logo.svg` ([Logo und Favicon](?path=/docs/grundlagen-logo-und-favicon--docs)). Den Namen trägt der Link (`aria-label`), das SVG ist ausgeblendet.
 - **Hauptnavigation** in `nav` mit `aria-label`. Die aktuelle Seite bekommt `aria-current="page"` (oder `"true"` für den Bereich, in dem sie liegt) und einen gelben Strich darunter – nicht nur eine andere Farbe.
 - **Sprachwahl** ist der [Switcher](?path=/docs/komponenten-switcher--docs) in einer zweiten `nav`.
 - **Sticky:** Mit `cda-header--sticky` bleibt der Header beim Scrollen oben (z-Ebene `nav-fixed`, ADR 0011) und bekommt einen leichten Schatten.

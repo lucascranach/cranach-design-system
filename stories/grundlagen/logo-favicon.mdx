@@ -1,0 +1,63 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as LogoFavicon from './logo-favicon.stories.js';
+
+<Meta of={LogoFavicon} />
+
+# Logo und Favicon
+
+Logo und Favicon des Cranach Digital Archive liegen im Paket unter `dist/brand/` und auf dem eigenen Server unter `/design-system/x.y.z/brand/` (ADR 0016). Die Projekte beziehen sie von dort statt aus eigenen Kopien oder dem alten Styleguide.
+
+| Datei | Zweck |
+|---|---|
+| `logo.svg` | Logo, `fill="currentColor"` |
+| `favicon.svg` | Favicon für aktuelle Browser |
+| `favicon.ico` | Favicon für ältere Browser und Server, die `/favicon.ico` erwarten (16 und 32 px) |
+| `apple-touch-icon.png` | Startbildschirm unter iOS (180 px) |
+
+> **Nicht MIT-lizenziert.** Logo und Favicon sind Zeichen des Cranach Digital Archive und dürfen nur für Angebote des Cranach Digital Archive verwendet werden – anders als Code und Tokens des Pakets (`dist/brand/LICENSE.md`).
+
+## Logo
+
+Eine Datei ersetzt die Varianten `cda-logo-bw`, `-gw`, `-ws`, `-ys` und `-yw` der Bestandsprojekte: **inline** nimmt das Logo die Textfarbe an (`currentColor`), im dunklen Theme also hell. Als `<img>` kann es die Textfarbe nicht erben und erscheint schwarz – so wie heute `cda-logo-bw.svg`. Die Zeichnungen „light“ und „cut“ aus cranach-artefacts werden nirgends verwendet und sind nicht übernommen.
+
+<Canvas of={LogoFavicon.Logo} />
+
+Im [Header](?path=/docs/komponenten-header--docs) steht das Logo inline im Link zur Startseite; den Namen trägt der Link, das SVG ist ausgeblendet:
+
+```html
+<a class="cda-header__brand" href="/" aria-label="Cranach Digital Archive – Startseite">
+  <svg viewBox="0 0 474 162" fill="currentColor" aria-hidden="true" focusable="false">…</svg>
+</a>
+```
+
+Als Bild, mit dem Namen im `alt`:
+
+```html
+<img src="/design-system/x.y.z/brand/logo.svg" alt="Cranach Digital Archive">
+```
+
+In Projekten mit Build über den Paketnamen, z. B. mit Vite als Text zum Einsetzen (`?raw`) oder als Adresse (`?url`):
+
+```js
+import logo from '@lucascranach/design-system/brand/logo.svg?raw';
+```
+
+Die Größe setzt das CSS (meist nur die Höhe); die Datei hat bewusst kein `width`/`height`.
+
+## Favicon
+
+<Canvas of={LogoFavicon.Favicon} />
+
+Die drei Dateien in den `<head>`; Browser wählen die passende:
+
+```html
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+```
+
+- **Projekte mit Build** kopieren die Dateien aus `node_modules/@lucascranach/design-system/dist/brand/` in ihren öffentlichen Ordner (z. B. `public/`), damit sie unter der Wurzel liegen.
+- **Projekte ohne Build** verweisen auf die Kopie auf dem eigenen Server, z. B. `href="/design-system/x.y.z/brand/favicon.svg"`.
+- Der Typ ist `image/svg+xml` – nicht `image/svg` wie heute in cranach-artefacts.
+
+Die Rasterbilder entstehen aus `favicon.svg` (`npm run brand:raster`, mit dem Chromium von Playwright) und liegen im Repo; nach einer Änderung am SVG das Skript erneut ausführen. Der Build prüft Größe und Format.

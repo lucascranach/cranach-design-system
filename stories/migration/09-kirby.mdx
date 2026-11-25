@@ -101,3 +101,4 @@ Eigene Layout-Regeln des Projekts, die ein [Layout](?path=/docs/layout-übersich
 - **Menü funktioniert heute nicht:** `main.js` sucht `[data-js-mobile-menu-toggle]`, `header.php` hat `data-js-menu`. Mit `.cda-header` schaltet das Projekt nur `aria-expanded` am Button.
 - **Fehler aus der Bestandsaufnahme:** `font-weight: 100 - 900` in `fonts.css` (richtig `100 900`) – entfällt, weil die Schrift aus `cranach.css` kommt.
 - **Barrierefreiheit:** Menü-Button mit `aria-label="Menü Button"`, ohne `aria-expanded`; Link-Hover #e6e6e6 auf #fc8e77 nur 1,81 : 1. Beides lösen die Komponenten.
+- **Favicon:** `page-header.php` verweist auf `assets/icons/favicons/favicon.ico`, die Datei liegt nicht im Repo. Die drei Dateien aus `dist/brand/` des Pakets nehmen ([Logo und Favicon](?path=/docs/grundlagen-logo-und-favicon--docs)).

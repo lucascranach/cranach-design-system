@@ -189,3 +189,4 @@ Eigene Layout-Regeln des Projekts, die ein [Layout](?path=/docs/layout-übersich
 - **Gelb als Textfarbe:** `color: $accent` 3× und `color: $accent-dark` 10×, dazu inline in `navigation.11ty.js`. Alle auf `--cda-color-text-accent` oder `-text-muted` umstellen.
 - **Globale Regeln:** `* { box-sizing: content-box; transition: all $tr-fast }` in `base/body-and-typo.scss` widerspricht dem Reset und ignoriert reduzierte Bewegung. `outline: none` in `meta-data-form.scss` löschen.
 - **Überschriften:** Mit 16 px Fließtext würde `$l` (h2, `.title`) genauso groß wie der Text. Als Schriftgröße deshalb `--cda-font-size-l`.
+- **Logo und Favicon:** `cda-logo-*.svg` und `favicon.svg` in `src/assets/images/` durch `dist/brand/` aus dem Paket ersetzen ([Logo und Favicon](?path=/docs/grundlagen-logo-und-favicon--docs)). Im `<link rel="icon">` stimmt der Typ nicht: `image/svg+xml` statt `image/svg`.
