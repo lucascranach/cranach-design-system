@@ -9,7 +9,7 @@ Format: Status · Kontext · Entscheidung · Konsequenzen. Neue Entscheidungen b
 | [0001](0001-neues-repo-und-abloesung-styleguide.md) | Neues Repo, Ablösung von `lucascranach/styleguide` | angenommen |
 | [0002](0002-css-first-mit-adaptern.md) | CSS-first mit Adaptern, ohne SCSS | angenommen |
 | [0003](0003-praefix-und-cascade-layers.md) | Präfix `cda` und Cascade Layers | angenommen, ergänzt durch 0021 |
-| [0004](0004-dtcg-tokens-und-style-dictionary.md) | Tokens im DTCG-Format, Build mit Style Dictionary | angenommen |
+| [0004](0004-dtcg-tokens-und-style-dictionary.md) | Tokens im DTCG-Format, Build mit Style Dictionary | angenommen, ergänzt durch 0022 |
 | [0005](0005-auslieferung.md) | Auslieferung: Git-Abhängigkeit und selbst gehostete Kopie | ersetzt durch 0016 |
 | [0006](0006-versionierung.md) | Versionierung mit SemVer und release-please | angenommen |
 | [0007](0007-themes.md) | Themes hell und dunkel | angenommen |
@@ -27,3 +27,4 @@ Format: Status · Kontext · Entscheidung · Konsequenzen. Neue Entscheidungen b
 | [0019](0019-stufenwoerter-semantischer-tokens.md) | Stufenwörter semantischer Tokens (`subtle`, `medium`, `strong`, `muted`) | angenommen |
 | [0020](0020-komponenten-aufnahme-und-katalog.md) | Aufnahme von Komponenten und Katalog der Projektkomponenten | angenommen |
 | [0021](0021-layouts-und-zustaende.md) | Layouts und Regel für Zustände | angenommen |
+| [0022](0022-semantische-tokens-ohne-theme.md) | Semantische Tokens ohne Theme | angenommen |

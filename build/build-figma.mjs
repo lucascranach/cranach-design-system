@@ -27,7 +27,8 @@ const DIR = path.join('dist', 'figma');
  */
 export function scopesFor(collection, name) {
   const [group, sub] = name.split('/');
-  if (collection === 'Cranach Semantic') {
+  // Semantische Farben nach Rolle; Bedeutungen ohne Theme (size/*, focus/ring-*, ADR 0022) wie unten nach Art des Werts
+  if (collection === 'Cranach Semantic' && group === 'color') {
     const surface = ['FRAME_FILL', 'SHAPE_FILL'];
     if (sub === 'text' || name === 'color/link/default' || name === 'color/link/hover-text') return ['TEXT_FILL'];
     if (sub === 'border' || sub === 'focus' || name === 'color/link/underline') return ['STROKE_COLOR'];
