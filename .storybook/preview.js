@@ -38,7 +38,7 @@ const preview = {
           'Einstieg',
           'Einbinden',
           'Grundlagen',
-          ['Farben', 'Typografie', 'Abstände', 'z-Ebenen', 'Icons'],
+          ['Farben', 'Typografie', 'Abstände', 'z-Ebenen', 'Icons', 'Logo und Favicon'],
           'Layout',
           ['Übersicht', 'Stack', 'Cluster', 'Sidebar', 'Grid', 'Center'],
           'Komponenten',

@@ -19,3 +19,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+Exception: The logo and favicon of the Cranach Digital Archive (brand/ in the
+repository, dist/brand/ in the package: logo.svg, favicon.svg, favicon.ico,
+apple-touch-icon.png) are marks of the Cranach Digital Archive. They are not
+covered by the MIT License above and may only be used for services of the
+Cranach Digital Archive. All rights reserved. See brand/LICENSE.md
+(dist/brand/LICENSE.md in the package).

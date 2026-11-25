@@ -35,12 +35,13 @@ Gemeinsame Design-Tokens, Grundstyles und Komponenten für die Frontends des Cra
 
 ```sh
 npm install
-npm run build            # CSS prüfen (Stylelint), Tokens, Icons, CSS und Figma-Sync bauen, Kontraste prüfen
+npm run build            # CSS prüfen (Stylelint), Tokens, Icons, CSS, Logo und Favicon, Figma-Sync bauen, Kontraste prüfen
 npm run lint:css         # Stylelint über src/ und .storybook/
 npm run test:lint        # Tests der Stylelint-Regeln
 npm run build:tokens     # Token-Dateien in dist/ aus tokens/ erzeugen
 npm run build:icons      # Icon-Subset von Google Fonts nach dist/fonts/ (Cache: .cache/icons/)
 npm run build:css        # dist/cranach.css aus src/ + Schriften nach dist/fonts/
+npm run build:brand      # Logo und Favicon aus brand/ nach dist/brand/, mit Prüfung
 npm run build:figma      # dist/figma/figma-sync.js für use_figma (Anleitung: docs/figma-sync.md)
 npm run test:figma       # Tests des Figma-Sync-Skripts
 npm run test:storybook   # alle Stories mit axe in Chromium, hell und dunkel (vorher npm run build; einmalig npx playwright install chromium)
@@ -50,6 +51,7 @@ npm run build:storybook  # Doku statisch nach storybook-static/
 npm pack --dry-run       # Paketinhalt kontrollieren
 npm run release          # Probelauf des Releases (nichts wird veröffentlicht; Anleitung: docs/release.md)
 npm run catalog:photos   # Fotos für den Katalog der Projektkomponenten (nur lokal, braucht Chrome und cwebp)
+npm run brand:raster     # favicon.ico und apple-touch-icon.png aus brand/favicon.svg (nur lokal, Chromium von Playwright)
 ```
 
 ## Aufbau
@@ -62,6 +64,7 @@ npm run catalog:photos   # Fotos für den Katalog der Projektkomponenten (nur lo
 | `build/` | Build-Skripte (Style Dictionary, Icons, CSS und Schriften, Kontrastprüfung mit Paarungen in `contrast.mjs`, Stylelint-Plugin und -Tests, Figma-Sync mit Vorlage und Tests, Release-Skript `release.mjs`, Fotos für den Katalog `catalog-photos.mjs`) |
 | `stylelint.config.mjs` | CSS-Regeln: Layer, Präfix, Werte nur über Tokens, kein `!important`/`outline: none` |
 | `src/` | CSS für Reset und Grundstyles (`reset.css`, `base.css`), Layouts `cda-l-*` in `layout.css` (ADR 0021), Komponenten in `src/components/`, Hilfsklassen `cda-u-*` in `utilities.css`; Reihenfolge in `build/build-css.mjs` |
+| `brand/` | Logo (`logo.svg`, `currentColor`) und Favicon (SVG, ICO, PNG 180) des CDA – **nicht MIT-lizenziert** (`brand/LICENSE.md`); Raster aus `npm run brand:raster` |
 | `icons/` | `icons.json` (Icon-Namen mit nutzenden Projekten), Lizenztext Material Symbols |
 | `stories/` | Storybook-Doku: MDX-Seiten (Deutsch) und Stories; Grundlagen in `stories/grundlagen/`, Layouts in `stories/layout/`, Komponenten in `stories/komponenten/`, Utilities in `stories/utilities.*`, Katalog der Projektkomponenten in `stories/projektkomponenten.*` mit Daten in `.json` und Fotos in `stories/assets/projektkomponenten/` (ADR 0020), Migrationsseiten je Projekt in `stories/migration/` |
 | `.storybook/` | Storybook-Konfiguration; `preview.css` mit Hilfsklassen `docs-*` nur für die Doku |

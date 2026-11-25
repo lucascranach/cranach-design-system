@@ -14,7 +14,7 @@ compare lädt heute drei Dinge von außen (`public/index.html`):
 |---|---|
 | `https://lucascranach.github.io/styleguide/shared/styles/main.css` – Variablen, Grundstyles, Klasse `.icon` | `cranach.css` vom eigenen Server |
 | `https://fonts.googleapis.com/icon?family=Material+Icons` | Icon-Font aus `cranach.css`; alle sechs Icons (collections, fullscreen, multiple_stop, lock, lock_open, playlist_remove) sind im Subset |
-| `https://lucascranach.github.io/styleguide/shared/favicon.svg` | **eigene Kopie** im Projekt – das Designsystem liefert kein Favicon. search, artefacts, map und timeline haben dieselbe `favicon.svg` |
+| `https://lucascranach.github.io/styleguide/shared/favicon.svg` | `/design-system/x.y.z/brand/favicon.svg` (dazu `.ico` und `apple-touch-icon.png`), siehe [Logo und Favicon](?path=/docs/grundlagen-logo-und-favicon--docs) |
 
 </div>
 
@@ -72,3 +72,4 @@ Eigene Styles hat compare nur in `public/styles/components.css`; die Templates s
 - **Bedienbarkeit:** Alle Bedienelemente sind heute `<div>`, `<i>` oder `<span>` mit Klick-Handlern, ohne Fokus-Styles und ohne Namen. Mit echten Buttons kommen Tastaturbedienung und Fokusring aus den Grundstyles.
 - **Theme:** Die Bedienelemente sind dunkel. Ob auch die Seite dunkel ist, steht nur im Styleguide – vor der Umstellung auf der Live-Seite prüfen und dann `data-theme="dark"` setzen.
 - **z-Ebenen:** Die Werte springen von 10–40 auf 60–160. Mögliche Konflikte mit den z-Indizes von OpenSeadragon sind nicht geprüft.
+- **Favicon:** statt der Datei aus dem alten Styleguide `favicon.ico`, `favicon.svg` und `apple-touch-icon.png` aus `/design-system/x.y.z/brand/` ([Logo und Favicon](?path=/docs/grundlagen-logo-und-favicon--docs)).
