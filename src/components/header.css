@@ -30,6 +30,9 @@
  * Der Menü-Button steht im HTML direkt vor der Navigation, damit Tab nach dem Öffnen ins Menü
  * führt. Optisch steht er per order ganz rechts.
  *
+ * Im breiten Header steht das Logo weiter von der Navigation ab (48 px) als die Einträge
+ * untereinander (24 px), damit es nicht wie ein weiterer Menüpunkt wirkt.
+ *
  * --sticky: bleibt beim Scrollen oben (wie in cranach-artefacts).
  *
  * Vorlagen: main-navigation aus cranach-search und cranach-artefacts, main-header aus cranach-kirby.
@@ -180,6 +183,11 @@
   }
 
   @container cda-header (width >= 48rem) {
+    /* zusammen mit dem gap 48 px (space-2xl) bis zur Navigation */
+    .cda-header__brand {
+      margin-inline-end: var(--cda-space-l);
+    }
+
     .cda-header__toggle {
       display: none;
     }
