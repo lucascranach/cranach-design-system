@@ -33,6 +33,7 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 - **Nichts löschen:** Variablen, die es in den Tokens nicht mehr gibt, werden nur gemeldet („nicht mehr in den Tokens“). Sie können noch in Entwürfen verwendet sein; gelöscht wird von Hand, nach Rücksprache.
 - **Typkonflikt:** Hat eine Variable in Figma einen anderen Typ als in den Tokens (etwa Zahl statt Text), meldet das Skript einen Fehler und lässt sie aus. Figma kann den Typ nicht ändern – die Variable muss von Hand gelöscht werden, der nächste Lauf legt sie neu an.
 - **CSS-Name:** Jede Variable zeigt im Dev Mode den Namen der Custom Property, z. B. `var(--cda-color-text-default)`.
+- **Deckkraft** in Prozent: Im CSS steht `opacity/*` als Anteil (0,6), Figma liest eine an die Deckkraft einer Ebene gebundene Variable aber in Prozent. Der Build rechnet um (`opacity/medium` = 60, `opacity/low` = 30); die Beschreibung nennt den Wert im CSS.
 - **Schriftgrößen** in px (aus rem × 16), **Schriftnamen** so, wie Figma sie kennt: „IBM Plex Sans“ statt „Cranach Sans“ (ADR 0017), „Material Symbols Sharp“ statt „Cranach Symbols“.
 
 ### Scopes – wo Figma eine Variable anbietet
@@ -49,7 +50,8 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 | `border-width/*`, `focus/ring-*` | Konturstärke |
 | `size/*` | Breite/Höhe |
 | `font/size/*`, `font/weight/*`, `font/family/*` | Schriftgröße, -stärke, -familie |
-| z-Ebenen, Breakpoints, Dauern, Deckkraft, Zeilenhöhe | keiner – nur zur Information, Figma hat dafür kein passendes Feld |
+| `opacity/*` | Deckkraft (Ebene), Werte in Prozent |
+| z-Ebenen, Breakpoints, Dauern, Zeilenhöhe | keiner – nur zur Information, Figma hat dafür kein passendes Feld |
 
 Die Zuordnung steht in `build/build-figma.mjs` (`scopesFor`).
 
@@ -117,3 +119,7 @@ Erster Lauf mit Stilen: `11 angelegt, 0 geändert, 138 unverändert, 0 nicht meh
 `size/*` und `focus/ring-*` stehen jetzt in `tokens/semantic/dimension.json` und damit in Figma in „Cranach Semantic“. Figma kann Variablen nicht zwischen Sammlungen verschieben: Der Sync legt sie dort neu an und meldet die 7 alten in „Cranach Primitives“ als „nicht mehr in den Tokens“. Vor dem Löschen der alten Variablen werden gebundene Ebenen auf die neuen umgestellt (auf der Seite „Übersicht“: Breiten und Fokusring).
 
 Ausgeführt am 25.11.2026: Sync `7 angelegt, 0 geändert, 142 unverändert, 7 nicht mehr in den Tokens, 0 Fehler` (unverändert sind 131 Variablen und die 11 Stile aus Schritt 30). Auf der Seite „Übersicht“ 7 Bindungen umgestellt (drei Breiten, vier Konturstärken des Fokusrings). Danach die 7 alten Variablen in „Cranach Primitives“ gelöscht (Freigabe Volker). Stand: Primitives 97, Semantic 38, Responsive 3 – zusammen 138; keine Bindung zeigt ins Leere.
+
+## Deckkraft in Prozent am 25.11.2026
+
+Sync nach der Umrechnung (Roadmap-Schritt 33): `0 angelegt, 2 geändert, 147 unverändert, 0 nicht mehr in den Tokens, 0 Fehler` – geändert `opacity/medium` (0,6 → 60) und `opacity/low` (0,3 → 30), jeweils Wert, Beschreibung und Scope `OPACITY`. Vorher war keine Ebene an diese Variablen gebunden.
