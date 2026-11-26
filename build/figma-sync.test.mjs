@@ -202,6 +202,13 @@ test('leere Datei: legt Sammlungen, Modi und alle Variablen an', async () => {
   assert.deepEqual(byName('color/background/default').scopes, ['FRAME_FILL', 'SHAPE_FILL']);
   assert.deepEqual(byName('color/link/underline').scopes, ['STROKE_COLOR']);
 
+  // Deckkraft: im CSS 0–1, in Figma in Prozent mit Scope OPACITY (Ebenen-Deckkraft)
+  const opacity = byName('opacity/medium');
+  assert.equal(opacity.valuesByMode[value], 60);
+  assert.equal(byName('opacity/low').valuesByMode[value], 30);
+  assert.deepEqual(opacity.scopes, ['OPACITY']);
+  assert.match(opacity.description, /In Figma in Prozent, im CSS als Anteil \(0\.6\)\.$/);
+
   // Bedeutungen ohne Theme (ADR 0022): in „Cranach Semantic“, in Light und Dark derselbe Wert
   const term = byName('size/term');
   assert.equal(term.variableCollectionId, f.collections[2].id);

@@ -8,6 +8,10 @@
  *   - css:    den Namen der Custom Property, den Figma im Dev Mode anzeigt,
  *   - alias.collection: in welcher Sammlung das Ziel eines Verweises liegt.
  *
+ * Deckkraft (opacity/*) steht in den Tokens als Anteil 0–1 wie im CSS; Figma liest eine an die
+ * Deckkraft einer Ebene gebundene Variable aber in Prozent. Der Build rechnet deshalb in Prozent um
+ * (0.6 → 60) und gibt den Scope OPACITY.
+ *
  * Fließende Abstände (space/fluid/*, clamp() mit vw) kann Figma nicht abbilden. Sie kommen statt
  * als Text in den Primitives als Zahlen in eine eigene Sammlung „Cranach Responsive“, je
  * Bildschirmbreite ein Modus (VIEWPORTS), mit dem Wert, den clamp() bei dieser Breite ergibt.
@@ -25,8 +29,7 @@ const DIR = path.join('dist', 'figma');
 /**
  * Scopes je Variable. Primitive Farben bekommen keine: Sie erscheinen nicht in den Farbwählern,
  * damit Gestalter:innen die semantischen Farben nutzen (die auf die primitiven verweisen).
- * Werte ohne passendes Figma-Feld (z-Ebenen, Breakpoints, Dauern, Deckkraft 0–1,
- * Zeilenhöhe als Faktor) bleiben ebenfalls ohne Scope – sie stehen nur zur Information in der Liste.
+ * Werte ohne passendes Figma-Feld (z-Ebenen, Breakpoints, Dauern, Zeilenhöhe als Faktor) bleiben ebenfalls ohne Scope – sie stehen nur zur Information in der Liste.
  */
 export function scopesFor(collection, name) {
   const [group, sub] = name.split('/');
@@ -48,8 +51,12 @@ export function scopesFor(collection, name) {
   if (group === 'font' && sub === 'size') return ['FONT_SIZE'];
   if (group === 'font' && sub === 'weight') return ['FONT_WEIGHT'];
   if (group === 'font' && sub === 'family') return ['FONT_FAMILY'];
+  if (group === 'opacity') return ['OPACITY'];
   return [];
 }
+
+/** Deckkraft von 0–1 (CSS) in Prozent (Figma); auf zwei Nachkommastellen, damit 0.6 genau 60 ergibt */
+export const toPercent = (value) => Math.round(value * 10000) / 100;
 
 /** Name der Custom Property im CSS: color/text/default → var(--cda-color-text-default) */
 export const cssFor = (name) => `var(--cda-${name.replaceAll('/', '-')})`;
@@ -120,7 +127,9 @@ export async function buildFigmaData() {
       variables: c.variables.map((v) => ({
         name: v.name,
         type: v.type,
-        description: v.description ?? '',
+        description: v.name.startsWith('opacity/')
+          ? `${v.description ? `${v.description} ` : ''}In Figma in Prozent, im CSS als Anteil (${v.values.Value}).`
+          : (v.description ?? ''),
         scopes: scopesFor(c.name, v.name),
         css: cssFor(v.name),
         values: Object.fromEntries(
@@ -128,6 +137,10 @@ export async function buildFigmaData() {
             if (value && typeof value === 'object' && value.alias) {
               if (!home.has(value.alias)) throw new Error(`${v.name}: Verweis auf unbekannte Variable ${value.alias}`);
               return [mode, { alias: value.alias, collection: home.get(value.alias) }];
+            }
+            if (v.name.startsWith('opacity/')) {
+              if (typeof value !== 'number' || value < 0 || value > 1) throw new Error(`${v.name}: Deckkraft ${value} liegt nicht zwischen 0 und 1`);
+              return [mode, toPercent(value)];
             }
             return [mode, value];
           }),

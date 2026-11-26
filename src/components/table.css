@@ -128,6 +128,10 @@
     background: none;
     border: 0;
 
+    /* Nicht auf der Grundlinie: Sonst entsteht über dem Button zusätzliche Zeilenhöhe, und ein
+       Spaltenkopf mit Sortierung wird rund 4 px höher als einer ohne */
+    vertical-align: bottom;
+
     /* Der Schrägstrich-Text ist der Name für Screenreader – leer, die Richtung sagt aria-sort */
     &::after {
       content: "unfold_more";
