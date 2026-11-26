@@ -33,6 +33,7 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 - **Nichts löschen:** Variablen, die es in den Tokens nicht mehr gibt, werden nur gemeldet („nicht mehr in den Tokens“). Sie können noch in Entwürfen verwendet sein; gelöscht wird von Hand, nach Rücksprache.
 - **Typkonflikt:** Hat eine Variable in Figma einen anderen Typ als in den Tokens (etwa Zahl statt Text), meldet das Skript einen Fehler und lässt sie aus. Figma kann den Typ nicht ändern – die Variable muss von Hand gelöscht werden, der nächste Lauf legt sie neu an.
 - **CSS-Name:** Jede Variable zeigt im Dev Mode den Namen der Custom Property, z. B. `var(--cda-color-text-default)`.
+- **Deckkraft** in Prozent: Im CSS steht `opacity/*` als Anteil (0,6), Figma liest eine an die Deckkraft einer Ebene gebundene Variable aber in Prozent. Der Build rechnet um (`opacity/medium` = 60, `opacity/low` = 30); die Beschreibung nennt den Wert im CSS.
 - **Schriftgrößen** in px (aus rem × 16), **Schriftnamen** so, wie Figma sie kennt: „IBM Plex Sans“ statt „Cranach Sans“ (ADR 0017), „Material Symbols Sharp“ statt „Cranach Symbols“.
 
 ### Scopes – wo Figma eine Variable anbietet
@@ -49,7 +50,8 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 | `border-width/*`, `focus/ring-*` | Konturstärke |
 | `size/*` | Breite/Höhe |
 | `font/size/*`, `font/weight/*`, `font/family/*` | Schriftgröße, -stärke, -familie |
-| z-Ebenen, Breakpoints, Dauern, Deckkraft, Zeilenhöhe | keiner – nur zur Information, Figma hat dafür kein passendes Feld |
+| `opacity/*` | Deckkraft (Ebene), Werte in Prozent |
+| z-Ebenen, Breakpoints, Dauern, Zeilenhöhe | keiner – nur zur Information, Figma hat dafür kein passendes Feld |
 
 Die Zuordnung steht in `build/build-figma.mjs` (`scopesFor`).
 
@@ -139,6 +141,10 @@ Ausgeführt am 25.11.2026: Sync `7 angelegt, 0 geändert, 142 unverändert, 7 ni
 ## Grundbausteine am 25.11.2026 (Schritt 32)
 
 Neue Seiten Icon, Aktion, Formular und Navigation mit je einem Abschnitt pro Komponente (zuerst eine Seite je Komponente, dann alles auf einer Seite „Komponenten“; weil das Assets-Panel nur nach Seiten gruppiert, auf Wunsch von Volker eine Seite je Zweck) und Komponenten bzw. Sets (59 Icon-Sets mit je 2, Button 24, Input 12, Checkbox 12, Toggle 8, Switcher item 8 Varianten; dazu Field, Search, Switcher). Kontrolle nur lesend: 236 Farben in Komponenten und Instanz-Overrides, keine ohne Variable. Nach dem Sync mit Deckkraft in Prozent die 15 Disabled-Varianten an `opacity/medium` gebunden (vorher fest 60 %). Seite „Übersicht“: Abschnitt „Komponenten“ hell und dunkel, nach Durchsicht von Volker mit größeren Abständen, Erläuterung einmal je Komponente und allen Zuständen (z. B. Button: Default, Hover, Focus, Disabled je Variante); der Hinweis „Noch nicht in Figma“ nennt jetzt die zehn fehlenden Komponenten. Danach auf Wunsch von Volker die Icon-Auswahl umgestellt: statt einer Komponente „Icon“ mit Texteingabe 59 Sets `Icon/<Name>` und die Eigenschaft `Icon` (Instance Swap) in Button und Switcher item; die alte Komponente gelöscht, nachdem keine Instanz mehr darauf zeigte. Abschnitt „Icon“ der Übersicht mit allen 59 Icons und ihren Namen. Library weiterhin nicht veröffentlicht.
+
+## Deckkraft in Prozent am 25.11.2026
+
+Sync nach der Umrechnung (Roadmap-Schritt 33): `0 angelegt, 2 geändert, 147 unverändert, 0 nicht mehr in den Tokens, 0 Fehler` – geändert `opacity/medium` (0,6 → 60) und `opacity/low` (0,3 → 30), jeweils Wert, Beschreibung und Scope `OPACITY`. Vorher war keine Ebene an diese Variablen gebunden.
 
 ## Zweites Paket am 25.11.2026 (Schritt 34)
 
