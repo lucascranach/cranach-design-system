@@ -33,6 +33,7 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 - **Nichts löschen:** Variablen, die es in den Tokens nicht mehr gibt, werden nur gemeldet („nicht mehr in den Tokens“). Sie können noch in Entwürfen verwendet sein; gelöscht wird von Hand, nach Rücksprache.
 - **Typkonflikt:** Hat eine Variable in Figma einen anderen Typ als in den Tokens (etwa Zahl statt Text), meldet das Skript einen Fehler und lässt sie aus. Figma kann den Typ nicht ändern – die Variable muss von Hand gelöscht werden, der nächste Lauf legt sie neu an.
 - **CSS-Name:** Jede Variable zeigt im Dev Mode den Namen der Custom Property, z. B. `var(--cda-color-text-default)`.
+- **Deckkraft** in Prozent: Im CSS steht `opacity/*` als Anteil (0,6), Figma liest eine an die Deckkraft einer Ebene gebundene Variable aber in Prozent. Der Build rechnet um (`opacity/medium` = 60, `opacity/low` = 30); die Beschreibung nennt den Wert im CSS.
 - **Schriftgrößen** in px (aus rem × 16), **Schriftnamen** so, wie Figma sie kennt: „IBM Plex Sans“ statt „Cranach Sans“ (ADR 0017), „Material Symbols Sharp“ statt „Cranach Symbols“.
 
 ### Scopes – wo Figma eine Variable anbietet
@@ -49,7 +50,8 @@ Der Sync darf beliebig oft laufen. Ein zweiter Lauf ohne Token-Änderungen melde
 | `border-width/*`, `focus/ring-*` | Konturstärke |
 | `size/*` | Breite/Höhe |
 | `font/size/*`, `font/weight/*`, `font/family/*` | Schriftgröße, -stärke, -familie |
-| z-Ebenen, Breakpoints, Dauern, Deckkraft, Zeilenhöhe | keiner – nur zur Information, Figma hat dafür kein passendes Feld |
+| `opacity/*` | Deckkraft (Ebene), Werte in Prozent |
+| z-Ebenen, Breakpoints, Dauern, Zeilenhöhe | keiner – nur zur Information, Figma hat dafür kein passendes Feld |
 
 Die Zuordnung steht in `build/build-figma.mjs` (`scopesFor`).
 
@@ -73,12 +75,30 @@ Erste Seite der Library-Datei, angelegt am 23.11.2026, zum Ansehen und Prüfen d
 |---|---|
 | Titel | Name, Zweck, Stand und Paketversion auf Gelb mit dunkler Schrift; eignet sich als Vorschaubild der Library |
 | Farben · Hell, Farben · Dunkel | alle semantischen Farben in Gruppen mit Name, CSS-Name und Beschreibung; derselbe Aufbau, einmal mit Modus Light, einmal mit Modus Dark der Sammlung „Cranach Semantic“ |
-| Grundwerte | Paletten, Schriftgrößen, -familien und -stärken, Abstände, fließende Abstände je Modus von „Cranach Responsive“, Radien, Rahmenstärken, Breiten, Textstile und Schatten mit den Stilen der Library; am Ende, was noch fehlt (Komponenten) |
+| Grundwerte | Paletten, Schriftgrößen, -familien und -stärken, Abstände, fließende Abstände je Modus von „Cranach Responsive“, Radien, Rahmenstärken, Breiten, Textstile und Schatten mit den Stilen der Library; am Ende, was noch fehlt |
+| Komponenten | je Grundbaustein einmal eine kurze Erläuterung (wofür, was im Code dazugehört), darunter seine Varianten und Zustände als Instanzen in zwei Feldern nebeneinander – links mit Modus Light, rechts mit Modus Dark; unter jedem Beispiel der Wert der Eigenschaft in Figma in Code-Schrift (IBM Plex Mono, xs, gedämpft; Auswahl Volker aus fünf Varianten) (Schritt 32) |
 
 - **An Variablen und Stile gebunden:** Flächen, Konturen, Schriftgrößen, -familien und -stärken, Balkenbreiten, Radien und Rahmenstärken; die Beispiele der Textstile und Schatten nutzen die Stile selbst. Ändert der Sync einen Wert, zeigt die Seite ihn ohne weiteres Zutun. Geprüft am 23.11.2026: 705 Bindungen, keine feste Farbe.
 - **Nicht im Sync:** Die Seite wurde einmalig über `use_figma` gebaut. Neue oder umbenannte Variablen und Stile erscheinen dort nicht von selbst; nach einem Sync, der Variablen anlegt, die Seite ergänzen (Claude bitten: „Übersicht in Figma ergänzen“).
 - **Ohne Darstellung:** z-Ebenen, Breakpoints, Dauern, Deckkraft, Zeilenhöhen, `size/measure` und `size/page` – sie stehen nur zur Information in den Variablen.
 - Stand und Version im Titel sind Text und werden bei einem Release von Hand angepasst.
+- **Zeilenlänge:** Fließtexte laufen höchstens 65 Zeichen breit, wie `size.measure` (65ch: 65 × Breite der „0“, bei 16 px also 624 px, bei 14 px 546 px). In Auto-Layout über die größte Breite (max width) begrenzt, damit sie bei schmaleren Rahmen weiter umbrechen.
+
+## Komponenten (ADR 0014)
+
+Die Komponenten baut Claude über `use_figma` nach Vorlage aus `src/components/` und Storybook; sie sind nicht Teil des Sync-Skripts. Ändert sich eine Komponente im Code, die Figma-Komponente von Hand oder per Auftrag an Claude nachziehen.
+
+- **Eine Seite je Zweck:** Icon, Aktion (Button), Formular (Checkbox, Suchfeld, Textfeld, Toggle), Inhalt (Accordion, Tabelle, Werk-Karte), Navigation (Footer, Header, Skip-Link, Switcher), Overlay (Dialog, Seitenleiste), Rückmeldung (Loader, Meldung), mit Emoji vor dem Namen. Seitenliste: `📖 Übersicht`, Trennlinie (Seite „---“, von Figma als Divider dargestellt), Überschrift `KOMPONENTEN` (leere Seite mit kurzem Hinweis, nur zur Gliederung), darunter eingerückt `↳ 🔣 Icon`, `↳ 👆 Aktion`, `↳ 📝 Formular`, `↳ 🗂️ Inhalt`, `↳ 🧭 Navigation`, `↳ 🪟 Overlay`, `↳ 🪧 Rückmeldung`. Neue Seiten bekommen ein Emoji, das die alphabetische Reihenfolge hält (Overlay z. B. 🪟). Die Emojis halten die alphabetische Reihenfolge im Assets-Panel; darin je Komponente ein Abschnitt (Section), benannt wie in Storybook und alphabetisch. Das Assets-Panel gruppiert Komponenten der eigenen Datei nur nach Seiten (Seitennamen alphabetisch) – Sections, Frames und Schrägstrich-Namen erzeugen dort keine Ordner (getestet 25.11.2026). Neue Komponenten kommen auf die passende Seite, bei Bedarf eine neue Seite (z. B. „Inhalt“ für Karte und Tabelle, „Overlay“ für Dialog und Seitenleiste).
+- **Reihenfolge im Abschnitt „Komponenten“ der Übersicht** wie in Storybook: zuerst Icon (dort eine Grundlage), dann alphabetisch – Accordion, Button, Checkbox, Dialog, Footer, Header, Loader, Meldung, Seitenleiste, Skip-Link, Suchfeld, Switcher, Tabelle, Textfeld, Toggle, Werk-Karte. Komponenten und Eigenschaften heißen englisch wie im Code (`Button`, `Variant=Primary`, `State=Hover`), Beschreibungen sind deutsch und nennen das Markup.
+- **Gebunden:** Flächen, Konturen, Textfarben, Innenabstände, Lücken, Radien und Rahmenstärken an Variablen, Texte an die Textstile `body/default` und `body/small`. Dadurch zeigen Instanzen in einem Rahmen mit Modus Dark der Sammlung „Cranach Semantic“ das dunkle Theme.
+- **Zustände als Varianten:** Default, Hover, Focus, Disabled, je nach Komponente auch Invalid und Read-only. Der Fokusring ist eine eigene Ebene „Focus ring“ – Rahmen in `color/focus/ring`, Stärke `focus/ring-width`, 2 px Abstand wie `outline-offset`.
+- **Icons** über die Icon-Font wie im Code (ADR 0012): je Icon aus `icons/icons.json` ein Komponentenset `Icon/<Name>` mit `Style` Outlined/Filled (Filled über die FILL-Achse der Schrift); die Ligatur zeigt das Symbol. Button und Switcher item haben die Eigenschaft `Icon` (Instance Swap) mit allen Icons als bevorzugten Werten – Figma zeigt sie zur Auswahl mit Vorschau, niemand muss Namen eintippen. Kommt ein Icon in `icons/icons.json` dazu, in Figma ein Set `Icon/<Name>` ergänzen und in die bevorzugten Werte aufnehmen (Claude bitten: „Icon in Figma ergänzen“).
+- **Deckkraft „Disabled“** an `opacity/medium` gebunden; Figma liest sie in Prozent, der Sync rechnet um (Abschnitt „Was das Skript macht“).
+- **Figma zeigt die beabsichtigte Gestaltung** (Entscheidung Volker, 25.11.2026): Maße und Farben wie in Tokens und CSS, abgeglichen mit Storybook im Browser. Ungewollte Abweichungen des Browsers werden im CSS behoben, nicht in Figma nachgebaut; reine Darstellungsdetails einzelner Browser (etwa wie gestrichelte Linien gezeichnet werden) bildet Figma nur ungefähr ab.
+- **Steuerelement neben einer Beschriftung** (Box der Checkbox, Schiene des Toggles) liegt in einer Ebene „Control“ von einer Textzeile Höhe (22 px), die Zeile ist oben ausgerichtet und mindestens `font/size/xl` hoch – wie im CSS bleibt es bei mehrzeiliger Beschriftung an der ersten Zeile. Die Beschriftung der Checkbox füllt die Breite (Höhe automatisch), damit die Trefferzahl in einer breiten Instanz rechts steht.
+- **Texte** binden Familie, Stärke und Größe an `font/*`.
+- **Asset-Vorschau:** Figma richtet die Vorschau unter Assets am sichtbaren Rand aus. Ragt der Fokusring nur auf einer Seite über (z. B. Input im Suchfeld), springt der Inhalt dort beim Wechsel auf Focus um 4 px; auf der Arbeitsfläche und in Instanzen nicht. Bleibt so (Entscheidung Volker, 26.11.2026) – ein Fix ginge nur mit einem knapp sichtbaren Ring in allen Zuständen.
+- **Fest statt gebunden:** das Strichmuster bei Read-only (3 px Strich, 2 px Lücke, ungefähr wie Chrome), Mindestmaße (42 px Höhe bei Button, Feld und Switcher), die Höhe der Ebene „Control“ (22 px), Summen ohne eigenes Token (Karte als Zeile rechts 44 px = `space/xl` + `space/s`) und die Form von Häkchen, Strich und Knopf.
 
 ## Dateien
 
@@ -117,3 +137,50 @@ Erster Lauf mit Stilen: `11 angelegt, 0 geändert, 138 unverändert, 0 nicht meh
 `size/*` und `focus/ring-*` stehen jetzt in `tokens/semantic/dimension.json` und damit in Figma in „Cranach Semantic“. Figma kann Variablen nicht zwischen Sammlungen verschieben: Der Sync legt sie dort neu an und meldet die 7 alten in „Cranach Primitives“ als „nicht mehr in den Tokens“. Vor dem Löschen der alten Variablen werden gebundene Ebenen auf die neuen umgestellt (auf der Seite „Übersicht“: Breiten und Fokusring).
 
 Ausgeführt am 25.11.2026: Sync `7 angelegt, 0 geändert, 142 unverändert, 7 nicht mehr in den Tokens, 0 Fehler` (unverändert sind 131 Variablen und die 11 Stile aus Schritt 30). Auf der Seite „Übersicht“ 7 Bindungen umgestellt (drei Breiten, vier Konturstärken des Fokusrings). Danach die 7 alten Variablen in „Cranach Primitives“ gelöscht (Freigabe Volker). Stand: Primitives 97, Semantic 38, Responsive 3 – zusammen 138; keine Bindung zeigt ins Leere.
+
+## Grundbausteine am 25.11.2026 (Schritt 32)
+
+Neue Seiten Icon, Aktion, Formular und Navigation mit je einem Abschnitt pro Komponente (zuerst eine Seite je Komponente, dann alles auf einer Seite „Komponenten“; weil das Assets-Panel nur nach Seiten gruppiert, auf Wunsch von Volker eine Seite je Zweck) und Komponenten bzw. Sets (59 Icon-Sets mit je 2, Button 24, Input 12, Checkbox 12, Toggle 8, Switcher item 8 Varianten; dazu Field, Search, Switcher). Kontrolle nur lesend: 236 Farben in Komponenten und Instanz-Overrides, keine ohne Variable. Nach dem Sync mit Deckkraft in Prozent die 15 Disabled-Varianten an `opacity/medium` gebunden (vorher fest 60 %). Seite „Übersicht“: Abschnitt „Komponenten“ hell und dunkel, nach Durchsicht von Volker mit größeren Abständen, Erläuterung einmal je Komponente und allen Zuständen (z. B. Button: Default, Hover, Focus, Disabled je Variante); der Hinweis „Noch nicht in Figma“ nennt jetzt die zehn fehlenden Komponenten. Danach auf Wunsch von Volker die Icon-Auswahl umgestellt: statt einer Komponente „Icon“ mit Texteingabe 59 Sets `Icon/<Name>` und die Eigenschaft `Icon` (Instance Swap) in Button und Switcher item; die alte Komponente gelöscht, nachdem keine Instanz mehr darauf zeigte. Abschnitt „Icon“ der Übersicht mit allen 59 Icons und ihren Namen. Library weiterhin nicht veröffentlicht.
+
+## Deckkraft in Prozent am 25.11.2026
+
+Sync nach der Umrechnung (Roadmap-Schritt 33): `0 angelegt, 2 geändert, 147 unverändert, 0 nicht mehr in den Tokens, 0 Fehler` – geändert `opacity/medium` (0,6 → 60) und `opacity/low` (0,3 → 30), jeweils Wert, Beschreibung und Scope `OPACITY`. Vorher war keine Ebene an diese Variablen gebunden.
+
+## Zweites Paket am 25.11.2026 (Schritt 34)
+
+Neue Seiten `↳ 🗂️ Inhalt` und `↳ 🪧 Rückmeldung` (🪧 statt 💬, damit die Seiten im Assets-Panel alphabetisch bleiben). Komponenten nach Vorlage aus `src/components/`:
+
+- **Meldung** (`Message`): `Type` Info/Success/Danger × `Toast` (mit Schatten `shadow/m`, 384 px breit wie `.cda-toast-region`), 6 Varianten; `Title`, `Text`, `Show title`, `Show close`. Fläche und Rand aus `color/feedback/*`, links 3 px (`border-width/l`), Symbol `info`/`check_circle`/`error`. Der Schließen-Button ragt wie im CSS (Rand −8 px) in den Innenabstand.
+- **Loader:** `Spinner` (Kreisbogen mit Lücke oben, 24 px, Textfarbe), `Loader` (Schleier in der Hintergrundfarbe mit `opacity/medium`, Panel mit Spinner, Text und `shadow/m` mittig), `Skeleton` (`Type` Text/Block in `background/medium`).
+- **Accordion:** `Accordion item` (`Open` × `State` Default/Hover/Focus, 6 Varianten; `Title`, `Text`) und `Accordion` mit drei Einträgen. Linie oben `border/default`, Pfeil gedämpft, offen `expand_less`.
+- **Skip-Link** (`Skip link`): `State` Focus/Hover – ohne Fokus ist er im Code unsichtbar, deshalb nur die sichtbaren Zustände.
+
+Kontrolle: 105 Farben, keine ohne Variable. Abgleich mit Storybook im Browser (auch die Stories „Mit Titel“ und „Toast“, dort per Klick ausgelöst): Maße, Abstände, Farben, Schatten und Schnitte gleich – Meldung 50/52/74 px, Toast 384 px breit (zuerst 480 px angelegt, korrigiert), Lade-Panel 264 × 50 px, Accordion-Eintrag 41/79 px, Skip-Link 185 × 40 px. Übersicht um die vier Abschnitte ergänzt, hell und dunkel; „Noch nicht in Figma“ nennt jetzt Werk-Karte, Tabelle, Header, Footer, Dialog, Seitenleiste.
+
+## Drittes Paket am 25.11.2026 (Schritt 35)
+
+Auf der Seite `↳ 🗂️ Inhalt`:
+
+- **Werk-Karte** (`Card`): `Layout` Tile/Row × `State` Default/Hover/Focus × `Favorite`, 12 Varianten; `Title`, `Subtitle`, `Text`, `Show subtitle`, `Show text`, `Show placeholder`. Kachel 256 px breit (`size/card/min`), Bild quadratisch und mit der Breite wachsend; Zeile mit Bild 128 px (`size/card/min-small`) und Innenabstand rechts für den Merken-Button. Hover/Focus: Bildfläche `background/strong`, gelbe Linie (Kachel oben, Zeile unten), Merken-Button sichtbar; Focus mit Ring um die ganze Karte. Merken-Button 32 px rund, gemerkt gelb mit `remove`. Dazu `Card small` (nur Bild, 128 px). Das Bild ist ein Platzhalter wie in Storybook (feste Farben, nur Platzhalter); echte Abbildungen als Bildfüllung (Fit) auf die Ebene „Bild“ und „Show placeholder“ aus.
+- **Tabelle:** `Table cell` (`Part` Head/Body/Term × `Align` Start/End × `Density` Default/Compact, 12 Varianten; `Text`, `Show sort`, `Sort icon` per Instance Swap mit `unfold_more`, `arrow_upward`, `arrow_downward`), daraus `Table` (`Style` Lines/Striped × `Density`) mit Beschriftung, Kopf und drei Zeilen sowie `Table details` (Begriff in `size/term`, Wert). Bei Lines ohne Innenabstand am Rand, bei Striped mit; jede zweite Zeile `background/subtle`.
+
+Abgleich mit Storybook im Browser: Karte (Inhalt 95,6 px hoch, Abstände 12/4, Zeile 8/44/8/16, Linie 2 px, Merken-Button 32 px bei 8/8), Tabelle (Kopf SemiBold mit 2 px `border/strong`, Zellen 8/12 bzw. kompakt 4/8, Zeilenlinie 1 px `border/default`, Rand 0 bzw. 12 px, Zebra `#f7f7f7`, Sortier-Symbol 20 px mit 4 px Abstand, Begriff 192 px gedämpft) – gleich. Ein Spaltenkopf mit Sortier-Button war im Browser rund 4 px höher (Button auf der Grundlinie); das war ungewollt und wird im CSS behoben (Roadmap-Schritt 36, `fix/tabelle-sortierkopf`). Figma zeigt die beabsichtigte Gestaltung: Kopf einheitlich 40 px (kompakt 32 px), mit und ohne Sortier-Symbol. Kontrolle: 266 Farben, keine ohne Variable (außer dem Platzhalterbild). Übersicht ergänzt; „Noch nicht in Figma“ nennt jetzt Header, Footer, Dialog, Seitenleiste.
+
+## Abgleich und Freigabe am 26.11.2026 (Schritte 32 und 35)
+
+Vor der Freigabe auf Wunsch von Volker alle Komponenten der Schritte 32 und 35 erneut mit `src/components/` und Storybook im Browser verglichen (Maße, Abstände, Farben, Zustände, Icons). Ergebnis: gleich bis auf Bruchteile eines Pixels; einzige sichtbare Abweichung ist der Spaltenkopf mit Sortier-Button (Schritt 36). Danach bereinigt: 49 Textebenen an `font/family/sans` gebunden (Field-Beschriftung auch an `font/weight/medium`; betrifft auch Meldung und Skip-Link aus Schritt 34), Checkbox und Toggle mit Ebene „Control“ an der ersten Textzeile (Box 1 px unter, Schiene 1 px über der Beschriftung wie im Browser), unterer Innenabstand der Karte an `space/m` (Kachel) bzw. `space/s` (Zeile). Die 30 Beispiele auf der Übersicht geprüft, Overrides erhalten. Haltepunkte 32 und 35 von Volker freigegeben. Library weiterhin nicht veröffentlicht.
+
+## Viertes Paket am 26.11.2026 (Schritt 37)
+
+Auf der Seite `↳ 🧭 Navigation` (Abschnitte alphabetisch: Footer, Header, Skip-Link, Switcher):
+
+- **Footer:** `Footer link` (`State` Default/Hover/Focus; `Label`; font.size.s, 2 px Strich unten beim Überfahren in `border/hover`) und `Footer` (Links und `Copyright`, `Show links`; Fläche `background/subtle`, Linie oben `border/default`, Innenabstand `space/l` und seitlich `space/fluid/m`, Links und Vermerk auf gemeinsamer Grundlinie, bricht bei wenig Platz um). Dunkel wie in cranach-artefacts über den Modus Dark der Sammlung „Cranach Semantic“ an der Instanz (Beispiel im Abschnitt).
+- **Header:** `Header link` (`Layout` Row 40 px / Menu 48 px volle Breite × `Current` × `State` Default/Hover/Focus, 12 Varianten) und `Header` (`Layout` Wide/Narrow/Narrow open × `Sticky`, 6 Varianten). Aufbau: „Bar“ mit „Brand“ (Logo 24 px hoch, Vektor aus `stories/logo.js`, Farbe `text/muted`), „Nav“ mit fünf Einträgen, „Actions“ mit Switcher (Sprache) und „Menu button“ (Button Ghost, Icon `menu` bzw. `close`); darunter „Menu“ (aufgeklapptes Menü, Linie oben, `shadow/s`). Wide 1280 px mit Modus Desktop, Narrow 384 px mit Modus Mobile der Sammlung „Cranach Responsive“. Sticky: `shadow/s` an der Bar. Im Code liegt das aufgeklappte Menü über dem Inhalt; in Figma verlängert es die Komponente. Abstand Logo → Navigation im Layout Wide 48 px (Entscheidung Volker, 26.11.2026): „Brand“ hat dort rechts den Innenabstand `space/l`, zusammen mit dem Abstand der Bar `space/l`; er steht für `margin-inline-end` am Logo im CSS (Schritt 38). Narrow bleibt bei 24 px.
+
+Neue Seite `↳ 🪟 Overlay`:
+
+- **Dialog** (`Dialog`): `Size` Default (624 px = 65ch; `size/measure` ist ein Text und lässt sich nicht binden) / Wide (1024 px als Beispiel, im Code bis `size/page`); `Title`, `Text`, `Show footer`. Rahmen `border/default`, Radius `radius/m`, Schatten `shadow/l`; Kopf mit Titel (font.size.l, SemiBold, 120 %) und Schließen-Button, Inhalt mit Innenabstand `space/l`, Fußzeile mit Buttons rechts. Wide zeigt eine Bildliste aus `Card small`.
+- **Seitenleiste** (`Drawer`): `Side` End/Start × `Wide` (384 px = 1,5 × `size/card/min`, breit 768 px), 800 px hoch; Linie zur Seite hin, `shadow/l`, Inhalt (Filter mit Checkboxen) füllt die Höhe, Fußzeile unten.
+- Je ein Beispiel auf der Abdunkelung `background/overlay`.
+
+Abgleich mit Storybook im Browser (Dialog und Seitenleiste per Klick geöffnet): Header 58 px hoch, Logo 70 × 24, Abstände 24 px, Menü-Einträge 48 px, Menü 265 px; Footer 78,6 px (Figma 79), Links 29,6 px; Dialog 624 × 267,2 px (Figma 266, Zeilenhöhe 22 statt 22,4), Kopf und Fußzeile 67 px; Seitenleiste 384 px, Kopf 67, Checkboxen 335 px breit mit 8 px Abstand – gleich. Dabei aufgefallen: Die Trefferzahl der Checkbox stand in Figma direkt hinter der Beschriftung, im Browser rechts; die Beschriftung füllt jetzt die Breite. Kontrolle: 474 Farben, keine ohne Variable; alle Texte mit gebundener Familie, Stärke und Größe. Übersicht um Dialog, Footer, Header und Seitenleiste ergänzt (hell und dunkel; Header ohne vierten und fünften Eintrag und Seitenleiste niedriger, damit sie in die Felder passen). Der Hinweis „Noch nicht in Figma“ auf der Übersicht ist entfernt: alle 17 Komponenten aus dem Code sind in Figma. Library weiterhin nicht veröffentlicht.
