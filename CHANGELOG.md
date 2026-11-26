@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.2.0](https://github.com/lucascranach/cranach-design-system/compare/v0.1.0...v0.2.0) (2026-11-26)
+
+
+### Neue Funktionen
+
+* **figma:** Text- und Effektstile aus den Tokens synchronisieren ([#10](https://github.com/lucascranach/cranach-design-system/issues/10)) ([435e0d7](https://github.com/lucascranach/cranach-design-system/commit/435e0d7f90a207c75ad55e490023f4bb6f91538f))
+
+
+### Fehlerbehebungen
+
+* **figma:** Deckkraft im Sync in Prozent umrechnen ([#13](https://github.com/lucascranach/cranach-design-system/issues/13)) ([1072601](https://github.com/lucascranach/cranach-design-system/commit/1072601b32c65da8584175fb60cc6f8549943a65))
+* **header:** mehr Abstand zwischen Logo und Navigation ([#16](https://github.com/lucascranach/cranach-design-system/issues/16)) ([5272df6](https://github.com/lucascranach/cranach-design-system/commit/5272df6ba0ec87e806a0342daaa8c2cc9adb2422))
+* **table:** Spaltenkopf mit Sortier-Button gleich hoch ([#15](https://github.com/lucascranach/cranach-design-system/issues/15)) ([b9bf1c7](https://github.com/lucascranach/cranach-design-system/commit/b9bf1c750e342e0f743ddadbdf6fcf2c17d6f5cf))
+
+
+### Dokumentation
+
+* **figma:** Komponenten in der Library-Datei vermerkt ([#14](https://github.com/lucascranach/cranach-design-system/issues/14)) ([31fe603](https://github.com/lucascranach/cranach-design-system/commit/31fe60384fef78d49eddb219e9b80904673fe923))
+* Prüfung der Figma-Library und Seite „Übersicht“ vermerkt ([#8](https://github.com/lucascranach/cranach-design-system/issues/8)) ([06a2989](https://github.com/lucascranach/cranach-design-system/commit/06a2989b43cd1abb94d714baa9827b69285d3c82))
+* Release 0.1.0 und Server-Zugang in Roadmap, Anleitung und CLAUDE.md vermerkt ([#6](https://github.com/lucascranach/cranach-design-system/issues/6)) ([ce070b9](https://github.com/lucascranach/cranach-design-system/commit/ce070b988f21bda6ae236c14268c3d58b1e933a0))
+
 ## 0.1.0 (2026-11-17)
 
 
